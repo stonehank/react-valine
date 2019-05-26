@@ -7,7 +7,7 @@ export default class PreviewComponentShow extends React.PureComponent {
     return (
       previewShow
         ? <div className="vinput vpreview">
-            <div dangerouslySetInnerHTML={{__html: previewContent}} />
+          <div dangerouslySetInnerHTML={{__html:`<div>${previewContent}</div>`}} />
           </div>
       :   null
 

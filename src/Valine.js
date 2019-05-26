@@ -21,6 +21,10 @@ export default class Valine extends React.Component{
     this.countMap=new Map()
     this.fetchCount=this.fetchCount.bind(this)
     this.updateCounts=this.updateCounts.bind(this)
+    window.AV.init({
+      appId:props.appId,
+      appKey:props.appKey
+    })
   }
 
   fetchCount(path){
@@ -47,15 +51,9 @@ export default class Valine extends React.Component{
     this.countMap.set(path,count)
   }
 
-  componentDidMount(){
-    const {appId,appKey}=this.props
-    window.AV.init({appId,appKey})
-  }
-
   render(){
-    const {appId,appKey}=this.props
     return (
-      <ValineContext.Provider value={{appId,appKey,fetchCount:this.fetchCount,updateCount:this.updateCounts,...this.state}}>
+      <ValineContext.Provider value={{fetchCount:this.fetchCount,updateCount:this.updateCounts,...this.state}}>
         {this.props.children}
       </ValineContext.Provider>
     )

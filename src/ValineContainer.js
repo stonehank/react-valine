@@ -412,16 +412,16 @@ export default class ValineContainer extends React.Component{
 
 
   componentDidMount(){
-    const {AV,nest,appId,appKey}=this.props
+    const {AV,nest}=this.props
     if(!AV)return
-    try{
-      AV.init({
-        appId,
-        appKey
-      })
-    }catch(err){
-      // do nothing
-    }
+    // try{
+    //   AV.init({
+    //     appId,
+    //     appKey
+    //   })
+    // }catch(err){
+    //   // do nothing
+    // }
     if(nest){
       this.fetchNest()
     }else{
