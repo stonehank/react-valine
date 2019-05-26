@@ -12,7 +12,7 @@ export default class CommentListComponent extends React.PureComponent{
       commentList,
       commentCounts,
       currentCounts,
-      emptyTxt,
+      sofaEmpty,
       nest,
       handleReply,
       submitLoading,
@@ -36,7 +36,7 @@ export default class CommentListComponent extends React.PureComponent{
               <div className={"vlist"}>
                 {
                   commentCounts===0
-                    ? <div className={"vempty"}>{emptyTxt}</div>
+                    ? <div className={"vempty"}>{sofaEmpty}</div>
                     : commentList.map(commentObj=>{
                       let avatarSrc = commentObj['avatarSrc'],
                         nickName=commentObj["nick"],

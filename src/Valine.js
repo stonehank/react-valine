@@ -15,7 +15,7 @@ export default class Valine extends React.Component{
       placeholder:props.placeholder,
       nest:props.nest,
       pageSize:props.pageSize,
-      emptyTxt:props.emptyTxt,
+      sofaEmpty:props.sofaEmpty,
       previewShow:props.previewShow,
     }
     this.countMap=new Map()
@@ -69,6 +69,6 @@ Valine.defaultProps={
   placeholder:"说点什么吧",
   nest:true,
   pageSize:10,
-  emptyTxt:'快来做第一个评论的人吧~',
+  sofaEmpty:'快来做第一个评论的人吧~',
   previewShow:true,
 }

@@ -432,7 +432,7 @@ export default class ValineContainer extends React.Component{
 
 
   render(){
-    const {requireName,requireEmail,placeholder,nest,emptyTxt}=this.props
+    const {requireName,requireEmail,placeholder,nest,sofaEmpty}=this.props
     const {
       commentCounts,
       currentCounts,
@@ -470,7 +470,7 @@ export default class ValineContainer extends React.Component{
                               commentCounts={commentCounts}
                               currentCounts={currentCounts}
                               commentList={commentList}
-                              emptyTxt={emptyTxt}
+                              sofaEmpty={sofaEmpty}
                               nest={nest}
                               submitLoading={submitLoading}
                               fetchMoreLoading={fetchMoreLoading}
