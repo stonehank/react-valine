@@ -25,7 +25,6 @@ export default function timeAgo(oldDate){
     if (days < 0) return '刚刚';
     else if (days < 30) return days + ' 天前';
     else if (days < 365) return Math.floor(days / 30) + ' 月前';
-    // else return Math.floor(days / 365) + ' 年前';
     else return dateFormat(oldDate);
   } catch (error) {
     console.log(error)

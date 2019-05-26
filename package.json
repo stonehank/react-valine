@@ -6,7 +6,7 @@
   "author": "stonehank <stonehank310@gmail.com>",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run build:main && npm run build:lib",
+    "build": "npm run build:main",
     "build:main": "webpack",
     "build:lib": "babel src --out-dir lib --copy-files"
   },
@@ -38,7 +38,6 @@
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
-    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
     "babel-core": "^7.0.0-bridge.0",
@@ -46,7 +45,6 @@
     "clean-webpack-plugin": "^2.0.2",
     "css-loader": "^2.1.1",
     "is-wsl": "^2.0.0",
-    "mini-css-extract-plugin": "^0.6.0",
     "node-sass": "^4.12.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "postcss-flexbugs-fixes": "^4.1.0",

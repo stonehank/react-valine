@@ -12,7 +12,6 @@ let xssFilter = (content) => {
     let val = attr(node, curAttr);
     if(val)attr(node, curAttr, val.replace(/(javascript|eval)/ig, ''));
   }
-  // console.log(subNodes)
   subNodes.forEach(n=>{
     if (n.nodeType !== 1) return;
     if (rejectNodes.includes(n.nodeName)) {
@@ -70,11 +69,6 @@ function clearAttr(el) {
         break;
       case 'class':
         if (el.nodeName === 'CODE') return false
-        // let clazz = attr.value
-        // if (clazz.indexOf('at') > -1) {
-        //   utils.attr(el, 'class', 'at');
-        //   return false
-        // }
         break;
       default:
         break;

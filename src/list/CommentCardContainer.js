@@ -21,14 +21,6 @@ export default class CommentCardContainer extends React.PureComponent{
     }))
   }
 
-  // shouldComponentUpdate(nextProps,nextState){
-  //   let {child:nxtChild,...nxtOtherProps}=nextProps,
-  //     {child:curChild,...curOtherPorps}=this.props
-  //   // console.log(nxtChild,curChild)
-  //   return !(deepEqual(nxtChild,curChild) &&
-  //     shallowEqual(nxtOtherProps,curOtherPorps) &&
-  //     this.state.showChild===nextState.showChild)
-  // }
 
   render(){
     const {showChild}=this.state

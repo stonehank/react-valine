@@ -1,6 +1,6 @@
 > 轻量级评论插件[Valine](https://github.com/xCss/Valine)的`React`版本。
 
-#### 新增特性
+### 新增特性
 
 1. 增加外部计数器。
 
@@ -10,16 +10,23 @@
 
 4. 优化实时预览。
 
-#### 使用说明
+### 待添加特性
+
+- [ ] 阅读量统计
+- [ ] 优化表情输入
+- [ ] 邮件回复
+- [ ] 垃圾评论处理
+
+### 使用说明
 
 * 安装
 
 `npm install react-valine`
 
 
-组件说明：
+### 组件说明：
 
-###  VaLine
+####  VaLine
 
 创建`React.createContext`，并且传递`自定义参数`和储存当前`count`的组件(避免重复请求)。
 
@@ -56,7 +63,7 @@ ReactDOM.render(
   , document.getElementById('root'));
 ```
 
-### ValineCount
+#### ValineCount
 
 获取当前`path`的评论数。
 
@@ -91,7 +98,7 @@ class ArticleMeta extends React.Component{
 }
 ```
 
-### ValinePanel
+#### ValinePanel
 
 评论面板，一般放在文章页最尾端。
 
@@ -103,7 +110,7 @@ class ArticleMeta extends React.Component{
 
 > 注意：path必须是一个独立值，强烈建议自己填写一个独立值，而不是用默认值，因为如果使用默认值，当需要获取评论数时，并不一定在当前评论页的`url`上，就会获取错误或者失败。
 
-### modify_hljs
+#### modify_hljs
 
 一个自定义`highlight`的方法。
 
