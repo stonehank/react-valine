@@ -29,19 +29,6 @@ function createNestComments(){
   // let map=new Map()
   return function(list,arr){
     let res=list.slice()
-    // 补充map
-    // for(let i=0;i<list.length;i++){
-    //   let item=list[i]
-    //   if(!map.has(item.id)){
-    //     map.set(item.id,item)
-    //   }
-    // }
-    // for(let i=0;i<arr.length;i++){
-    //   let item=arr[i]
-    //   if(!map.has(item.id)){
-    //     map.set(item.id,item)
-    //   }
-    // }
     // DFS遍历arr
     for(let item of arr){
       res=dfsClone(res,item)[0]

@@ -20,7 +20,6 @@ export default class ValineContainer extends React.Component{
 
   constructor(props){
     super(props)
-    if(props.uniqStr==null)throw new Error('Must set uniqStr!')
     this.state={
       previewShow:props.previewShow,
       commentCounts:0,
@@ -45,7 +44,7 @@ export default class ValineContainer extends React.Component{
     this.fillNxtCommentList=this.fillNxtCommentList.bind(this)
     this.resetDefaultComment=this.resetDefaultComment.bind(this)
     this.fetchNxtCommentList=this.fetchNxtCommentList.bind(this)
-    // this.commentContentOnChange=this.commentContentOnChange.bind(this)
+
 
     this.resetDefaultComment()
     this.wrapRef=React.createRef()
@@ -63,13 +62,13 @@ export default class ValineContainer extends React.Component{
       comment:'',
       at:'',
       nick:'',
-      uniqStr:this.props.uniqStr,
+      path:this.props.path,
       ua:navigator.userAgent,
     }
   }
 
   createNewObj(){
-    const {AV,nest,updateCount,uniqStr}=this.props
+    const {AV,nest,updateCount,path}=this.props
     const {commentList}=this.state
     let Ct = AV.Object.extend('Comment');
     let comment = new Ct();
@@ -119,7 +118,7 @@ export default class ValineContainer extends React.Component{
             // commentContent:'',
             submitLoading:false
           }),()=>{
-            updateCount(uniqStr,this.state.commentCounts)
+            updateCount(path,this.state.commentCounts)
           })
           if(this.rScrollTop!=null)document.documentElement.scrollTo(0,this.rScrollTop)
           this.resetDefaultComment()
@@ -272,7 +271,7 @@ export default class ValineContainer extends React.Component{
 
   fetchMoreNest(){
     let contains=[],simplyList=[]
-    const {AV,uniqStr,pageSize}=this.props
+    const {AV,path,pageSize}=this.props
     let {currentCounts,commentList,commentCounts}=this.state
     let newCurrentCounts=0
     if(currentCounts===commentCounts)return
@@ -280,7 +279,7 @@ export default class ValineContainer extends React.Component{
       fetchMoreLoading:true
     })
     let query1= new AV.Query('Comment'),query2= new AV.Query('Comment')
-    query1.equalTo('uniqStr',uniqStr)
+    query1.equalTo('path',path)
       .equalTo('rid','')
       .addDescending('createdAt')
       .skip(commentList.length)
@@ -299,7 +298,7 @@ export default class ValineContainer extends React.Component{
           simplyList.push(simplyObj(obj))
           contains.push(obj.get('rootId'))
         }
-        query2.equalTo('uniqStr',uniqStr)
+        query2.equalTo('path',path)
           .notEqualTo('rid','')
           .containedIn('rootId',contains)
           .addAscending('createdAt')
@@ -323,13 +322,13 @@ export default class ValineContainer extends React.Component{
 
   fetchNest(){
     let contains=[],simplyList=[],commentList=[]
-    const {AV,pageSize,fetchCount,uniqStr}=this.props
+    const {AV,pageSize,fetchCount,path}=this.props
     let currentCounts=0
     let commentCounts=0
     this.setState({
       fetchInitLoading:true
     })
-    return fetchCount(uniqStr).then(counts=> {
+    return fetchCount(path).then(counts=> {
       commentCounts = counts
       if (commentCounts === 0) {
         this.setState({
@@ -338,7 +337,7 @@ export default class ValineContainer extends React.Component{
         return
       }
       let query1 =new AV.Query('Comment'), query2=new AV.Query('Comment')
-      query1.equalTo('uniqStr',uniqStr)
+      query1.equalTo('path',path)
         .equalTo('rid','')
         .limit(pageSize)
         .select(['nick', 'comment', 'link', 'rid', 'avatarSrc','rootId'])
@@ -350,7 +349,7 @@ export default class ValineContainer extends React.Component{
             simplyList.push(simplyObj(obj))
             contains.push(obj.get('rootId'))
           }
-          query2.equalTo('uniqStr',uniqStr)
+          query2.equalTo('path',path)
             .notEqualTo('rid','')
             .containedIn('rootId',contains)
             .select(['nick', 'comment', 'link', 'rid', 'avatarSrc','rootId'])
@@ -377,12 +376,12 @@ export default class ValineContainer extends React.Component{
 
 
   initQuery(){
-    const {AV,pageSize,uniqStr,fetchCount}=this.props
+    const {AV,pageSize,path,fetchCount}=this.props
     let commentCounts=0
     this.setState({
       fetchInitLoading:true
     })
-    return fetchCount(uniqStr).then(counts=>{
+    return fetchCount(path).then(counts=>{
       commentCounts=counts
       if(commentCounts===0){
         this.setState({
@@ -391,7 +390,7 @@ export default class ValineContainer extends React.Component{
         return
       }
       let query =new AV.Query('Comment')
-      query.matches('uniqStr',uniqStr)
+      query.matches('path',path)
         .select(['nick', 'comment', 'link', 'rid', 'avatarSrc','rootId'])
         .addDescending('createdAt')
         .limit(pageSize)

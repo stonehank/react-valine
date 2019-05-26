@@ -9,7 +9,7 @@ export default class ValinePanel extends React.Component{
     super(props)
     this.state={
       AV:window.AV,
-      uniqStr:props.uniqStr
+      path:props.path
     }
   }
 
@@ -18,9 +18,9 @@ export default class ValinePanel extends React.Component{
     return (
       <ValineContext.Consumer>
         {contextProps=>{
-          const {uniqStr,AV}=this.state
+          const {path,AV}=this.state
           const {fetchCount,updateCount,...otherPorps}=contextProps
-          return <ValineContainer uniqStr={uniqStr} fetchCount={fetchCount} updateCount={updateCount} av={AV} {...otherPorps}/>
+          return <ValineContainer path={path} fetchCount={fetchCount} updateCount={updateCount} av={AV} {...otherPorps}/>
         }}
       </ValineContext.Consumer>
     )
@@ -29,5 +29,5 @@ export default class ValinePanel extends React.Component{
 }
 
 ValinePanel.defaultProps={
-  uniqStr:decodeURI(window.location.origin+window.location.pathname)
+  path:decodeURI(window.location.origin+window.location.pathname)
 }

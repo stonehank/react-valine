@@ -4,7 +4,6 @@ const AV=require('leancloud-storage')
 
 window.AV=AV
 
-
 export default class Valine extends React.Component{
 
   constructor(props){
@@ -24,40 +23,33 @@ export default class Valine extends React.Component{
     this.updateCounts=this.updateCounts.bind(this)
   }
 
-  fetchCount(uniqStr){
+  fetchCount(path){
     return new Promise(resolve=>{
-      if(this.countMap.has(uniqStr)){
-        resolve(this.countMap.get(uniqStr))
+      if(this.countMap.has(path)){
+        resolve(this.countMap.get(path))
       }else{
         let AV=window.AV
-        if(!AV)return
+        if(!AV){
+          throw new Error("请检查依赖包是否存在`leancloud-storage`")
+        }
         new AV.Query('Comment')
-          .equalTo('uniqStr',uniqStr)
+          .equalTo('path',path)
           .count()
           .then((counts)=>{
-            this.countMap.set(uniqStr,counts)
+            this.countMap.set(path,counts)
             resolve(counts)
           })
       }
     })
   }
 
-  updateCounts(uniqStr,count){
-    this.countMap.set(uniqStr,count)
+  updateCounts(path,count){
+    this.countMap.set(path,count)
   }
 
   componentDidMount(){
     const {appId,appKey}=this.props
-    // const {AV}=this.state
-    // if(!AV){
-    //   import('leancloud-storage').then(module=>{
-    //     window.AV=module.default
     window.AV.init({appId,appKey})
-    // this.setState({
-    //   AV:window.AV
-    // })
-    // })
-    // }
   }
 
   render(){

@@ -45,7 +45,7 @@ export default class CommentCardContainer extends React.PureComponent{
       commentContent,
       createdAt
     }=this.props
-    // console.log(2)
+
     return (
       <div id={curId} className={'vcard'} >
         <CardAvatar avatarSrc={avatarSrc} GRAVATAR_URL={GRAVATAR_URL}/>
