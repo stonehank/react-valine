@@ -13,6 +13,7 @@ package-lock.json
 
 src
 test
+demo
 docs
 index.html
 postcss.config.js

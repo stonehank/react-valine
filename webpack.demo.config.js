@@ -13,12 +13,10 @@ const src = path.join(__dirname, 'src')
 
 module.exports= {
   mode: 'production',
-  entry: path.join( src, 'index.js'),
+  entry: path.join( src, 'App.js'),
   output: {
-    path: path.join(__dirname, 'dist'),
-    filename:'react-valine.js',
-    library: "react-valine",
-    libraryTarget: 'umd',
+    path: path.join(__dirname, 'demo'),
+    filename:'react-valine.js'
   },
   optimization: {
     minimize: true,
@@ -53,9 +51,6 @@ module.exports= {
       }),
     ],
   },
-  externals: {
-    react:'react'
-  },
 
   resolve: {
     extensions: [ '.js', '.json', '.jsx','.css','.scss'],
@@ -64,9 +59,8 @@ module.exports= {
     rules: [
       { parser: { requireEnsure: false } },
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         include:path.resolve(__dirname, 'src'),
-        exclude:path.resolve(__dirname,'src/App.js'),
         loader: 'babel-loader',
         options: {
           cacheDirectory: true,
@@ -94,6 +88,14 @@ module.exports= {
           "sass-loader"
         ]
       },
+	  {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader"
+          }
+        ]
+      }
     ],
   },
   plugins: [
