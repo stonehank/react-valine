@@ -1,5 +1,6 @@
 import React from 'react'
-import './index.scss'
+import './css/index.scss'
+import './css/github.min.scss'
 import InfoComponent from "./info/InfoComponent";
 import CommentListComponent from "./list/CommentListComponent";
 import InputContainer from "./input/InputContainer";
