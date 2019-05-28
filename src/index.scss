@@ -114,6 +114,24 @@
     .vedit {
       position: relative;
       padding-top:10px;
+      .vemoji-preview-list{
+        position:absolute;
+        list-style: none;
+        margin-top: 1.5rem;
+        margin-left:2px;
+        min-width:10rem;
+        border: 1px solid #ccc;
+        border-top: none;
+        li{
+          cursor:pointer;
+          border-top:1px solid #ccc;
+          padding-right:2px;
+        }
+        li:hover{
+          background: #5c7bfc;
+          color:#fff
+        }
+      }
     }
     .vedit .vctrl {
       text-align: right;
@@ -298,7 +316,7 @@
   .veditor {
     width: 100%;
     min-height: 8.75rem;
-    font-size: .875rem;
+    font-size: 1rem;
     background: transparent;
     resize: vertical;
     transition:all .25s ease;

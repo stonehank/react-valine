@@ -11,16 +11,17 @@ export default class ValineCount extends React.Component{
     return (
       <ValineContext.Consumer>
         {contextProps=>{
-            const {fetchCount}=contextProps
-            const {style,path,count}=this.props
-            return (
-              <ValineGetCount style={style}
-                              fetchCount={fetchCount}
-                              path={path}
-                              count={count}
-              />
-            )
-          }
+          const {fetchCount,updateCountHash}=contextProps
+          const {style,path,count}=this.props
+          return (
+            <ValineGetCount style={style}
+                            fetchCount={fetchCount}
+                            updateCountHash={updateCountHash}
+                            path={path}
+                            count={count}
+            />
+          )
+        }
         }
       </ValineContext.Consumer>
     )

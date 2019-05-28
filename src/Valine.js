@@ -17,10 +17,12 @@ export default class Valine extends React.Component{
       pageSize:props.pageSize,
       sofaEmpty:props.sofaEmpty,
       previewShow:props.previewShow,
+      updateCountHash:0
     }
     this.countMap=new Map()
     this.fetchCount=this.fetchCount.bind(this)
     this.updateCounts=this.updateCounts.bind(this)
+
     window.AV.init({
       appId:props.appId,
       appKey:props.appKey
@@ -49,11 +51,15 @@ export default class Valine extends React.Component{
 
   updateCounts(path,count){
     this.countMap.set(path,count)
+    this.setState({
+      updateCountHash:Math.floor(Math.random()*(1e9+7))
+    })
   }
 
   render(){
+    const {appId,appKey}=this.props
     return (
-      <ValineContext.Provider value={{fetchCount:this.fetchCount,updateCount:this.updateCounts,...this.state}}>
+      <ValineContext.Provider value={{appId,appKey,fetchCount:this.fetchCount,updateCount:this.updateCounts,...this.state}}>
         {this.props.children}
       </ValineContext.Provider>
     )

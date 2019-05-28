@@ -3,8 +3,12 @@ import emojiData from '../assets/emoji.json'
 import EditAreaComponent from "./edit-components/EditAreaComponent";
 import ButtonContainer from "./button-components/ButtonContainer";
 import TextAreaComponent from "./edit-components/TextAreaComponent";
-import {insertAtCaret} from "../utils";
+import {calcValueAndPos, getEmojiPrefix} from "../utils";
+import getWordList from "../utils/emojiTire";
+import EmojiPreviewComponent from "./EmojiPreviewComponent";
 const avatarsList=["mp","identicon", "monsterid",  "retro", "robohash", "wavatar","blank",]
+
+const getCaretCoordinates=require('textarea-caret')
 
 export default class InputContainer extends React.PureComponent {
   constructor(props){
@@ -14,9 +18,14 @@ export default class InputContainer extends React.PureComponent {
       email:'',
       link:'',
       commentContent:'',
+      emojiList:[],
+      emojiPrefix:'',
+      emojiChooseId:0,
+      emojiListPos:[0,0],
       avatarSrc:`${props.GRAVATAR_URL}/?d=${avatarsList[Math.floor(Math.random()*avatarsList.length)]}&size=50`,
     }
     this.emailOnChange=this.emailOnChange.bind(this)
+    this.chooseEmoji=this.chooseEmoji.bind(this)
     this.insertEmoji=this.insertEmoji.bind(this)
     this.linkOnChange=this.linkOnChange.bind(this)
     this.nameOnChange=this.nameOnChange.bind(this)
@@ -28,32 +37,119 @@ export default class InputContainer extends React.PureComponent {
     this.textAreaRef=React.createRef()
   }
 
-  insertEmoji(emoji){
+  chooseEmoji(emoji,prefix){
     let ele=this.textAreaRef.current
-    insertAtCaret(ele,emoji)
+    // 此处prefix前面还有`:`，因此需要+1
+    let [newV,startPos,scrollTop]=calcValueAndPos(ele,emoji,prefix.length+1)
     this.setState({
-      commentContent:ele.value
+      commentContent:newV,
+      emojiList:[],
+      emojiChooseId:0
+    },()=>{
+      ele.focus()
+      ele.selectionStart = startPos + emoji.length;
+      ele.selectionEnd = startPos + emoji.length;
+      ele.scrollTop = scrollTop;
     })
   }
 
+  insertEmoji(emoji){
+    let ele=this.textAreaRef.current
+    let [newV,startPos,scrollTop]=calcValueAndPos(ele,emoji)
+    this.setState({
+      commentContent:newV
+    },()=>{
+      ele.focus();
+      ele.selectionStart = startPos + emoji.length;
+      ele.selectionEnd = startPos + emoji.length;
+      ele.scrollTop = scrollTop;
+    })
+  }
+
+  // 修改上下选择表情 38 40
+  // 修改TAB 9
+  // 修改Enter 13
+  // 修改ESC 27
   contentOnKeyDown(event){
-    if(event && event.keyCode===9){
+    if(!event)return
+    const {emojiList,emojiChooseId,emojiPrefix}=this.state
+    let keyCode=event.keyCode,listLen=emojiList.length
+    if(keyCode===27){
+      if(listLen>0){
+        event.preventDefault()
+        this.setState({
+          emojiList:[],
+          emojiChooseId:0
+        })
+      }
+    }else if(keyCode===13){
+      if(listLen>0){
+        event.preventDefault()
+        let chooseEmoji=emojiList[emojiChooseId]
+        this.chooseEmoji(emojiData[chooseEmoji],emojiPrefix)
+      }
+    }else if(keyCode===40 || keyCode===38){
+      if(listLen>0){
+        event.preventDefault()
+        let newChooseId=0
+        if(keyCode===40)newChooseId=(emojiChooseId+1) % listLen
+        else newChooseId=(emojiChooseId+listLen-1) % listLen
+        this.setState({
+          emojiChooseId:newChooseId
+        })
+      }
+    }else if(keyCode===9){
       event.preventDefault()
-      let ele=this.textAreaRef.current
-      insertAtCaret(ele,'  ')
+      let ele=event ? event.target : this.textAreaRef.current
+      let insertStr='  '
+      let [newV,startPos,scrollTop]=calcValueAndPos(ele,insertStr)
       this.setState({
-        commentContent:ele.value
+        commentContent:newV
+      },()=>{
+        ele.focus();
+        ele.selectionStart = startPos + insertStr.length;
+        ele.selectionEnd = startPos + insertStr.length;
+        ele.scrollTop = scrollTop;
       })
     }
   }
 
+
   commentContentOnChange(event,str=''){
-    let newStr=event ? event.target.value : (str + this.state.commentContent)
-    newStr=newStr.replace(/:(.+?):/g, (placeholder, key) => emojiData[key] || placeholder)
+    const {emojiList,emojiListPos,emojiChooseId}=this.state
+    let newEmojiList=[],newEmojiListPos=emojiListPos
+    let target=event?event.target:this.textAreaRef.current
+    // 获取表情prefix列表
+    let prefix=getEmojiPrefix(target)
+    if(str==='')newEmojiList=getWordList(prefix)
+    let selectionStart=target.selectionStart
+    // 当开始出现表情列表时，获取top,left
+    if(emojiList.length===0 && newEmojiList.length>0){
+      let scrollTop=target.scrollTop
+      let {top,left}=getCaretCoordinates(target,selectionStart)
+      newEmojiListPos=[top,left,scrollTop]
+    }
+    // 替换已经存在的表情符号
+    let newStr=str + target.value.replace(/:(.+?):/g, (placeholder, key) => {
+      if(emojiData[key]){
+        selectionStart-=key.length
+        selectionStart+=1
+      }
+      return emojiData[key] || placeholder
+    })
+    selectionStart+=str.length
     this.setState({
-      commentContent:newStr
+      commentContent:newStr,
+      emojiPrefix:prefix,
+      emojiList:newEmojiList,
+      emojiChooseId: emojiList.length===0 ? 0 : emojiChooseId,
+      emojiListPos:newEmojiListPos
+    },()=>{
+      target.selectionStart=selectionStart
+      target.selectionEnd=selectionStart
     })
   }
+
   avatarOnChange(event){
     event.stopPropagation()
     let ele=event.target,parent=event.currentTarget
@@ -65,7 +161,7 @@ export default class InputContainer extends React.PureComponent {
         this.setState({
           avatarSrc:src
         })
-          resolve()
+        resolve()
       }else{
         reject()
       }
@@ -127,7 +223,18 @@ export default class InputContainer extends React.PureComponent {
   }
 
   render() {
-    const { link,email,nickName,avatarSrc,commentContent } = this.state;
+    const {
+      link,
+      email,
+      nickName,
+      avatarSrc,
+      commentContent,
+      emojiList,
+      emojiChooseId,
+      emojiPrefix,
+      emojiListPos
+    } = this.state;
+
     const {
       placeholder,
       requireName,
@@ -138,6 +245,7 @@ export default class InputContainer extends React.PureComponent {
       previewShow,
       togglePreviewShow
     }=this.props
+
     return (
       <React.Fragment>
         <EditAreaComponent link={link}
@@ -159,6 +267,12 @@ export default class InputContainer extends React.PureComponent {
                              placeholder={placeholder}
                              contentOnKeyDown={this.contentOnKeyDown}
                              contentOnChange={this.commentContentOnChange}
+          />
+          <EmojiPreviewComponent emojiList={emojiList}
+                                 emojiListPos={emojiListPos}
+                                 emojiPrefix={emojiPrefix}
+                                 emojiChooseId={emojiChooseId}
+                                 chooseEmoji={this.chooseEmoji}
           />
           <ButtonContainer previewShow={previewShow}
                            insertEmoji={this.insertEmoji}

@@ -91,45 +91,45 @@ export default class ValineContainer extends React.Component{
         resolve()
       }
     }).then(()=>{
-        let acl = new AV.ACL();
-        acl.setPublicReadAccess(true);
-        acl.setPublicWriteAccess(false);
-        comment.setACL(acl);
-        comment.save().then((commentItem) => {
-          let simplyItem=simplyObj(commentItem)
-          let newCommentList=[]
-          if(nest && this.defaultComment.rid!==''){
-            newCommentList=mergeNestComment(commentList,[simplyItem])
-          }else{
-            newCommentList=[simplyItem].concat(commentList)
-          }
-          localStorage && localStorage.setItem('ValineCache', JSON.stringify({
-            nick: this.defaultComment['nick'],
-            link: this.defaultComment['link'],
-            mail: this.defaultComment['mail'],
-            avatarSrc:this.defaultComment['avatarSrc']
-          }));
+      let acl = new AV.ACL();
+      acl.setPublicReadAccess(true);
+      acl.setPublicWriteAccess(false);
+      comment.setACL(acl);
+      comment.save().then((commentItem) => {
+        let simplyItem=simplyObj(commentItem)
+        let newCommentList=[]
+        if(nest && this.defaultComment.rid!==''){
+          newCommentList=mergeNestComment(commentList,[simplyItem])
+        }else{
+          newCommentList=[simplyItem].concat(commentList)
+        }
+        localStorage && localStorage.setItem('ValineCache', JSON.stringify({
+          nick: this.defaultComment['nick'],
+          link: this.defaultComment['link'],
+          mail: this.defaultComment['mail'],
+          avatarSrc:this.defaultComment['avatarSrc']
+        }));
 
-          this.setState((prevState,)=>({
-            commentList:newCommentList,
-            commentCounts:prevState.commentCounts+1,
-            currentCounts:prevState.currentCounts+1,
-            submitBtnDisable:false,
-            // commentContent:'',
-            submitLoading:false
-          }),()=>{
-            updateCount(path,this.state.commentCounts)
-          })
-          if(this.rScrollTop!=null)document.documentElement.scrollTo(0,this.rScrollTop)
-          this.resetDefaultComment()
-        }).catch(ex => {
-          console.error("Something wrong with submit!",ex)
-          this.setState({
-            submitBtnDisable:false,
-            submitLoading:false
-          })
+        this.setState((prevState,)=>({
+          commentList:newCommentList,
+          commentCounts:prevState.commentCounts+1,
+          currentCounts:prevState.currentCounts+1,
+          submitBtnDisable:false,
+          // commentContent:'',
+          submitLoading:false
+        }),()=>{
+          updateCount(path,this.state.commentCounts)
+        })
+        if(this.rScrollTop!=null)document.documentElement.scrollTo(0,this.rScrollTop)
+        this.resetDefaultComment()
+      }).catch(ex => {
+        console.error("Something wrong with submit!",ex)
+        this.setState({
+          submitBtnDisable:false,
+          submitLoading:false
         })
       })
+    })
   }
 
   togglePreviewShow(){
@@ -414,14 +414,6 @@ export default class ValineContainer extends React.Component{
   componentDidMount(){
     const {AV,nest}=this.props
     if(!AV)return
-    // try{
-    //   AV.init({
-    //     appId,
-    //     appKey
-    //   })
-    // }catch(err){
-    //   // do nothing
-    // }
     if(nest){
       this.fetchNest()
     }else{
