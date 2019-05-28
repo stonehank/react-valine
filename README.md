@@ -145,6 +145,10 @@ modify_hljs((hljs)=>{
 
 ### Changelog
 
+##### 0.3.1
+
+* 修复头像css错位问题
+
 ##### 0.3.0
 
 * 修复增加回复后，`ValineCount`不变化；
