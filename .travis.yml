@@ -8,7 +8,7 @@ install:
 
 
 script:
-  - npm run build
+  - npm run build:demo
 
 after_script:
   - cd ./demo
