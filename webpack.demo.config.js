@@ -6,7 +6,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const safePostCssParser = require('postcss-safe-parser');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 
 const src = path.join(__dirname, 'src')
@@ -100,9 +100,9 @@ module.exports= {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new BundleAnalyzerPlugin({
-      openAnalyzer:false
-    }),
+    // new BundleAnalyzerPlugin({
+    //   openAnalyzer:false
+    // }),
     new HtmlWebPackPlugin({
       template: "./index.html",
       filename: "./index.html"
