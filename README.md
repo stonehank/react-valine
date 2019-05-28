@@ -14,7 +14,7 @@
 
 ### 效果查看
 
-[点击查看](https://stonehank.github.io/react-valine-test/)
+[点击查看](https://stonehank.github.io/react-valine/)
 
 
 ### 待添加特性
