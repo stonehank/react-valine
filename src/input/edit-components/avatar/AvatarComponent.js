@@ -1,7 +1,10 @@
 import React from 'react'
 
 const avatarsList=["mp","identicon", "monsterid",  "retro", "robohash", "wavatar","blank",]
-
+const size=50
+const styles={
+  cell:{height:size+2}
+}
 export default class AvatarComponent extends React.PureComponent{
 
   render(){
@@ -19,7 +22,7 @@ export default class AvatarComponent extends React.PureComponent{
     // console.log(1)
     return (
       <React.Fragment>
-        <div className={"vavatars-select-button"} onClick={toggleShowList} onMouseEnter={turnOnMark} onMouseLeave={turnOffMark}>
+        <div className={"vavatars-select-button"} style={styles.cell} onClick={toggleShowList} onMouseEnter={turnOnMark} onMouseLeave={turnOffMark}>
           {showMark
           ? <div className={"vavatars-select-mark"}>更换</div>
           :  null
@@ -29,11 +32,11 @@ export default class AvatarComponent extends React.PureComponent{
         {
           showList
           ? <ul className={"vavatars-select-list"} onClick={avatarOnChange}>
-              <li className={"vavatars-select-cell"}><img alt={"avatarToChoose"} src={`${GRAVATAR_URL}/${emailHash}/?size=50`} /></li>
+              <li className={"vavatars-select-cell"} style={styles.cell}><img alt={"avatarToChoose"} src={`${GRAVATAR_URL}/${emailHash}/?size=${size}`} /></li>
               {
                 avatarsList.map((k,i)=>{
                   return (
-                    <li className={"vavatars-select-cell"} key={i}><img alt={"avatarToChoose"} src={`${GRAVATAR_URL}/?d=${k}&size=50`} /></li>
+                    <li className={"vavatars-select-cell"} style={styles.cell} key={i}><img alt={"avatarToChoose"} src={`${GRAVATAR_URL}/?d=${k}&size=${size}`} /></li>
                   )
                 })
               }
