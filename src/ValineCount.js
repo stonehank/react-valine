@@ -12,12 +12,12 @@ export default class ValineCount extends React.Component{
       <ValineContext.Consumer>
         {contextProps=>{
           const {fetchCount,updateCountHash,curLang}=contextProps
-          const {style,url,count}=this.props
+          const {style,uniqStr,count}=this.props
           return (
             <ValineGetCount style={style}
                             fetchCount={fetchCount}
                             updateCountHash={updateCountHash}
-                            url={url}
+                            uniqStr={uniqStr}
                             count={count}
                             fetchTxt={curLang['tips']['count']}
             />

@@ -49,25 +49,25 @@ export default class Valine extends React.Component{
     })
   }
 
-  fetchCount(url){
+  fetchCount(uniqStr){
     return new Promise(resolve=>{
-      if(this.countMap.has(url)){
-        resolve(this.countMap.get(url))
+      if(this.countMap.has(uniqStr)){
+        resolve(this.countMap.get(uniqStr))
       }else{
         let AV=window.AV
         new AV.Query('Comment')
-          .equalTo('url',url)
+          .equalTo('uniqStr',uniqStr)
           .count()
           .then((counts)=>{
-            this.countMap.set(url,counts)
+            this.countMap.set(uniqStr,counts)
             resolve(counts)
           })
       }
     })
   }
 
-  updateCounts(url,count){
-    this.countMap.set(url,count)
+  updateCounts(uniqStr,count){
+    this.countMap.set(uniqStr,count)
     this.setState({
       updateCountHash:Math.floor(Math.random()*(1e9+7))
     })

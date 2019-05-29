@@ -14,7 +14,8 @@
       "sofa": "快来做第一个评论的人吧~"
     },
     "ctrl": {
-      "reply": "提交",
+      "reply": "回复",
+      "submit": "提交",
       "expand_reply":"查看回复",
       "collapse_reply":"收起回复",
       "more": "加载更多评论",

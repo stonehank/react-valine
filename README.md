@@ -84,17 +84,17 @@ ReactDOM.render(
 
 #### ValineCount
 
-获取当前`url`的评论数。
+获取当前`uniqStr`的评论数。
 
 参数：
 
 |参数|是否必须|作用|默认值|
 |:---:|:---:|:---:|:---:|
-|url|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
+|uniqStr|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
 |style|否|组件的样式|''|
 |count|否|未获取时的初始值|获取中|
 
-> 注意：url必须是一个独立值，强烈建议自己填写一个独立值，而不是用默认值，因为如果使用默认值，当需要获取评论数时，并不一定在当前评论页的`url`上，就会获取错误或者失败。
+> 注意：uniqStr必须是一个独立值，强烈建议自己填写一个独立值，而不是用默认值，因为如果使用默认值，当需要获取评论数时，并不一定在当前评论页的`uniqStr`上，就会获取错误或者失败。
 
 案例参考：
 
@@ -105,12 +105,12 @@ import {ValineCount} from "react-valine";
 
 class ArticleMeta extends React.Component{
   render(){
-    const {createdAt,author,a_unique_url}=this.props
+    const {createdAt,author,a_unique_string}=this.props
     return (
       <div>
         <span>创建日期：{createdAt}</span>
         <span>作者：{author}</span>
-        <span>评论数：<ValineCount url={a_unique_url}/></span>
+        <span>评论数：<ValineCount uniqStr={a_unique_string}/></span>
       </div>
     )
   }
@@ -125,9 +125,9 @@ class ArticleMeta extends React.Component{
 
 |参数|是否必须|作用|默认值|
 |:---:|:---:|:---:|:---:|
-|url|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
+|uniqStr|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
 
-> 注意：url必须是一个独立值，强烈建议自己填写一个独立值，而不是用默认值，因为如果使用默认值，当需要获取评论数时，并不一定在当前评论页的`url`上，就会获取错误或者失败。
+> 注意：uniqStr必须是一个独立值，强烈建议自己填写一个独立值，而不是用默认值，因为如果使用默认值，当需要获取评论数时，并不一定在当前评论页的`uniqStr`上，就会获取错误或者失败。
 
 #### modify_hljs
 
@@ -160,6 +160,11 @@ modify_hljs((hljs)=>{
 
 ### Changelog
 
+##### 0.3.4
+
+* 修复文字错误
+* 原`url`字段用于邮件获取地址，新增`uniqStr`字段，用于获取页面评论
+
 ##### 0.3.3
 
 * 多语言支持
@@ -176,12 +181,12 @@ modify_hljs((hljs)=>{
 
 ##### 0.3.0
 
-* 修复增加回复后，`ValineCount`不变化；
-* 更新React依赖为16.8.6；
-* 优化表情输入；
+* 修复增加回复后，`ValineCount`不变化
+* 更新React依赖为16.8.6
+* 优化表情输入
 
-    * 优选150+常用表情；
-    * 通过输入`:`开启表情选择框，可以使用`Enter`，`Esc`，`↑`，`↓`键位进行操作；
+    * 优选150+常用表情
+    * 通过输入`:`开启表情选择框，可以使用`Enter`，`Esc`，`↑`，`↓`键位进行操作
 * 修复可能出现的回复`a`标签错误渲染
 
 ##### 0.2.1

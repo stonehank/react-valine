@@ -63,13 +63,13 @@ export default class ValineContainer extends React.Component{
       comment:'',
       at:'',
       nick:'',
-      url:this.props.url,
+      uniqStr:this.props.uniqStr,
       ua:navigator.userAgent,
     }
   }
 
   createNewObj(){
-    const {AV,nest,updateCount,url,curLang}=this.props
+    const {AV,nest,updateCount,uniqStr,curLang}=this.props
     const {commentList}=this.state
     let Ct = AV.Object.extend('Comment');
     let comment = new Ct();
@@ -82,6 +82,7 @@ export default class ValineContainer extends React.Component{
       }
     }
     comment.set('pid',this.defaultComment.pid)
+    comment.set('url',location.pathname)
     return new Promise((resolve)=>{
       if(this.defaultComment.pid===''){
         comment.save().then(item=>{
@@ -119,7 +120,7 @@ export default class ValineContainer extends React.Component{
           // commentContent:'',
           submitLoading:false
         }),()=>{
-          updateCount(url,this.state.commentCounts)
+          updateCount(uniqStr,this.state.commentCounts)
         })
         if(this.rScrollTop!=null)document.documentElement.scrollTo(0,this.rScrollTop)
         this.resetDefaultComment()
@@ -265,7 +266,7 @@ export default class ValineContainer extends React.Component{
 
   fetchMoreNest(){
     let contains=[],simplyList=[]
-    const {AV,url,pageSize}=this.props
+    const {AV,uniqStr,pageSize}=this.props
     let {currentCounts,commentList,commentCounts}=this.state
     let newCurrentCounts=0
     if(currentCounts===commentCounts)return
@@ -273,7 +274,7 @@ export default class ValineContainer extends React.Component{
       fetchMoreLoading:true
     })
     let query1= new AV.Query('Comment'),query2= new AV.Query('Comment')
-    query1.equalTo('url',url)
+    query1.equalTo('uniqStr',uniqStr)
       .equalTo('pid','')
       .addDescending('createdAt')
       .skip(commentList.length)
@@ -292,7 +293,7 @@ export default class ValineContainer extends React.Component{
           simplyList.push(simplyObj(obj))
           contains.push(obj.get('rid'))
         }
-        query2.equalTo('url',url)
+        query2.equalTo('uniqStr',uniqStr)
           .notEqualTo('pid','')
           .containedIn('rid',contains)
           .addAscending('createdAt')
@@ -316,13 +317,13 @@ export default class ValineContainer extends React.Component{
 
   fetchNest(){
     let contains=[],simplyList=[],commentList=[]
-    const {AV,pageSize,fetchCount,url}=this.props
+    const {AV,pageSize,fetchCount,uniqStr}=this.props
     let currentCounts=0
     let commentCounts=0
     this.setState({
       fetchInitLoading:true
     })
-    return fetchCount(url).then(counts=> {
+    return fetchCount(uniqStr).then(counts=> {
       commentCounts = counts
       if (commentCounts === 0) {
         this.setState({
@@ -331,7 +332,7 @@ export default class ValineContainer extends React.Component{
         return
       }
       let query1 =new AV.Query('Comment'), query2=new AV.Query('Comment')
-      query1.equalTo('url',url)
+      query1.equalTo('uniqStr',uniqStr)
         .equalTo('pid','')
         .limit(pageSize)
         .select(['nick', 'comment', 'link', 'pid', 'avatarSrc','rid'])
@@ -343,7 +344,7 @@ export default class ValineContainer extends React.Component{
             simplyList.push(simplyObj(obj))
             contains.push(obj.get('rid'))
           }
-          query2.equalTo('url',url)
+          query2.equalTo('uniqStr',uniqStr)
             .notEqualTo('pid','')
             .containedIn('rid',contains)
             .select(['nick', 'comment', 'link', 'pid', 'avatarSrc','rid'])
@@ -370,12 +371,12 @@ export default class ValineContainer extends React.Component{
 
 
   initQuery(){
-    const {AV,pageSize,url,fetchCount}=this.props
+    const {AV,pageSize,uniqStr,fetchCount}=this.props
     let commentCounts=0
     this.setState({
       fetchInitLoading:true
     })
-    return fetchCount(url).then(counts=>{
+    return fetchCount(uniqStr).then(counts=>{
       commentCounts=counts
       if(commentCounts===0){
         this.setState({
@@ -384,7 +385,7 @@ export default class ValineContainer extends React.Component{
         return
       }
       let query =new AV.Query('Comment')
-      query.matches('url',url)
+      query.matches('uniqStr',uniqStr)
         .select(['nick', 'comment', 'link', 'pid', 'avatarSrc','rid'])
         .addDescending('createdAt')
         .limit(pageSize)
