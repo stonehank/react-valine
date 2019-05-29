@@ -12,7 +12,8 @@ export default class CommentListComponent extends React.PureComponent{
       commentList,
       commentCounts,
       currentCounts,
-      sofaEmpty,
+      // sofaEmpty,
+      curLang,
       nest,
       handleReply,
       submitLoading,
@@ -36,7 +37,7 @@ export default class CommentListComponent extends React.PureComponent{
               <div className={"vlist"}>
                 {
                   commentCounts===0
-                    ? <div className={"vempty"}>{sofaEmpty}</div>
+                    ? <div className={"vempty"}>{curLang["tips"]["sofa"]}</div>
                     : commentList.map(commentObj=>{
                       let avatarSrc = commentObj['avatarSrc'],
                         nickName=commentObj["nick"],
@@ -48,10 +49,12 @@ export default class CommentListComponent extends React.PureComponent{
                         child=nest ? commentObj['child'] : null
 
                       return <CommentCardContainer curId={curId}
-                                                   key={curId}
+                                                    key={curId}
                                                    nest={nest}
                                                    child={child}
                                                    rid={rid}
+                                                   langTime={curLang["timeago"]}
+                                                   langCtrl={curLang["ctrl"]}
                                                    GRAVATAR_URL={GRAVATAR_URL}
                                                    avatarSrc={avatarSrc}
                                                    link={link}
@@ -63,7 +66,8 @@ export default class CommentListComponent extends React.PureComponent{
                     })
                 }
               </div>
-              <PageComponent  commentCounts={commentCounts}
+              <PageComponent  langCtrl={curLang["ctrl"]}
+                              commentCounts={commentCounts}
                               currentCounts={currentCounts}
                               fillNxtCommentList={fillNxtCommentList}
               />

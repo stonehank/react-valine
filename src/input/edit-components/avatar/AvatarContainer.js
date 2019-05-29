@@ -76,10 +76,11 @@ export default class AvatarContainer extends React.PureComponent{
 
   render(){
     const {showList,emailHash,showMark}=this.state
-    const {avatarSrc,GRAVATAR_URL}=this.props
+    const {avatarSrc,GRAVATAR_URL,langHead}=this.props
     return <AvatarComponent showList={showList}
                             emailHash={emailHash}
                             showMark={showMark}
+                            langHead={langHead}
                             GRAVATAR_URL={GRAVATAR_URL}
                             avatarSrc={avatarSrc}
                             turnOffMark={this.turnOffMark}

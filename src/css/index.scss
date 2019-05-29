@@ -346,6 +346,13 @@
       margin-left: 1.25rem;
     }
   }
+  .vbtn:disabled,.vbtn:disabled:hover{
+    cursor:not-allowed;
+    border:none;
+    background:#ededed;
+    color: #c7c7c7;
+  }
+
   .vbtn:active,
   .vbtn:hover {
     color: #3090e4;
@@ -445,15 +452,17 @@
         border-bottom: 1px dashed #f5f5f5;
 
         .showchild-button-on{
+          font-size:0.6rem;
           cursor: pointer;
           width: 100%;
           border: 2px solid #ccc;
           background: #8de0ff;
-          color: #747474;
+          color: #000;
           border-radius: 4px;
           padding: 2px;
         }
         .showchild-button-off{
+          font-size:0.6rem;
           cursor: pointer;
           width: 100%;
           border: 2px solid #ccc;
@@ -533,6 +542,8 @@
         color: #666;
         margin-top: 1rem;
         //padding-left: 1rem;
+        font-size: 0.6rem;
+        font-weight: 500;
         border-left: 1px dashed rgba(215, 215, 215, 0.5);
         .vimg{
           width: 2.225rem;

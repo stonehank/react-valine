@@ -5,7 +5,7 @@
 .npmignore
 .babelrc
 *.log
-
+.travis.yml
 
 node_modules
 package-lock.json
@@ -19,3 +19,4 @@ index.html
 postcss.config.js
 webpack.config.js
 webpack.dev.config.js
+webpack.demo.config.js

@@ -58,13 +58,21 @@ export default class ButtonContainer extends React.PureComponent {
   }
   render() {
     const {show,previewContent} = this.state;
-    const {previewShow,togglePreviewShow,submitBtnDisable,handleOnSubmit,insertEmoji}=this.props
+    const {
+      previewShow,
+      togglePreviewShow,
+      langCtrl,
+      submitBtnDisable,
+      handleOnSubmit,
+      insertEmoji
+    }=this.props
+
     return (
       <React.Fragment>
-        <ButtonComponent previewShow={previewShow} togglePreviewShow={togglePreviewShow} toggleEmojiShow={this.toggleEmojiShow}/>
+        <ButtonComponent langCtrl={langCtrl} previewShow={previewShow} togglePreviewShow={togglePreviewShow} toggleEmojiShow={this.toggleEmojiShow}/>
         <EmojiComponentShow show={show} insertEmoji={insertEmoji} />
         <PreviewComponentShow previewShow={previewShow} previewContent={previewContent} />
-        <ControlButton submitBtnDisable={submitBtnDisable} handleOnSubmit={handleOnSubmit}/>
+        <ControlButton langCtrl={langCtrl} submitBtnDisable={submitBtnDisable} handleOnSubmit={handleOnSubmit}/>
       </React.Fragment>
     );
   }

@@ -4,9 +4,10 @@ export default class ValineGetCount extends React.Component{
 
   constructor(props){
     super(props)
+    const {fetchTxt,count,url}=props
     this.state={
-      count:props.count,
-      url:props.url
+      count:count==null ? fetchTxt : count,
+      url,
     }
     this._isMounted=false
   }
@@ -45,5 +46,4 @@ export default class ValineGetCount extends React.Component{
 
 ValineGetCount.defaultProps={
   url:decodeURI(window.location.origin+window.location.pathname),
-  count:'获取中'
 }

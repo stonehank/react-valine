@@ -19,16 +19,18 @@ export default class EditAreaComponent extends React.PureComponent {
       emailOnChange,
       linkOnChange,
       nameOnChange,
-      avatarOnChange
+      avatarOnChange,
+      curLang
     } = this.props;
     // console.log(11)
+    const langHead=curLang['head']
     return (
       <div className={"vheader item3"} >
-        <AvatarContainer avatarSrc={avatarSrc} email={email} GRAVATAR_URL={GRAVATAR_URL} avatarOnChange={avatarOnChange}/>
+        <AvatarContainer langHead={langHead} avatarSrc={avatarSrc} email={email} GRAVATAR_URL={GRAVATAR_URL} avatarOnChange={avatarOnChange}/>
         <div className={"vinputs"}>
-          <NickNameComponent nickName={nickName} requireName={requireName} nameOnChange={nameOnChange}/>
-          <MailComponent email={email} requireEmail={requireEmail} emailOnChange={emailOnChange} />
-          <LinkComponent link={link} linkOnChange={linkOnChange} />
+          <NickNameComponent nickName={nickName} langHead={langHead} requireName={requireName} nameOnChange={nameOnChange}/>
+          <MailComponent email={email} langHead={langHead} requireEmail={requireEmail} emailOnChange={emailOnChange} />
+          <LinkComponent link={link} langHead={langHead} linkOnChange={linkOnChange} />
         </div>
       </div>
     )

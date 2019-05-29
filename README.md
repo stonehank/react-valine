@@ -51,6 +51,8 @@
 |pageSize|否|评论列表分页，每页条数|10|
 |sofaEmpty|否|无评论时显示|快来做第一个评论的人吧~|
 |previewShow|否|是否默认开启实时预览|true|
+|lang|否|支持中文(zh-cn)和英文(en)|zh-cn|
+|customTxt|否|自定义内部文字|参考assets/local.json|
 
 
 案例参考：
@@ -65,7 +67,15 @@ const appKey='xxxxxxxxx'
 
 // 此处为全局导入，在App内部任意位置都可以使用<ValineCount />和<ValinePanel />
 ReactDOM.render(
-  <Valine  appId={appId} appKey={appKey}>
+  <Valine  appId={appId}
+           appKey={appKey}
+           pagesize={12} 
+           customTxt={
+             {
+               tips:{sofa:"抢个沙发吧~"},
+               ctrl:{more:"再给我来一打"}
+             }
+           }>
     <App />
   </Valine>
   , document.getElementById('root'));
@@ -148,6 +158,10 @@ modify_hljs((hljs)=>{
 参考[Valine-Admin](https://github.com/zhaojun1998/Valine-Admin)
 
 ### Changelog
+
+##### 0.3.3
+
+* 多语言支持
 
 ##### 0.3.2
 

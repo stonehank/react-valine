@@ -4,10 +4,10 @@ import React from 'react'
 export default class SubmitComponent extends React.PureComponent{
 
   render(){
-    const { submitBtnDisable,handleOnSubmit} = this.props;
+    const { submitBtnDisable,handleOnSubmit,langCtrl} = this.props;
     return (
       <div className="col col-80 text-right">
-        <button type="button" className="vsubmit vbtn" onClick={handleOnSubmit} disabled={submitBtnDisable}>提交</button>
+        <button type="button" className="vsubmit vbtn" onClick={handleOnSubmit} disabled={submitBtnDisable}>{langCtrl["reply"]}</button>
       </div>
     )
   }

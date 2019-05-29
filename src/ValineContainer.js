@@ -69,7 +69,7 @@ export default class ValineContainer extends React.Component{
   }
 
   createNewObj(){
-    const {AV,nest,updateCount,url}=this.props
+    const {AV,nest,updateCount,url,curLang}=this.props
     const {commentList}=this.state
     let Ct = AV.Object.extend('Comment');
     let comment = new Ct();
@@ -124,7 +124,7 @@ export default class ValineContainer extends React.Component{
         if(this.rScrollTop!=null)document.documentElement.scrollTo(0,this.rScrollTop)
         this.resetDefaultComment()
       }).catch(ex => {
-        console.error("Something wrong with submit!",ex)
+        console.error("Something wrong with submit!",curLang.error[ex.code])
         this.setState({
           submitBtnDisable:false,
           submitLoading:false
@@ -175,14 +175,14 @@ export default class ValineContainer extends React.Component{
   }
 
   submitVerify(){
-    const {requireName,requireEmail}=this.props
+    const {requireName,requireEmail,curLang}=this.props
     const {nick,mail,comment,link,at,pid}=this.defaultComment
-    let errorStr='',state=false
-    if(comment==='')errorStr='内容不能为空！'
-    else if(requireName && nick.trim()==='')errorStr='昵称为必填项！'
-    else if(requireEmail && mail.trim()==='')errorStr='email为必填项！'
-    else if(mail.trim()!=='' && !emailVerify(mail))errorStr='email格式错误！'
-    else if(link.trim()!=='' && !linkVerify(link))errorStr='网址格式错误！请以http/https开头'
+    let errorStr='',state=false,errObj=curLang.verify
+    if(comment==='')errorStr=errObj['empty_comment']
+    else if(requireName && nick.trim()==='')errorStr=errObj['if_require_nick']
+    else if(requireEmail && mail.trim()==='')errorStr=errObj['if_require_mail']
+    else if(mail.trim()!=='' && !emailVerify(mail))errorStr=errObj['email_format_failed']
+    else if(link.trim()!=='' && !linkVerify(link))errorStr=errObj['link_format_failed']
     else if(at!=='' && pid!==''){
       if(!contentAtVerify(comment,at)){
         this.defaultComment.pid=''
@@ -195,16 +195,9 @@ export default class ValineContainer extends React.Component{
     return {state,errorStr}
   }
 
-  // commentContentOnChange(event,str=''){
-  //   let newStr=(event ? event.target.value : this.state.commentContent) +str
-  //   newStr=newStr.replace(/:(.+?):/g, (placeholder, key) => emojiData[key] || placeholder)
-  //   this.setState({
-  //     commentContent:newStr
-  //   })
-  // }
 
   handleReply(replyId,replyName,rid){
-    console.log(replyId,replyName,rid)
+    // console.log(replyId,replyName,rid)
     this.defaultComment.pid=replyId
     this.defaultComment.at=replyName
     this.defaultComment.rid=rid
@@ -225,7 +218,6 @@ export default class ValineContainer extends React.Component{
     }
 
     this.setState((prevState)=>({
-      // commentContent:`@${replyName} `+prevState.commentContent,
       toggleTextAreaFocus:!prevState.toggleTextAreaFocus
     }),()=>{
       document.documentElement.scrollTo(0,reachCeilTop)
@@ -426,7 +418,14 @@ export default class ValineContainer extends React.Component{
 
 
   render(){
-    const {requireName,requireEmail,placeholder,nest,sofaEmpty}=this.props
+    const {
+      requireName,
+      requireEmail,
+      // placeholder,
+      curLang,
+      nest,
+      // sofaEmpty
+    }=this.props
     const {
       commentCounts,
       currentCounts,
@@ -449,9 +448,10 @@ export default class ValineContainer extends React.Component{
           }
           <InputContainer submitBtnDisable={submitBtnDisable}
                           ref={this.inputContainerRef}
-                          placeholder={placeholder}
+                          // placeholder={placeholder}
                           requireName={requireName}
                           requireEmail={requireEmail}
+                          curLang={curLang}
                           GRAVATAR_URL={GRAVATAR_URL}
                           toggleTextAreaFocus={toggleTextAreaFocus}
                           previewShow={previewShow}
@@ -459,12 +459,13 @@ export default class ValineContainer extends React.Component{
                           togglePreviewShow={this.togglePreviewShow}
           />
         </div>
-        <InfoComponent commentCounts={commentCounts}/>
+        <InfoComponent  lang_comments={curLang["tips"]["comments"]} commentCounts={commentCounts}/>
         <CommentListComponent GRAVATAR_URL={GRAVATAR_URL}
                               commentCounts={commentCounts}
                               currentCounts={currentCounts}
                               commentList={commentList}
-                              sofaEmpty={sofaEmpty}
+                              // sofaEmpty={sofaEmpty}
+                              curLang={curLang}
                               nest={nest}
                               submitLoading={submitLoading}
                               fetchMoreLoading={fetchMoreLoading}

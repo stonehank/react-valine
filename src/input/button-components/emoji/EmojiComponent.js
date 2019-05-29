@@ -3,10 +3,10 @@ import React from 'react';
 export default class EmojiComponent extends React.PureComponent {
 
   render() {
-    const {toggleEmojiShow}=this.props
+    const {txt,toggleEmojiShow}=this.props
     return (
       <React.Fragment>
-        <span className="vemoji-btn" title="表情" onClick={toggleEmojiShow}>表情</span>
+        <span className="vemoji-btn" title={txt} onClick={toggleEmojiShow}>{txt}</span>
       </React.Fragment>
     );
   }

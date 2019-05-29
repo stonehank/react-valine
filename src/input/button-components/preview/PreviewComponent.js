@@ -3,11 +3,11 @@ import React from 'react';
 export default class PreviewComponent extends React.PureComponent {
 
   render() {
-    const {previewShow, togglePreviewShow}=this.props
+    const {previewShow,txt,txt_on,togglePreviewShow}=this.props
     return (
-      <span className="vpreview-btn" title="预览" onClick={togglePreviewShow}>
+      <span className="vpreview-btn" title={txt} onClick={togglePreviewShow}>
         {
-          previewShow ? "已开启预览" : "开启预览"
+          previewShow ? txt_on : txt
         }
       </span>
     );

@@ -1,17 +1,17 @@
 import React from 'react'
 import ValineContext from './ValineContext'
 import ValineGetCount from "./ValineGetCount";
+import PropTypes from "prop-types";
 
 
 
 export default class ValineCount extends React.Component{
 
-
   render(){
     return (
       <ValineContext.Consumer>
         {contextProps=>{
-          const {fetchCount,updateCountHash}=contextProps
+          const {fetchCount,updateCountHash,curLang}=contextProps
           const {style,url,count}=this.props
           return (
             <ValineGetCount style={style}
@@ -19,12 +19,17 @@ export default class ValineCount extends React.Component{
                             updateCountHash={updateCountHash}
                             url={url}
                             count={count}
+                            fetchTxt={curLang['tips']['count']}
             />
           )
         }
         }
       </ValineContext.Consumer>
     )
-
   }
+}
+
+ValineCount.propTypes = {
+  count:PropTypes.string,
+  style:PropTypes.object
 }

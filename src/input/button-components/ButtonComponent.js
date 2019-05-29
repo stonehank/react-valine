@@ -6,11 +6,11 @@ import PreviewComponent from "./preview/PreviewComponent";
 export default class ButtonComponent extends React.PureComponent {
 
   render() {
-    const {previewShow,togglePreviewShow,toggleEmojiShow}=this.props
+    const {previewShow,togglePreviewShow,toggleEmojiShow,langCtrl}=this.props
     return (
       <div className={"vctrl"}>
-        <EmojiComponent toggleEmojiShow={toggleEmojiShow}/>
-        <PreviewComponent previewShow={previewShow} togglePreviewShow={togglePreviewShow}/>
+        <EmojiComponent txt={langCtrl["emoji"]} toggleEmojiShow={toggleEmojiShow}/>
+        <PreviewComponent txt={langCtrl["preview"]} txt_on={langCtrl["preview_on"]} previewShow={previewShow} togglePreviewShow={togglePreviewShow}/>
       </div>
 
     );

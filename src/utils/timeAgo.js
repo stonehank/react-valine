@@ -1,4 +1,4 @@
-export default function timeAgo(oldDate){
+export default function timeAgo(oldDate,langTxt){
   let oldTime=oldDate.getTime()
   try {
     let curTime = new Date().getTime(),
@@ -16,18 +16,18 @@ export default function timeAgo(oldDate){
           //计算相差秒数
           let leave3 = leave2 % (60 * 1000); //计算分钟数后剩余的毫秒数
           let seconds = Math.round(leave3 / 1000);
-          return seconds + ' 秒前';
+          return seconds + ` ${langTxt["seconds"]}`;
         }
-        return minutes + ' 分钟前';
+        return minutes + ` ${langTxt["minutes"]}`;
       }
-      return hours + ' 小时前';
+      return hours + ` ${langTxt["hours"]}`;
     }
-    if (days < 0) return '刚刚';
-    else if (days < 30) return days + ' 天前';
-    else if (days < 365) return Math.floor(days / 30) + ' 月前';
+    if (days < 0) return langTxt["now"];
+    else if (days < 30) return days + ` ${langTxt["days"]}`;
+    else if (days < 365) return Math.floor(days / 30) + ` ${langTxt["months"]}`
     else return dateFormat(oldDate);
   } catch (error) {
-    console.log(error)
+    console.error("Something wrong with timeago function.",error)
   }
 }
 

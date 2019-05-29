@@ -24,6 +24,9 @@ function App() {
 
 
 ReactDOM.render(
-  <Valine  appId={"I5DAxOhp2kPXkbj9VXPyKoEB-gzGzoHsz"} appKey={"lGPcHd7GL9nYKqBbNEkgXKjX"} placeholder={"尝试使用“:”开启表情输入，欢迎拍砖(⭐️ )~"} >
+  <Valine  appId={"I5DAxOhp2kPXkbj9VXPyKoEB-gzGzoHsz"}
+           appKey={"lGPcHd7GL9nYKqBbNEkgXKjX"}
+           placeholder={"尝试使用“:”开启表情输入，欢迎拍砖(⭐️ )~"}
+  >
     <App />
   </Valine>, document.getElementById('root'));

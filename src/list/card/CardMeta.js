@@ -10,13 +10,15 @@ export default class CardMeta extends React.PureComponent{
       curId,
       rid,
       handleReply,
+      langTime,
+      txt_reply,
       nickName,
       createdAt
     }=this.props
     return (
       <div className={"vmeta"}>
-        <CreatedTimeComponent createdAt={createdAt} />
-        <span className={"vat"} onClick={handleReply.bind(this,curId,nickName,rid)}>回复</span>
+        <CreatedTimeComponent langTime={langTime} createdAt={createdAt} />
+        <span className={"vat"} onClick={handleReply.bind(this,curId,nickName,rid)}>{txt_reply}</span>
       </div>
     )
   }

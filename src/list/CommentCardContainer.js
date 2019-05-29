@@ -30,6 +30,8 @@ export default class CommentCardContainer extends React.PureComponent{
       nest,
       child,
       avatarSrc,
+      langTime,
+      langCtrl,
       rid,
       link,
       handleReply,
@@ -43,7 +45,7 @@ export default class CommentCardContainer extends React.PureComponent{
         <CardAvatar avatarSrc={avatarSrc} GRAVATAR_URL={GRAVATAR_URL}/>
         <div className={'vh'}>
           <CardHead link={link} nickName={nickName}/>
-          <CardMeta curId={curId} rid={rid} nickName={nickName} createdAt={createdAt} handleReply={handleReply}/>
+          <CardMeta langTime={langTime} txt_reply={langCtrl["reply"]} curId={curId} rid={rid} nickName={nickName} createdAt={createdAt} handleReply={handleReply}/>
           <CardContent commentContent={commentContent}/>
           {
             nest && child.length>0
@@ -63,6 +65,8 @@ export default class CommentCardContainer extends React.PureComponent{
                       return <CommentCardContainer curId={curId}
                                                    key={curId}
                                                    rid={rid}
+                                                   langTime={langTime}
+                                                   langCtrl={langCtrl}
                                                    nest={nest}
                                                    child={child}
                                                    GRAVATAR_URL={GRAVATAR_URL}
@@ -76,9 +80,9 @@ export default class CommentCardContainer extends React.PureComponent{
                       })
                     }
                     </div>
-                  <span className={"showchild-button-off"} onClick={this.toggleShowChild}>收起回复</span>
+                  <span className={"showchild-button-off"} onClick={this.toggleShowChild}>{langCtrl["collapse_reply"]}</span>
                 </React.Fragment>
-              : <span className={"showchild-button-on"} onClick={this.toggleShowChild}>展开回复</span>
+              : <span className={"showchild-button-on"} onClick={this.toggleShowChild}>{langCtrl["expand_reply"]}</span>
             : null
           }
         </div>

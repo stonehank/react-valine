@@ -236,9 +236,10 @@ export default class InputContainer extends React.PureComponent {
     } = this.state;
 
     const {
-      placeholder,
+      // placeholder,
       requireName,
       requireEmail,
+      curLang,
       GRAVATAR_URL,
       submitBtnDisable,
       toggleTextAreaFocus,
@@ -252,6 +253,7 @@ export default class InputContainer extends React.PureComponent {
                            email={email}
                            nickName={nickName}
                            avatarSrc={avatarSrc}
+                           curLang={curLang}
                            requireName={requireName}
                            requireEmail={requireEmail}
                            GRAVATAR_URL={GRAVATAR_URL}
@@ -264,7 +266,7 @@ export default class InputContainer extends React.PureComponent {
           <TextAreaComponent ref={this.textAreaRef}
                              toggleTextAreaFocus={toggleTextAreaFocus}
                              commentContent={commentContent}
-                             placeholder={placeholder}
+                             placeholder={curLang["tips"]["placeholder"]}
                              contentOnKeyDown={this.contentOnKeyDown}
                              contentOnChange={this.commentContentOnChange}
           />
@@ -275,6 +277,7 @@ export default class InputContainer extends React.PureComponent {
                                  chooseEmoji={this.chooseEmoji}
           />
           <ButtonContainer previewShow={previewShow}
+                           langCtrl={curLang["ctrl"]}
                            insertEmoji={this.insertEmoji}
                            commentContent={commentContent}
                            togglePreviewShow={togglePreviewShow}
