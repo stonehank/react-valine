@@ -44,14 +44,14 @@ export default class CommentListComponent extends React.PureComponent{
                         createdAt=commentObj['createdAt'],
                         commentContent=xssMarkdown(commentObj['comment']),
                         curId=commentObj['id'],
-                        rootId=commentObj['rootId'],
+                        rid=commentObj['rid'],
                         child=nest ? commentObj['child'] : null
 
                       return <CommentCardContainer curId={curId}
                                                    key={curId}
                                                    nest={nest}
                                                    child={child}
-                                                   rootId={rootId}
+                                                   rid={rid}
                                                    GRAVATAR_URL={GRAVATAR_URL}
                                                    avatarSrc={avatarSrc}
                                                    link={link}

@@ -21,7 +21,7 @@
 
 - [ ] 阅读量统计
 - [x] 优化表情输入
-- [ ] 邮件回复
+- [x] 邮件回复
 - [ ] 垃圾评论处理
 - [ ] 增加单元测试
 
@@ -73,17 +73,17 @@ ReactDOM.render(
 
 #### ValineCount
 
-获取当前`path`的评论数。
+获取当前`url`的评论数。
 
 参数：
 
 |参数|是否必须|作用|默认值|
 |:---:|:---:|:---:|:---:|
-|path|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
+|url|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
 |style|否|组件的样式|''|
 |count|否|未获取时的初始值|获取中|
 
-> 注意：path必须是一个独立值，强烈建议自己填写一个独立值，而不是用默认值，因为如果使用默认值，当需要获取评论数时，并不一定在当前评论页的`url`上，就会获取错误或者失败。
+> 注意：url必须是一个独立值，强烈建议自己填写一个独立值，而不是用默认值，因为如果使用默认值，当需要获取评论数时，并不一定在当前评论页的`url`上，就会获取错误或者失败。
 
 案例参考：
 
@@ -94,12 +94,12 @@ import {ValineCount} from "react-valine";
 
 class ArticleMeta extends React.Component{
   render(){
-    const {createdAt,author,a_unique_path}=this.props
+    const {createdAt,author,a_unique_url}=this.props
     return (
       <div>
         <span>创建日期：{createdAt}</span>
         <span>作者：{author}</span>
-        <span>评论数：<ValineCount path={a_unique_path}/></span>
+        <span>评论数：<ValineCount url={a_unique_url}/></span>
       </div>
     )
   }
@@ -114,9 +114,9 @@ class ArticleMeta extends React.Component{
 
 |参数|是否必须|作用|默认值|
 |:---:|:---:|:---:|:---:|
-|path|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
+|url|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
 
-> 注意：path必须是一个独立值，强烈建议自己填写一个独立值，而不是用默认值，因为如果使用默认值，当需要获取评论数时，并不一定在当前评论页的`url`上，就会获取错误或者失败。
+> 注意：url必须是一个独立值，强烈建议自己填写一个独立值，而不是用默认值，因为如果使用默认值，当需要获取评论数时，并不一定在当前评论页的`url`上，就会获取错误或者失败。
 
 #### modify_hljs
 
@@ -143,7 +143,16 @@ modify_hljs((hljs)=>{
 更多关于[异步加载highlight](https://highlightjs.org/usage/)的介绍。
 
 
+### 邮件回复
+
+参考[Valine-Admin](https://github.com/zhaojun1998/Valine-Admin)
+
 ### Changelog
+
+##### 0.3.2
+
+* 统一与`Valine`的接口
+* 可以开启邮件回复，具体参考[Valine-Admin](https://github.com/zhaojun1998/Valine-Admin)
 
 ##### 0.3.1
 

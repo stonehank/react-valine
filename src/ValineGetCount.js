@@ -6,14 +6,14 @@ export default class ValineGetCount extends React.Component{
     super(props)
     this.state={
       count:props.count,
-      path:props.path
+      url:props.url
     }
     this._isMounted=false
   }
 
   componentDidMount(){
     this._isMounted=true
-    this.props.fetchCount(this.state.path)
+    this.props.fetchCount(this.state.url)
       .then(count=>{
         if(this._isMounted){
           this.setState({
@@ -23,7 +23,7 @@ export default class ValineGetCount extends React.Component{
       })
   }
   componentDidUpdate(){
-    this.props.fetchCount(this.state.path)
+    this.props.fetchCount(this.state.url)
       .then(count=>{
         if(count===this.state.count)return
         if(this._isMounted){
@@ -44,6 +44,6 @@ export default class ValineGetCount extends React.Component{
 }
 
 ValineGetCount.defaultProps={
-  path:decodeURI(window.location.origin+window.location.pathname),
+  url:decodeURI(window.location.origin+window.location.pathname),
   count:'获取中'
 }

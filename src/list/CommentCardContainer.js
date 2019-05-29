@@ -30,7 +30,7 @@ export default class CommentCardContainer extends React.PureComponent{
       nest,
       child,
       avatarSrc,
-      rootId,
+      rid,
       link,
       handleReply,
       nickName,
@@ -43,7 +43,7 @@ export default class CommentCardContainer extends React.PureComponent{
         <CardAvatar avatarSrc={avatarSrc} GRAVATAR_URL={GRAVATAR_URL}/>
         <div className={'vh'}>
           <CardHead link={link} nickName={nickName}/>
-          <CardMeta curId={curId} rootId={rootId} nickName={nickName} createdAt={createdAt} handleReply={handleReply}/>
+          <CardMeta curId={curId} rid={rid} nickName={nickName} createdAt={createdAt} handleReply={handleReply}/>
           <CardContent commentContent={commentContent}/>
           {
             nest && child.length>0
@@ -62,7 +62,7 @@ export default class CommentCardContainer extends React.PureComponent{
 
                       return <CommentCardContainer curId={curId}
                                                    key={curId}
-                                                   rootId={rootId}
+                                                   rid={rid}
                                                    nest={nest}
                                                    child={child}
                                                    GRAVATAR_URL={GRAVATAR_URL}

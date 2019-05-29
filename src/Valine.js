@@ -29,28 +29,28 @@ export default class Valine extends React.Component{
     })
   }
 
-  fetchCount(path){
+  fetchCount(url){
     return new Promise(resolve=>{
-      if(this.countMap.has(path)){
-        resolve(this.countMap.get(path))
+      if(this.countMap.has(url)){
+        resolve(this.countMap.get(url))
       }else{
         let AV=window.AV
         if(!AV){
           throw new Error("请检查依赖包是否存在`leancloud-storage`")
         }
         new AV.Query('Comment')
-          .equalTo('path',path)
+          .equalTo('url',url)
           .count()
           .then((counts)=>{
-            this.countMap.set(path,counts)
+            this.countMap.set(url,counts)
             resolve(counts)
           })
       }
     })
   }
 
-  updateCounts(path,count){
-    this.countMap.set(path,count)
+  updateCounts(url,count){
+    this.countMap.set(url,count)
     this.setState({
       updateCountHash:Math.floor(Math.random()*(1e9+7))
     })

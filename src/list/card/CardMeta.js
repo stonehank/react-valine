@@ -8,7 +8,7 @@ export default class CardMeta extends React.PureComponent{
   render(){
     const {
       curId,
-      rootId,
+      rid,
       handleReply,
       nickName,
       createdAt
@@ -16,7 +16,7 @@ export default class CardMeta extends React.PureComponent{
     return (
       <div className={"vmeta"}>
         <CreatedTimeComponent createdAt={createdAt} />
-        <span className={"vat"} onClick={handleReply.bind(this,curId,nickName,rootId)}>回复</span>
+        <span className={"vat"} onClick={handleReply.bind(this,curId,nickName,rid)}>回复</span>
       </div>
     )
   }

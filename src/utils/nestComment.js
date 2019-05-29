@@ -1,11 +1,11 @@
 
 function dfsClone(list,item){
   let res=[],hasInserted=false
-  let {rootId,rid}=item
+  let {rid,pid}=item
   for(let i=0;i<list.length;i++){
-    if(!hasInserted && list[i].rootId===rootId){
+    if(!hasInserted && list[i].rid===rid){
       let obj=Object.assign({},list[i])
-      if(list[i].id===rid){
+      if(list[i].id===pid){
         obj.child=list[i].child.slice()
         obj.child.push(item)
         hasInserted=true

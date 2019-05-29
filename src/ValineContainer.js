@@ -55,21 +55,21 @@ export default class ValineContainer extends React.Component{
 
   resetDefaultComment(){
     this.defaultComment={
-      rootId:'',
       rid:'',
+      pid:'',
       mail:'',
       avatarSrc:'',
       link:'',
       comment:'',
       at:'',
       nick:'',
-      path:this.props.path,
+      url:this.props.url,
       ua:navigator.userAgent,
     }
   }
 
   createNewObj(){
-    const {AV,nest,updateCount,path}=this.props
+    const {AV,nest,updateCount,url}=this.props
     const {commentList}=this.state
     let Ct = AV.Object.extend('Comment');
     let comment = new Ct();
@@ -81,11 +81,11 @@ export default class ValineContainer extends React.Component{
         comment.set(k,val);
       }
     }
-    comment.set('pid',this.defaultComment.rid)
+    comment.set('pid',this.defaultComment.pid)
     return new Promise((resolve)=>{
-      if(this.defaultComment.rid===''){
+      if(this.defaultComment.pid===''){
         comment.save().then(item=>{
-          comment.set('rootId',item.id)
+          comment.set('rid',item.id)
           resolve()
         })
       }else{
@@ -99,7 +99,7 @@ export default class ValineContainer extends React.Component{
       comment.save().then((commentItem) => {
         let simplyItem=simplyObj(commentItem)
         let newCommentList=[]
-        if(nest && this.defaultComment.rid!==''){
+        if(nest && this.defaultComment.pid!==''){
           newCommentList=mergeNestComment(commentList,[simplyItem])
         }else{
           newCommentList=[simplyItem].concat(commentList)
@@ -119,7 +119,7 @@ export default class ValineContainer extends React.Component{
           // commentContent:'',
           submitLoading:false
         }),()=>{
-          updateCount(path,this.state.commentCounts)
+          updateCount(url,this.state.commentCounts)
         })
         if(this.rScrollTop!=null)document.documentElement.scrollTo(0,this.rScrollTop)
         this.resetDefaultComment()
@@ -176,19 +176,19 @@ export default class ValineContainer extends React.Component{
 
   submitVerify(){
     const {requireName,requireEmail}=this.props
-    const {nick,mail,comment,link,at,rid}=this.defaultComment
+    const {nick,mail,comment,link,at,pid}=this.defaultComment
     let errorStr='',state=false
     if(comment==='')errorStr='内容不能为空！'
     else if(requireName && nick.trim()==='')errorStr='昵称为必填项！'
     else if(requireEmail && mail.trim()==='')errorStr='email为必填项！'
     else if(mail.trim()!=='' && !emailVerify(mail))errorStr='email格式错误！'
     else if(link.trim()!=='' && !linkVerify(link))errorStr='网址格式错误！请以http/https开头'
-    else if(at!=='' && rid!==''){
+    else if(at!=='' && pid!==''){
       if(!contentAtVerify(comment,at)){
-        this.defaultComment.rid=''
+        this.defaultComment.pid=''
         this.defaultComment.at=''
       }else{
-        this.defaultComment.comment=replaceAt(comment,rid)
+        this.defaultComment.comment=replaceAt(comment,pid)
       }
       state=true
     } else state=true
@@ -203,10 +203,11 @@ export default class ValineContainer extends React.Component{
   //   })
   // }
 
-  handleReply(replyId,replyName,rootId){
-    this.defaultComment.rid=replyId
+  handleReply(replyId,replyName,rid){
+    console.log(replyId,replyName,rid)
+    this.defaultComment.pid=replyId
     this.defaultComment.at=replyName
-    this.defaultComment.rootId=rootId
+    this.defaultComment.rid=rid
     let ele=this.wrapRef.current
     let scrTop=document.documentElement.scrollTop
     let boundTop=ele.getBoundingClientRect().top
@@ -248,7 +249,7 @@ export default class ValineContainer extends React.Component{
       fetchMoreLoading:true
     })
     return query
-      .select(['nick', 'comment', 'link', 'rid', 'avatarSrc','rootId'])
+      .select(['nick', 'comment', 'link', 'pid', 'avatarSrc','rid'])
       .skip(currentCounts)
       .limit(pageSize)
       .addDescending('createdAt')
@@ -272,7 +273,7 @@ export default class ValineContainer extends React.Component{
 
   fetchMoreNest(){
     let contains=[],simplyList=[]
-    const {AV,path,pageSize}=this.props
+    const {AV,url,pageSize}=this.props
     let {currentCounts,commentList,commentCounts}=this.state
     let newCurrentCounts=0
     if(currentCounts===commentCounts)return
@@ -280,12 +281,12 @@ export default class ValineContainer extends React.Component{
       fetchMoreLoading:true
     })
     let query1= new AV.Query('Comment'),query2= new AV.Query('Comment')
-    query1.equalTo('path',path)
-      .equalTo('rid','')
+    query1.equalTo('url',url)
+      .equalTo('pid','')
       .addDescending('createdAt')
       .skip(commentList.length)
       .limit(pageSize)
-      .select(['nick', 'comment', 'link', 'rid', 'avatarSrc','rootId'])
+      .select(['nick', 'comment', 'link', 'pid', 'avatarSrc','rid'])
       .find()
       .then(items=>{
         if(items.length===0){
@@ -297,11 +298,11 @@ export default class ValineContainer extends React.Component{
         newCurrentCounts+=items.length
         for(let obj of items){
           simplyList.push(simplyObj(obj))
-          contains.push(obj.get('rootId'))
+          contains.push(obj.get('rid'))
         }
-        query2.equalTo('path',path)
-          .notEqualTo('rid','')
-          .containedIn('rootId',contains)
+        query2.equalTo('url',url)
+          .notEqualTo('pid','')
+          .containedIn('rid',contains)
           .addAscending('createdAt')
           .find()
           .then(items=>{
@@ -323,13 +324,13 @@ export default class ValineContainer extends React.Component{
 
   fetchNest(){
     let contains=[],simplyList=[],commentList=[]
-    const {AV,pageSize,fetchCount,path}=this.props
+    const {AV,pageSize,fetchCount,url}=this.props
     let currentCounts=0
     let commentCounts=0
     this.setState({
       fetchInitLoading:true
     })
-    return fetchCount(path).then(counts=> {
+    return fetchCount(url).then(counts=> {
       commentCounts = counts
       if (commentCounts === 0) {
         this.setState({
@@ -338,22 +339,22 @@ export default class ValineContainer extends React.Component{
         return
       }
       let query1 =new AV.Query('Comment'), query2=new AV.Query('Comment')
-      query1.equalTo('path',path)
-        .equalTo('rid','')
+      query1.equalTo('url',url)
+        .equalTo('pid','')
         .limit(pageSize)
-        .select(['nick', 'comment', 'link', 'rid', 'avatarSrc','rootId'])
+        .select(['nick', 'comment', 'link', 'pid', 'avatarSrc','rid'])
         .addDescending('createdAt')
         .find()
         .then(items=>{
           currentCounts+=items.length
           for(let obj of items){
             simplyList.push(simplyObj(obj))
-            contains.push(obj.get('rootId'))
+            contains.push(obj.get('rid'))
           }
-          query2.equalTo('path',path)
-            .notEqualTo('rid','')
-            .containedIn('rootId',contains)
-            .select(['nick', 'comment', 'link', 'rid', 'avatarSrc','rootId'])
+          query2.equalTo('url',url)
+            .notEqualTo('pid','')
+            .containedIn('rid',contains)
+            .select(['nick', 'comment', 'link', 'pid', 'avatarSrc','rid'])
             .addAscending('createdAt')
             .find()
             .then(items=>{
@@ -377,12 +378,12 @@ export default class ValineContainer extends React.Component{
 
 
   initQuery(){
-    const {AV,pageSize,path,fetchCount}=this.props
+    const {AV,pageSize,url,fetchCount}=this.props
     let commentCounts=0
     this.setState({
       fetchInitLoading:true
     })
-    return fetchCount(path).then(counts=>{
+    return fetchCount(url).then(counts=>{
       commentCounts=counts
       if(commentCounts===0){
         this.setState({
@@ -391,8 +392,8 @@ export default class ValineContainer extends React.Component{
         return
       }
       let query =new AV.Query('Comment')
-      query.matches('path',path)
-        .select(['nick', 'comment', 'link', 'rid', 'avatarSrc','rootId'])
+      query.matches('url',url)
+        .select(['nick', 'comment', 'link', 'pid', 'avatarSrc','rid'])
         .addDescending('createdAt')
         .limit(pageSize)
         .find()
