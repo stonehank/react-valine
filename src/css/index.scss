@@ -85,6 +85,36 @@
     vertical-align: middle;
     margin-top:-2px;
   }
+  .vscreen-errorlog{
+    background: #ffcdcd;
+    color: #ef5858;
+    position: absolute;
+    height: 2rem;
+    width: 40%;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    border-radius: 10px;
+    border: 1px solid #ef5858;
+    text-align: center;
+  }
+  .verrorlog{
+    background: #ffcdcd;
+    color: #ef5858;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 40%;
+    height: 2rem;
+    border-radius: 10px;
+    border: 1px solid #ef5858;
+    text-align: center;
+  }
   .vwrap {
     border: 1px solid #f0f0f0;
     border-radius: 4px;
@@ -95,21 +125,7 @@
     input {
       background: transparent;
     }
-    .verrorlog{
-      background: #ffcdcd;
-      color: #ef5858;
-      position: absolute;
-      margin: auto;
-      top: 0;
-      right: 0;
-      left: 0;
-      bottom: 0;
-      width: 40%;
-      height: 2rem;
-      border-radius: 10px;
-      border: 1px solid #ef5858;
-      text-align: center;
-    }
+
 
     .vedit {
       position: relative;

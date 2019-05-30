@@ -98,6 +98,8 @@ export default class Valine extends React.Component{
               item.save().then(()=>{
                 this.pageviewMap.set(uniqStr,updateTime)
                 resolve(updateTime)
+              }).catch(ex=>{
+                resolve(updateTime-1)
               })
             }
           }).catch(ex=>{

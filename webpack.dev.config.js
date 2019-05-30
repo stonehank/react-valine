@@ -3,7 +3,7 @@ const path = require('path');
 const src = path.join(__dirname, 'src')
 
 module.exports = {
-  entry: path.join( src, 'App.js'),
+  entry: path.join( src, 'index.js'),
   output: {
     path: path.join(__dirname, 'demo'),
     filename:'react-valine.js'

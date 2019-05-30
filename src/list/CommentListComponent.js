@@ -22,7 +22,7 @@ export default class CommentListComponent extends React.PureComponent{
       GRAVATAR_URL,
       fillNxtCommentList
     }=this.props
-
+// console.log(fetchInitLoading,commentList)
     return (
       <React.Fragment>
         {

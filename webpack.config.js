@@ -13,7 +13,7 @@ const src = path.join(__dirname, 'src')
 
 module.exports= {
   mode: 'production',
-  entry: path.join( src, 'index.js'),
+  entry: path.join( src, 'react-valine.js'),
   output: {
     path: path.join(__dirname, 'dist'),
     filename:'react-valine.js',
@@ -66,7 +66,7 @@ module.exports= {
       {
         test: /\.js$/,
         include:path.resolve(__dirname, 'src'),
-        exclude:path.resolve(__dirname,'src/App.js'),
+        // exclude:path.resolve(__dirname,'src/App.js'),
         loader: 'babel-loader',
         options: {
           cacheDirectory: true,
