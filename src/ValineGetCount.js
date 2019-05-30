@@ -14,7 +14,7 @@ export default class ValineGetCount extends React.Component{
 
   componentDidMount(){
     this._isMounted=true
-    this.props.fetchCount(this.state.uniqStr)
+    this.props.fetchCount(this.state.uniqStr,this.props.title)
       .then(count=>{
         if(this._isMounted){
           this.setState({
@@ -45,5 +45,5 @@ export default class ValineGetCount extends React.Component{
 }
 
 ValineGetCount.defaultProps={
-  uniqStr:decodeURI(window.location.origin+window.location.pathname),
+  uniqStr:decodeURI(window.location.origin+window.location.pathname)
 }

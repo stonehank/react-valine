@@ -5,21 +5,23 @@ import PropTypes from "prop-types";
 
 
 
-export default class ValineCount extends React.Component{
+
+export default class ValinePageview extends React.Component{
+
 
   render(){
     return (
       <ValineContext.Consumer>
         {contextProps=>{
-          const {fetchCount,updateCountHash,curLang}=contextProps
-          const {style,uniqStr,count}=this.props
+          const {getPageview,curLang}=contextProps
+          const {style,uniqStr,count,title}=this.props
           return (
             <ValineGetCount style={style}
-                            fetchCount={fetchCount}
-                            updateCountHash={updateCountHash}
+                            fetchCount={getPageview}
+                            title={title}
                             uniqStr={uniqStr}
                             count={count}
-                            fetchTxt={curLang['tips']['count']}
+                            fetchTxt={curLang['tips']['pageview']}
             />
           )
         }
@@ -28,8 +30,12 @@ export default class ValineCount extends React.Component{
     )
   }
 }
+ValinePageview.defaultProps={
+  title:document.title
+}
 
-ValineCount.propTypes = {
+ValinePageview.propTypes = {
   count:PropTypes.oneOfType([PropTypes.string,PropTypes.number]),
-  style:PropTypes.object
+  style:PropTypes.object,
+  title:PropTypes.string
 }

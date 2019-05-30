@@ -3,7 +3,7 @@ import emojiData from '../assets/emoji.json'
 import EditAreaComponent from "./edit-components/EditAreaComponent";
 import ButtonContainer from "./button-components/ButtonContainer";
 import TextAreaComponent from "./edit-components/TextAreaComponent";
-import {calcValueAndPos, getEmojiPrefix} from "../utils";
+import {calcValueAndPos, getEmojiPrefix,resolveTAB} from "../utils";
 import getWordList from "../utils/emojiTire";
 import EmojiPreviewComponent from "./EmojiPreviewComponent";
 const avatarsList=["mp","identicon", "monsterid",  "retro", "robohash", "wavatar","blank",]
@@ -40,7 +40,7 @@ export default class InputContainer extends React.PureComponent {
   chooseEmoji(emoji,prefix){
     let ele=this.textAreaRef.current
     // 此处prefix前面还有`:`，因此需要+1
-    let [newV,startPos,scrollTop]=calcValueAndPos(ele,emoji,prefix.length+1)
+    let [newV,scrollTop,startPos]=calcValueAndPos(ele,emoji,prefix.length+1)
     this.setState({
       commentContent:newV,
       emojiList:[],
@@ -55,7 +55,7 @@ export default class InputContainer extends React.PureComponent {
 
   insertEmoji(emoji){
     let ele=this.textAreaRef.current
-    let [newV,startPos,scrollTop]=calcValueAndPos(ele,emoji)
+    let [newV,scrollTop,startPos]=calcValueAndPos(ele,emoji)
     this.setState({
       commentContent:newV
     },()=>{
@@ -83,6 +83,9 @@ export default class InputContainer extends React.PureComponent {
         })
       }
     }else if(keyCode===13){
+      if(event.ctrlKey){
+        return this.handleOnSubmit()
+      }
       if(listLen>0){
         event.preventDefault()
         let chooseEmoji=emojiList[emojiChooseId]
@@ -99,16 +102,19 @@ export default class InputContainer extends React.PureComponent {
         })
       }
     }else if(keyCode===9){
+      if(event.shiftKey){
+        return
+      }
       event.preventDefault()
       let ele=event ? event.target : this.textAreaRef.current
       let insertStr='  '
-      let [newV,startPos,scrollTop]=calcValueAndPos(ele,insertStr)
+      let [newV,scrollTop,startPos,endPos]=resolveTAB(ele,insertStr)
       this.setState({
         commentContent:newV
       },()=>{
         ele.focus();
         ele.selectionStart = startPos + insertStr.length;
-        ele.selectionEnd = startPos + insertStr.length;
+        ele.selectionEnd = endPos + insertStr.length;
         ele.scrollTop = scrollTop;
       })
     }

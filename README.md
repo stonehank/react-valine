@@ -117,6 +117,41 @@ class ArticleMeta extends React.Component{
 }
 ```
 
+#### ValinePageview
+
+阅读量统计组件。
+
+参数：
+
+|参数|是否必须|作用|默认值|
+|:---:|:---:|:---:|:---:|
+|uniqStr|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
+|style|否|组件的样式|''|
+|count|否|未获取时的初始值|获取中|
+|title|否|当前组件对应的文章标题，用于方便后台查看|document.title|
+
+> 注意：uniqStr必须是一个独立值，强烈建议自己填写一个独立值，而不是用默认值，因为如果使用默认值，当需要获取评论数时，并不一定在当前评论页的`uniqStr`上，就会获取错误或者失败。
+
+articleMeta.js
+```js
+import React from 'react';
+import {ValineCount} from "react-valine";
+
+class ArticleMeta extends React.Component{
+  render(){
+    const {createdAt,author,a_unique_string}=this.props
+    return (
+      <div>
+        <span>创建日期：{createdAt}</span>
+        <span>作者：{author}</span>
+        <span>评论数：<ValineCount uniqStr={a_unique_string}/></span>
+        <span>阅读量：<ValinePageview uniqStr={a_unique_string} title={"JS基础教程"} /></span>
+      </div>
+    )
+  }
+}
+```
+
 #### ValinePanel
 
 评论面板，一般放在文章页最尾端。
@@ -159,6 +194,11 @@ modify_hljs((hljs)=>{
 参考[Valine-Admin](https://github.com/zhaojun1998/Valine-Admin)
 
 ### Changelog
+
+##### 0.3.5
+
+* 增加访问次数统计
+* 增强编辑框的TAB键(多行Tab)
 
 ##### 0.3.4
 

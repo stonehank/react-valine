@@ -3,6 +3,7 @@ import ValineContext from './ValineContext'
 import local from './assets/local'
 import PropTypes from 'prop-types';
 
+
 const AV=require('leancloud-storage')
 
 window.AV=AV
@@ -15,10 +16,8 @@ export default class Valine extends React.Component{
       AV:window.AV,
       requireName:props.requireName,
       requireEmail:props.requireEmail,
-      // placeholder:props.placeholder==null ? local[props.lang].tips.placeholder : local[props.lang].tips.placeholder=props.placeholder,
       nest:props.nest,
       pageSize:props.pageSize,
-      // sofaEmpty:props.sofaEmpty==null ? local[props.lang].tips.sofa : local[props.lang].tips.sofa=props.sofaEmpty,
       previewShow:props.previewShow,
       updateCountHash:0,
       lang:props.lang,
@@ -40,8 +39,11 @@ export default class Valine extends React.Component{
     if(props.sofaEmpty!=null)local[props.lang].tips.sofa=props.sofaEmpty
 
     this.countMap=new Map()
+    this.pageviewMap=new Map()
     this.fetchCount=this.fetchCount.bind(this)
     this.updateCounts=this.updateCounts.bind(this)
+    this.getPageview=this.getPageview.bind(this)
+    this.createCounter=this.createCounter.bind(this)
 
     window.AV.init({
       appId:props.appId,
@@ -55,13 +57,14 @@ export default class Valine extends React.Component{
         resolve(this.countMap.get(uniqStr))
       }else{
         let AV=window.AV
-        new AV.Query('Comment')
-          .equalTo('uniqStr',uniqStr)
+        let query= new AV.Query('Comment')
+        query.equalTo('uniqStr',uniqStr)
           .count()
           .then((counts)=>{
             this.countMap.set(uniqStr,counts)
             resolve(counts)
           })
+        query=null
       }
     })
   }
@@ -73,40 +76,67 @@ export default class Valine extends React.Component{
     })
   }
 
+  getPageview(uniqStr,title){
+    return new Promise(resolve=>{
+      if(this.pageviewMap.has(uniqStr)){
+        resolve(this.pageviewMap.get(uniqStr))
+      }else{
+        let AV=window.AV
+        let query= new AV.Query('Counter')
+        query.equalTo('uniqStr',uniqStr)
+          .find()
+          .then(items=>{
+            if(items.length===0){
+              this.createCounter(uniqStr,title)
+                .then(()=>resolve(1))
+            }else{
+              if(items.length>1)console.warn("Warning!The uniqStr is not unique!")
+              let item=items[0]
+              let updateTime=item.get("time")+1
+              item.increment("time")
+              item.set('title',title)
+              item.save().then(()=>{
+                this.pageviewMap.set(uniqStr,updateTime)
+                resolve(updateTime)
+              })
+            }
+          }).catch(ex=>{
+            if(ex.code===101){
+              this.createCounter(uniqStr,title)
+                .then(()=>resolve(1))
+            }else{
+              console.error(local[this.props.lang]["error"][ex.code],ex)
+            }
+        })
+        query=null
+      }
+    })
+  }
+
+  createCounter(uniqStr,title=''){
+    let AV=window.AV
+    let Ct = AV.Object.extend('Counter');
+    let newCounter = new Ct();
+    let acl = new AV.ACL();
+    acl.setPublicReadAccess(true);
+    acl.setPublicWriteAccess(true);
+    newCounter.setACL(acl);
+    newCounter.set('uniqStr', uniqStr)
+    newCounter.set('title', title)
+    newCounter.set('time', 1)
+    return newCounter.save().then(() => {
+      this.pageviewMap.set(uniqStr,1)
+    }).catch(ex => {
+      console.error(local[this.props.lang]["error"][ex.code],ex)
+    });
+  }
+
+
   render(){
     const {lang,...otherState}=this.state
     let curLang=local[lang]
-    // let lang_txt={
-    //   head_nick:curLang['head']['nick'],
-    //   head_mail:curLang['head']['mail'],
-    //   head_link:curLang['head']['link'],
-    //   head_require:curLang["head"]["require"],
-    //   head_change_avatar:curLang["head"]["change_avatar"],
-    //   tips_count:curLang["tips"]["count"],
-    //   tips_placeholder:curLang["tips"]["placeholder"],
-    //   tips_sofa:curLang["tips"]["sofa"],
-    //   tips_busy:curLang["tips"]["busy"],
-    //   ctrl_reply:curLang["ctrl"]["reply"],
-    //   ctrl_preview:curLang["ctrl"]["preview"],
-    //   ctrl_preview_on:curLang["ctrl"]["preview_on"],
-    //   ctrl_emoji:curLang["ctrl"]["emoji"],
-    //   error_99:curLang["error"]["99"],
-    //   error_100:curLang["error"]["100"],
-    //   error_401:curLang["error"]["401"],
-    //   error_403:curLang["error"]["403"],
-    //   timeago_seconds:curLang["timeago"]["seconds"],
-    //   timeago_minutes:curLang["timeago"]["minutes"],
-    //   timeago_hours:curLang["timeago"]["hours"],
-    //   timeago_days:curLang["timeago"]["days"],
-    //   timeago_now:curLang["timeago"]["now"],
-    //   verify_empty_content:curLang["verify"]["empty_content"],
-    //   verify_require_nick:curLang["verify"]["require_nick"],
-    //   verify_require_mail:curLang["verify"]["require_mail"],
-    //   verify_email_format_failed:curLang["verify"]["email_format_failed"],
-    //   verify_link_format_failed:curLang["verify"]["link_format_failed"],
-    // }
     return (
-      <ValineContext.Provider value={{curLang,fetchCount:this.fetchCount,updateCount:this.updateCounts,...otherState}}>
+      <ValineContext.Provider value={{curLang,getPageview:this.getPageview, fetchCount:this.fetchCount,updateCount:this.updateCounts,...otherState}}>
         {this.props.children}
       </ValineContext.Provider>
     )

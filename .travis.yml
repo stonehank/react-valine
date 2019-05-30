@@ -18,6 +18,8 @@ after_script:
   - git add .
   - git commit -m "Update"
   - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:${P_BRANCH} >/dev/null 2>&1
+  - npm run build
+  - npm publish
 # E: Build LifeCycle
 
 branches:

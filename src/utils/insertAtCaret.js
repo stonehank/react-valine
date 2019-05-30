@@ -5,8 +5,36 @@ export function calcValueAndPos(ele,insertStr,deletePrefixLen=0){
   let startPos=_startPos-deletePrefixLen
   let value=ele.value
   let scrollTop=ele.scrollTop
-  let newValue=value.substring(0,startPos)+insertStr+value.substring(endPos)
-  return [newValue,startPos,scrollTop]
+  let newValue=value.substring(0,startPos)+insertStr+value.substring(_startPos,endPos)+value.substring(endPos)
+  return [newValue,scrollTop,startPos,endPos]
+}
+
+export function resolveTAB(ele,insertStr){
+  let ids=[],
+    newValue=ele.value,
+    selectVal=ele.value.substring(ele.selectionStart,ele.selectionEnd),
+    initS=ele.selectionStart,
+    initE=ele.selectionEnd,
+    insertLen=insertStr.length,
+    startPos,
+    endPos,
+    scrollTop=ele.scrollTop
+  let id=selectVal.indexOf("\n")
+  while(id!==-1){
+    ids.push(id)
+    id=selectVal.indexOf("\n",id+1)
+  }
+  let s=ele.selectionStart
+  for(let i=0;i<=ids.length;i++){
+    let _s=s,_e=null
+    if(i===ids.length)_e=ele.selectionEnd+i*insertLen
+    else _e=initS+ids[i]+i*insertLen
+    s=_e+1+insertLen
+    newValue=newValue.substring(0,_s)+insertStr+newValue.substring(_s,_e)+newValue.substring(_e)
+  }
+  startPos=initS
+  endPos=initE+insertLen*ids.length
+  return [newValue,scrollTop,startPos,endPos]
 }
 
 export function getEmojiPrefix(ele,head=':'){

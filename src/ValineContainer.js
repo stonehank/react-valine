@@ -70,7 +70,7 @@ export default class ValineContainer extends React.Component{
 
   createNewObj(){
     const {AV,nest,updateCount,uniqStr,curLang}=this.props
-    const {commentList}=this.state
+    // const {commentList}=this.state
     let Ct = AV.Object.extend('Comment');
     let comment = new Ct();
 
@@ -99,12 +99,6 @@ export default class ValineContainer extends React.Component{
       comment.setACL(acl);
       comment.save().then((commentItem) => {
         let simplyItem=simplyObj(commentItem)
-        let newCommentList=[]
-        if(nest && this.defaultComment.pid!==''){
-          newCommentList=mergeNestComment(commentList,[simplyItem])
-        }else{
-          newCommentList=[simplyItem].concat(commentList)
-        }
         localStorage && localStorage.setItem('ValineCache', JSON.stringify({
           nick: this.defaultComment['nick'],
           link: this.defaultComment['link'],
@@ -112,14 +106,21 @@ export default class ValineContainer extends React.Component{
           avatarSrc:this.defaultComment['avatarSrc']
         }));
 
-        this.setState((prevState,)=>({
-          commentList:newCommentList,
-          commentCounts:prevState.commentCounts+1,
-          currentCounts:prevState.currentCounts+1,
-          submitBtnDisable:false,
-          // commentContent:'',
-          submitLoading:false
-        }),()=>{
+        this.setState((prevState,)=>{
+          let newCommentList=[]
+          if(nest && this.defaultComment.pid!==''){
+            newCommentList=mergeNestComment(prevState.commentList,[simplyItem])
+          }else{
+            newCommentList=[simplyItem].concat(prevState.commentList)
+          }
+          return {
+            commentList:newCommentList,
+            commentCounts:prevState.commentCounts+1,
+            currentCounts:prevState.currentCounts+1,
+            submitBtnDisable:false,
+            submitLoading:false
+          }
+        },()=>{
           updateCount(uniqStr,this.state.commentCounts)
         })
         if(this.rScrollTop!=null)document.documentElement.scrollTo(0,this.rScrollTop)
@@ -179,7 +180,7 @@ export default class ValineContainer extends React.Component{
     const {requireName,requireEmail,curLang}=this.props
     const {nick,mail,comment,link,at,pid}=this.defaultComment
     let errorStr='',state=false,errObj=curLang.verify
-    if(comment==='')errorStr=errObj['empty_comment']
+    if(comment==='')errorStr=errObj['empty_content']
     else if(requireName && nick.trim()==='')errorStr=errObj['if_require_nick']
     else if(requireEmail && mail.trim()==='')errorStr=errObj['if_require_mail']
     else if(mail.trim()!=='' && !emailVerify(mail))errorStr=errObj['email_format_failed']

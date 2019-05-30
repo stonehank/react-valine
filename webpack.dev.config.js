@@ -11,6 +11,7 @@ module.exports = {
   resolve: {
     extensions: [ '.js', '.json', '.jsx','.css','.scss'],
   },
+  devtool: 'cheap-module-source-map',
   module: {
     rules: [
       {
@@ -53,5 +54,11 @@ module.exports = {
       template: "./index.html",
       filename: "./index.html"
     })
-  ]
+  ],
+  devServer:{
+    clientLogLevel: 'none',
+    overlay:true,
+    // useLocalIp:true,
+    // host:"0.0.0.0"
+  }
 };
