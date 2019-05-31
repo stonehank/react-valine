@@ -125,7 +125,13 @@ export default class ValineContainer extends React.Component{
         },()=>{
           updateCount(uniqStr,this.state.commentCounts)
         })
-        if(this.rScrollTop!=null)document.documentElement.scrollTo(0,this.rScrollTop)
+        if(this.rScrollTop!=null){
+          // document.documentElement.scrollTo(0,this.rScrollTop)
+          window.scrollTo({
+            top: this.rScrollTop,
+            behavior: 'smooth'
+          })
+        }
         this.resetDefaultComment()
       }).catch(ex => {
         console.error("Something wrong with submit!",curLang.error[ex.code])
@@ -185,8 +191,8 @@ export default class ValineContainer extends React.Component{
     const {nick,mail,comment,link,at,pid}=this.defaultComment
     let errorStr='',state=false,errObj=curLang.verify
     if(comment==='')errorStr=errObj['empty_content']
-    else if(requireName && nick.trim()==='')errorStr=errObj['if_require_nick']
-    else if(requireEmail && mail.trim()==='')errorStr=errObj['if_require_mail']
+    else if(requireName && nick.trim()==='')errorStr=errObj['require_nick']
+    else if(requireEmail && mail.trim()==='')errorStr=errObj['require_mail']
     else if(mail.trim()!=='' && !emailVerify(mail))errorStr=errObj['email_format_failed']
     else if(link.trim()!=='' && !linkVerify(link))errorStr=errObj['link_format_failed']
     else if(at!=='' && pid!==''){
@@ -207,7 +213,7 @@ export default class ValineContainer extends React.Component{
     this.defaultComment.at=replyName
     this.defaultComment.rid=rid
     let ele=this.wrapRef.current
-    let scrTop=document.documentElement.scrollTop
+    let scrTop=window.pageYOffset || document.documentElement.scrollTop
     let boundTop=ele.getBoundingClientRect().top
     let reachCeilTop=ele.offsetTop || scrTop+boundTop
     if(this.props.nest){
@@ -225,7 +231,10 @@ export default class ValineContainer extends React.Component{
     this.setState((prevState)=>({
       toggleTextAreaFocus:!prevState.toggleTextAreaFocus
     }),()=>{
-      document.documentElement.scrollTo(0,reachCeilTop)
+      window.scrollTo({
+        top: reachCeilTop,
+        behavior: 'smooth'
+      })
     })
   }
 
@@ -402,7 +411,6 @@ export default class ValineContainer extends React.Component{
         })
     }
   }
-
   render(){
 
     const {

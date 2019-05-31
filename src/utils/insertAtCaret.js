@@ -9,7 +9,7 @@ export function calcValueAndPos(ele,insertStr,deletePrefixLen=0){
   return [newValue,scrollTop,startPos,endPos]
 }
 
-export function resolveTAB(ele,insertStr){
+export function resolveTAB(ele,insertStr='  '){
   let ids=[],
     newValue=ele.value,
     selectVal=ele.value.substring(ele.selectionStart,ele.selectionEnd),
@@ -24,22 +24,21 @@ export function resolveTAB(ele,insertStr){
     ids.push(id)
     id=selectVal.indexOf("\n",id+1)
   }
-  let s=ele.selectionStart
+  let s=initS
   for(let i=0;i<=ids.length;i++){
     let _s=s,_e=null
-    if(i===ids.length)_e=ele.selectionEnd+i*insertLen
+    if(i===ids.length)_e=initE+i*insertLen
     else _e=initS+ids[i]+i*insertLen
     s=_e+1+insertLen
     newValue=newValue.substring(0,_s)+insertStr+newValue.substring(_s,_e)+newValue.substring(_e)
   }
-  startPos=initS
-  endPos=initE+insertLen*ids.length
+  startPos=initS+insertLen
+  endPos=initE+insertLen*(ids.length+1)
   return [newValue,scrollTop,startPos,endPos]
 }
 
-export function getEmojiPrefix(ele,head=':'){
-  let startPos = ele.selectionStart
-  let beforeCaret=ele.value.substring(0, startPos)
+export function getEmojiPrefix(value,startPos,head=':'){
+  let beforeCaret=value.substring(0, startPos)
   let lastIdx=beforeCaret.lastIndexOf(head)
   if(lastIdx===-1)return null
   if(lastIdx===0 || beforeCaret[lastIdx-1]===' ' || beforeCaret[lastIdx-1]==="\n"){

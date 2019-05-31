@@ -3,7 +3,7 @@ import emojiData from '../assets/emoji.json'
 import EditAreaComponent from "./edit-components/EditAreaComponent";
 import ButtonContainer from "./button-components/ButtonContainer";
 import TextAreaComponent from "./edit-components/TextAreaComponent";
-import {calcValueAndPos, getEmojiPrefix,resolveTAB} from "../utils";
+import {calcValueAndPos, getEmojiPrefix,resolveTAB,replaceExistEmoji2} from "../utils";
 import getWordList from "../utils/emojiTire";
 import EmojiPreviewComponent from "./EmojiPreviewComponent";
 const avatarsList=["mp","identicon", "monsterid",  "retro", "robohash", "wavatar","blank",]
@@ -113,8 +113,8 @@ export default class InputContainer extends React.PureComponent {
         commentContent:newV
       },()=>{
         ele.focus();
-        ele.selectionStart = startPos + insertStr.length;
-        ele.selectionEnd = endPos + insertStr.length;
+        ele.selectionStart = startPos
+        ele.selectionEnd = endPos
         ele.scrollTop = scrollTop;
       })
     }
@@ -124,25 +124,23 @@ export default class InputContainer extends React.PureComponent {
   commentContentOnChange(event,str=''){
     const {emojiList,emojiListPos,emojiChooseId}=this.state
     let newEmojiList=[],newEmojiListPos=emojiListPos
-    let target=event?event.target:this.textAreaRef.current
+    let ele=event?event.target:this.textAreaRef.current,
+      selectionStart=ele.selectionStart,
+      value=ele.value
     // 获取表情prefix列表
-    let prefix=getEmojiPrefix(target)
+    let prefix=getEmojiPrefix(value,selectionStart)
     if(str==='')newEmojiList=getWordList(prefix)
-    let selectionStart=target.selectionStart
+
     // 当开始出现表情列表时，获取top,left
     if(emojiList.length===0 && newEmojiList.length>0){
-      let scrollTop=target.scrollTop
-      let {top,left}=getCaretCoordinates(target,selectionStart)
+      let scrollTop=ele.scrollTop
+      let {top,left}=getCaretCoordinates(ele,selectionStart)
       newEmojiListPos=[top,left,scrollTop]
     }
     // 替换已经存在的表情符号
-    let newStr=str + target.value.replace(/:(.+?):/g, (placeholder, key) => {
-      if(emojiData[key]){
-        selectionStart-=key.length
-        selectionStart+=1
-      }
-      return emojiData[key] || placeholder
-    })
+    let result=replaceExistEmoji2(value,selectionStart,str),
+      newStr=result[0]
+    selectionStart=result[1]
     selectionStart+=str.length
     this.setState({
       commentContent:newStr,
@@ -151,8 +149,8 @@ export default class InputContainer extends React.PureComponent {
       emojiChooseId: emojiList.length===0 ? 0 : emojiChooseId,
       emojiListPos:newEmojiListPos
     },()=>{
-      target.selectionStart=selectionStart
-      target.selectionEnd=selectionStart
+      ele.selectionStart=selectionStart
+      ele.selectionEnd=selectionStart
     })
   }
 
