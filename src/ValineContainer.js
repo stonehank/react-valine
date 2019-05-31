@@ -43,7 +43,7 @@ export default class ValineContainer extends React.Component{
     this.fetchMoreNest=this.fetchMoreNest.bind(this)
     this.submitComment=this.submitComment.bind(this)
     this.togglePreviewShow=this.togglePreviewShow.bind(this)
-    this.setNestCommentList=this.setNestCommentList.bind(this)
+    this.setCommentList=this.setCommentList.bind(this)
     this.fillNxtCommentList=this.fillNxtCommentList.bind(this)
     this.resetDefaultComment=this.resetDefaultComment.bind(this)
     this.fetchNxtCommentList=this.fetchNxtCommentList.bind(this)
@@ -203,7 +203,6 @@ export default class ValineContainer extends React.Component{
 
 
   handleReply(replyId,replyName,rid){
-    // console.log(replyId,replyName,rid)
     this.defaultComment.pid=replyId
     this.defaultComment.at=replyName
     this.defaultComment.rid=rid
@@ -230,92 +229,67 @@ export default class ValineContainer extends React.Component{
     })
   }
 
-
-
   fetchNxtCommentList(){
-    const {AV,pageSize}=this.props
+    const {AV,pageSize,uniqStr}=this.props
     const {currentCounts,commentCounts}=this.state
-    let query=new AV.Query('Comment')
-    if(currentCounts===commentCounts)return
-    this.setState({
-      fetchMoreLoading:true
-    })
-    return query
+    return new AV.Query('Comment')
+      .equalTo("uniqStr",uniqStr)
       .select(['nick', 'comment', 'link', 'pid', 'avatarSrc','rid'])
       .skip(currentCounts)
       .limit(pageSize)
       .addDescending('createdAt')
       .find()
-      .then(commentArr=>{
-        if(commentArr.length===0){
-          this.setState({
-            fetchMoreLoading:false
-          })
+      .then(items=>{
+        if(items.length===0){
+          return [null,null,null,null,"回复参数出现错误！无法获取剩下的回复"]
         }else{
-          let insertList=convert2SimplyList(commentArr)
-          this.setState((prevState)=>({
-            commentList:prevState.commentList.concat(insertList),
-            currentCounts:prevState.currentCounts+commentArr.length,
-            fetchMoreLoading:false
-          }))
+          return [items,null,0,commentCounts]
         }
-        query=null
       })
   }
   initQuery(){
     const {AV,pageSize,uniqStr,fetchCount}=this.props
     let commentCounts=0
-    this.setState({
-      fetchInitLoading:true
-    })
     return fetchCount(uniqStr).then(counts=>{
       commentCounts=counts
       if(commentCounts===0){
-        this.setState({
-          fetchInitLoading:false
-        })
-        return
+        return [null,null,null,0]
       }
-      let query =new AV.Query('Comment')
-      query.matches('uniqStr',uniqStr)
+      return new AV.Query('Comment')
+        .equalTo('uniqStr',uniqStr)
         .select(['nick', 'comment', 'link', 'pid', 'avatarSrc','rid'])
         .addDescending('createdAt')
         .limit(pageSize)
         .find()
-        .then(commentArr=>{
-          let commentList=convert2SimplyList(commentArr)
-          this.setState({
-            commentList,
-            commentCounts,
-            currentCounts:pageSize,
-            fetchInitLoading:false,
-            fetchMoreLoading:false
-          })
-          query=null
+        .then(items=>{
+          return [items,null,0,commentCounts]
         })
     })
   }
   fillNxtCommentList(){
     let {currentCounts,commentCounts}=this.state
     if(currentCounts===commentCounts)return
+    this.setState({
+      fetchMoreLoading:true
+    })
     if(this.props.nest){
-      this.setState({
-        fetchMoreLoading:true
-      })
       this.fetchMoreNest().then(list=>{
-        this.setNestCommentList(...list)
+        this.setCommentList(list,true)
       })
     }else{
-      this.fetchNxtCommentList()
+      this.fetchNxtCommentList().then(list=>{
+        this.setCommentList(list,false)
+      })
     }
   }
+
   fetchMoreNest(){
     let contains=[],simplyList=[]
     const {AV,uniqStr,pageSize}=this.props
     let {commentList}=this.state
     let addCounts=0
-    let query1= new AV.Query('Comment'),query2= new AV.Query('Comment')
-    return query1.equalTo('uniqStr',uniqStr)
+    return  new AV.Query('Comment')
+      .equalTo('uniqStr',uniqStr)
       .equalTo('pid','')
       .addDescending('createdAt')
       .skip(commentList.length)
@@ -331,7 +305,8 @@ export default class ValineContainer extends React.Component{
           simplyList.push(simplyObj(obj))
           contains.push(obj.get('rid'))
         }
-        return query2.equalTo('uniqStr',uniqStr)
+        return new AV.Query('Comment')
+          .equalTo('uniqStr',uniqStr)
           .notEqualTo('pid','')
           .containedIn('rid',contains)
           .addAscending('createdAt')
@@ -374,7 +349,7 @@ export default class ValineContainer extends React.Component{
     })
   }
 
-  setNestCommentList(items,simplyList,counts,commentCounts,errorLog){
+  setCommentList([items,simplyList,counts,commentCounts,errorLog],nest){
     if(commentCounts===0 || errorLog!=null){
       this.setState({
         fetchInitLoading:false,
@@ -388,15 +363,20 @@ export default class ValineContainer extends React.Component{
             this.setState({
               errorLog:null
             })
-          },5000)
+          },2000)
         })
       }
       return
     }
     let addCounts=counts+items.length
-    let simplyItems=[]
-    for(let obj of items)simplyItems.push(simplyObj(obj))
-    let commentList=mergeNestComment(simplyList,simplyItems)
+    let commentList=[]
+    if(nest){
+      let simplyItems=[]
+      for(let obj of items)simplyItems.push(simplyObj(obj))
+      commentList=mergeNestComment(simplyList,simplyItems)
+    }else{
+      commentList=convert2SimplyList(items)
+    }
     this.setState(prevState=>({
       commentList:prevState.commentList.concat(commentList),
       currentCounts:prevState.currentCounts+addCounts,
@@ -406,37 +386,32 @@ export default class ValineContainer extends React.Component{
     }))
   }
 
-
-
-
   componentDidMount(){
-    const {AV,nest}=this.props
-    if(!AV)return
-    if(nest){
-      this.setState({
-        fetchInitLoading:true
-      })
+    this.setState({
+      fetchInitLoading:true
+    })
+    if(this.props.nest){
       this.fetchNest()
         .then(list=>{
-          // console.log(list)
-          this.setNestCommentList(...list)
+          this.setCommentList(list,true)
         })
     }else{
       this.initQuery()
+        .then(list=>{
+          this.setCommentList(list,false)
+        })
     }
-
   }
 
-
   render(){
+
     const {
       requireName,
       requireEmail,
-      // placeholder,
       curLang,
       nest,
-      // sofaEmpty
     }=this.props
+
     const {
       commentCounts,
       currentCounts,
@@ -453,14 +428,12 @@ export default class ValineContainer extends React.Component{
       <div ref={this.wrapRef} className="v">
         {
           errorLog!=null
-            // ? <div className={"verrorlog"}>{errorLog}</div>
             ? <ErrorLog errorLog={errorLog}/>
             : null
         }
         <div className="vwrap">
           <InputContainer submitBtnDisable={submitBtnDisable}
                           ref={this.inputContainerRef}
-                          // placeholder={placeholder}
                           requireName={requireName}
                           requireEmail={requireEmail}
                           curLang={curLang}
@@ -476,7 +449,6 @@ export default class ValineContainer extends React.Component{
                               commentCounts={commentCounts}
                               currentCounts={currentCounts}
                               commentList={commentList}
-                              // sofaEmpty={sofaEmpty}
                               curLang={curLang}
                               nest={nest}
                               submitLoading={submitLoading}

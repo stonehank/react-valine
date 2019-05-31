@@ -44,7 +44,9 @@ export default class Valine extends React.Component{
     this.updateCounts=this.updateCounts.bind(this)
     this.getPageview=this.getPageview.bind(this)
     this.createCounter=this.createCounter.bind(this)
-
+    if(!window.AV){
+      throw new Error("leancloud 导入失败，请联系作者！")
+    }
     window.AV.init({
       appId:props.appId,
       appKey:props.appKey
