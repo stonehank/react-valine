@@ -71,7 +71,7 @@ export default class ValineContainer extends React.Component{
   }
 
   createNewObj(){
-    const {AV,nest,updateCount,uniqStr,curLang}=this.props
+    const {AV,nest,updateCount,uniqStr,curLang,nestLayers}=this.props
     // const {commentList}=this.state
     let Ct = AV.Object.extend('Comment');
     let comment = new Ct();
@@ -111,7 +111,7 @@ export default class ValineContainer extends React.Component{
         this.setState((prevState,)=>{
           let newCommentList=[]
           if(nest && this.defaultComment.pid!==''){
-            newCommentList=mergeNestComment(prevState.commentList,[simplyItem])
+            newCommentList=mergeNestComment(prevState.commentList,[simplyItem],nestLayers)
           }else{
             newCommentList=[simplyItem].concat(prevState.commentList)
           }
@@ -382,7 +382,7 @@ export default class ValineContainer extends React.Component{
     if(nest){
       let simplyItems=[]
       for(let obj of items)simplyItems.push(simplyObj(obj))
-      commentList=mergeNestComment(simplyList,simplyItems)
+      commentList=mergeNestComment(simplyList,simplyItems,this.props.nestLayers)
     }else{
       commentList=convert2SimplyList(items)
     }

@@ -50,6 +50,7 @@
 |requireEmail|否|是否必须填写邮箱|false|
 |placeholder|否|评论框占位提示符|说点什么吧|
 |nest|否|回复样式是否为嵌套模式|true|
+|nestLayers|否|开启嵌套模式后有效，配置嵌套的层数|Infinity|
 |pageSize|否|评论列表分页，每页条数|10|
 |sofaEmpty|否|无评论时显示|快来做第一个评论的人吧~|
 |previewShow|否|是否默认开启实时预览|true|

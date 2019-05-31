@@ -1,16 +1,16 @@
 
-function dfsClone(list,item){
+function dfsClone(list,item,nestLayer){
   let res=[],hasInserted=false
   let {rid,pid}=item
   for(let i=0;i<list.length;i++){
     if(!hasInserted && list[i].rid===rid){
       let obj=Object.assign({},list[i])
-      if(list[i].id===pid){
+      if(nestLayer<=0 || list[i].id===pid){
         obj.child=list[i].child.slice()
         obj.child.push(item)
         hasInserted=true
-      }else{
-        let [child,state]=dfsClone(obj.child,item)
+      }else {
+        let [child,state]=dfsClone(obj.child,item,nestLayer-1)
         obj.child=child
         hasInserted=hasInserted||state
       }
@@ -24,11 +24,11 @@ function dfsClone(list,item){
 }
 
 function createNestComments(){
-  return function(list,arr){
+  return function(list,arr,nestLayer=Infinity){
     let res=list.slice()
     // DFS遍历arr
     for(let item of arr){
-      res=dfsClone(res,item)[0]
+      res=dfsClone(res,item,nestLayer-1)[0]
     }
     return res
   }

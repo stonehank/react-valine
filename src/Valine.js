@@ -21,6 +21,7 @@ export default class Valine extends React.Component{
       previewShow:props.previewShow,
       updateCountHash:0,
       lang:props.lang,
+      nestLayers:props.nestLayers
     }
     if(props.customTxt!=null){
       let customTxt=props.customTxt
@@ -45,7 +46,7 @@ export default class Valine extends React.Component{
     this.getPageview=this.getPageview.bind(this)
     this.createCounter=this.createCounter.bind(this)
     if(!window.AV){
-      throw new Error("leancloud 导入失败，请联系作者！")
+      throw new Error("leancloud 导入失败，请刷新重试！")
     }
     window.AV.init({
       appId:props.appId,
@@ -154,7 +155,8 @@ Valine.defaultProps={
   nest:true,
   pageSize:10,
   previewShow:true,
-  lang:'zh-cn'
+  lang:'zh-cn',
+  nestLayers:Infinity
 }
 
 Valine.propTypes = {
@@ -168,5 +170,6 @@ Valine.propTypes = {
   lang:PropTypes.oneOf(['zh-cn','en']),
   placeholder:PropTypes.string,
   sofaEmpty:PropTypes.string,
-  customTxt:PropTypes.object
+  customTxt:PropTypes.object,
+  nestLayers:PropTypes.number
 }
