@@ -1,4 +1,4 @@
-import {resolveTAB,replaceExistEmoji2,getEmojiPrefix} from '../src/utils'
+import {resolveTAB,replaceExistEmoji2,getEmojiPrefix,mergeNestComment,simplyObj} from '../src/utils'
 
 
 
@@ -131,4 +131,59 @@ describe("获取表情前缀",()=>{
     expect(getEmojiPrefix(content,7)).toBe("do")
     expect(getEmojiPrefix(content,8)).toBe("dog")
   })
+})
+
+
+it("复杂对象简单化(针对Leancloud对象)",()=>{
+  let complicateObj=Object.prototype
+  complicateObj.attributes={a:1,b:2,c:3}
+  complicateObj.get=(str)=>"2019-06-01"
+  complicateObj.id='001'
+  expect(simplyObj(complicateObj)).toEqual({a:1,b:2,c:3,child:[],id:"001",createdAt:"2019-06-01"})
+})
+
+it("获取数据合并",()=>{
+  let list=[
+    {id:'001',rid:'001',pid:'',child:[]},
+    {id:'002',rid:'002',pid:'',child:[]},
+    {id:'007',rid:'007',pid:'',child:[]},
+    {id:'008',rid:'008',pid:'',child:[]},
+    ],
+    arr=[
+      {id:'003',rid:'001',pid:'001',child:[]},
+      {id:'004',rid:'002',pid:'002',child:[]},
+      {id:'005',rid:'001',pid:'003',child:[]},
+      {id:'006',rid:'002',pid:'004',child:[]},
+
+      ]
+  expect(mergeNestComment(list,arr)).toEqual([
+      {
+        child: [{
+          child: [{
+            child: [],
+            id: "005",
+            pid: "003",
+            rid: "001"}],
+          id: "003",
+          pid: "001",
+          rid: "001"}],
+        id: "001",
+        pid: "",
+        rid: "001"},
+      {
+        child: [{
+          child: [{
+            child: [],
+            id: "006",
+            pid: "004",
+            rid: "002",},],
+          id: "004",
+          pid: "002",
+          rid: "002",},],
+        id: "002",
+        pid: "",
+        rid: "002",},
+      {id:'007',rid:'007',pid:'',child:[]},
+      {id:'008',rid:'008',pid:'',child:[]},
+  ])
 })

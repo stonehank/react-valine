@@ -19,7 +19,6 @@ nock('https://app-router.leancloud.cn')
 /* fetch list--start */
 nock('https://i5daxohp.api.lncld.net:443')
   .persist()
-  // .log(console.log)
   .get('/1.1/classes/Comment?where=%7B%22uniqStr%22%3A%22test-1-reply%22%2C%22pid%22%3A%22%22%7D&keys=nick%2Ccomment%2Clink%2Cpid%2CavatarSrc%2Crid&limit=10&order=-createdAt')
   .reply(200, {"results":[{"nick":"fsf","updatedAt":"2019-05-29T13:33:18.710Z","objectId":"5cee8a1d43e78c006734fc8e","createdAt":"2019-05-29T13:33:17.983Z","pid":"","link":"","comment":"<p>sdfsadf<\/p>\n","avatarSrc":"https:\/\/gravatar.loli.net\/avatar\/?d=robohash&size=50","rid":"5cee8a1d43e78c006734fc8e"}]})
 
@@ -177,34 +176,11 @@ describe('test App with 1 reply', ()=>{
     expect(previewPanelEles.length).toBe(1)
   })
 
-  /* 放到 utils 测试 */
-  // it("turn on emoji list",()=>{
-    // let emojiListPanel=container.getElementsByClassName("vemoji-preview-list")
-    // // expect(textAreaEle.value).toBe('')
-    // textAreaEle.value=""
-    // TestUtil.Simulate.change(textAreaEle)
-    // textAreaEle.value=":"
-    // TestUtil.Simulate.change(textAreaEle)
-    // TestUtil.Simulate.keyDown(textAreaEle,{key:':',target:textAreaEle})
-    // TestUtil.Simulate.change(textAreaEle)
-    // TestUtil.Simulate.change(textAreaEle)
-    // console.log(textAreaEle,emojiListPanel)
-    // expect(emojiListPanel.length).toBe(1)
-    // textAreaEle.value="a:"
-    // TestUtil.Simulate.change(textAreaEle)
-    // expect(emojiListPanel.length).toBe(0)
-    // textAreaEle.value="abc\n:"
-    // TestUtil.Simulate.change(textAreaEle)
-    // expect(emojiListPanel.length).toBe(1)
-  // })
-
   it('click reply',()=>{
     let replyBtn=container.getElementsByClassName("vat")[0]
-    // console.log(list[0],replyBtn)
     try{
       TestUtil.Simulate.click(replyBtn)
     }catch(e){
-
     }
     expect(textAreaEle.value).toBe("@fsf something...")
   })
