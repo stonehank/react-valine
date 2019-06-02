@@ -55,7 +55,7 @@
 |sofaEmpty|否|无评论时显示|快来做第一个评论的人吧~|
 |previewShow|否|是否默认开启实时预览|true|
 |lang|否|支持中文(zh-cn)和英文(en)|zh-cn|
-|customTxt|否|自定义内部文字|参考assets/local.json|
+|customTxt|否|自定义内部文字|参考assets/locales.json|
 
 
 案例参考：

@@ -1,6 +1,6 @@
 import React from 'react'
 import ValineContext from './ValineContext'
-import local from './assets/local'
+import locales from './assets/locales'
 import PropTypes from 'prop-types';
 
 
@@ -30,14 +30,14 @@ export default class Valine extends React.Component{
       }
       for(let k in customTxt){
         if(customTxt.hasOwnProperty(k)){
-          if(local[props.lang][k]){
-            local[props.lang][k]=Object.assign({},local[props.lang][k],customTxt[k])
+          if(locales[props.lang][k]){
+            locales[props.lang][k]=Object.assign({},locales[props.lang][k],customTxt[k])
           }
         }
       }
     }
-    if(props.placeholder!=null)local[props.lang].tips.placeholder=props.placeholder
-    if(props.sofaEmpty!=null)local[props.lang].tips.sofa=props.sofaEmpty
+    if(props.placeholder!=null)locales[props.lang].tips.placeholder=props.placeholder
+    if(props.sofaEmpty!=null)locales[props.lang].tips.sofa=props.sofaEmpty
 
     this.countMap=new Map()
     this.pageviewMap=new Map()
@@ -110,7 +110,7 @@ export default class Valine extends React.Component{
               this.createCounter(uniqStr,title)
                 .then(()=>resolve(1))
             }else{
-              console.error(local[this.props.lang]["error"][ex.code],ex)
+              console.error(locales[this.props.lang]["error"][ex.code],ex)
             }
         })
         query=null
@@ -132,14 +132,14 @@ export default class Valine extends React.Component{
     return newCounter.save().then(() => {
       this.pageviewMap.set(uniqStr,1)
     }).catch(ex => {
-      console.error(local[this.props.lang]["error"][ex.code],ex)
+      console.error(locales[this.props.lang]["error"][ex.code],ex)
     });
   }
 
 
   render(){
     const {lang,...otherState}=this.state
-    let curLang=local[lang]
+    let curLang=locales[lang]
     return (
       <ValineContext.Provider value={{curLang,getPageview:this.getPageview, fetchCount:this.fetchCount,updateCount:this.updateCounts,...otherState}}>
         {this.props.children}
