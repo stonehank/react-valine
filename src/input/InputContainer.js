@@ -3,12 +3,11 @@ import emojiData from '../assets/emoji.json'
 import EditAreaComponent from "./edit-components/EditAreaComponent";
 import ButtonContainer from "./button-components/ButtonContainer";
 import TextAreaComponent from "./edit-components/TextAreaComponent";
-import {calcValueAndPos, getEmojiPrefix,resolveTAB,replaceExistEmoji2} from "../utils";
+import {calcValueAndPos, getEmojiPrefix,resolveTAB,replaceExistEmoji2,getCaretCoordinates} from "../utils";
 import getWordList from "../utils/emojiTire";
 import EmojiPreviewComponent from "./EmojiPreviewComponent";
 const avatarsList=["mp","identicon", "monsterid",  "retro", "robohash", "wavatar","blank",]
 
-const getCaretCoordinates=require('textarea-caret')
 
 export default class InputContainer extends React.PureComponent {
   constructor(props){
@@ -21,7 +20,7 @@ export default class InputContainer extends React.PureComponent {
       emojiList:[],
       emojiPrefix:'',
       emojiChooseId:0,
-      emojiListPos:[0,0,0],
+      emojiListPos:[0,0],
       avatarSrc:`${props.GRAVATAR_URL}/?d=${avatarsList[Math.floor(Math.random()*avatarsList.length)]}&size=50`,
     }
     this.emailOnChange=this.emailOnChange.bind(this)
@@ -134,9 +133,8 @@ export default class InputContainer extends React.PureComponent {
 
     // 当开始出现表情列表时，获取top,left
     if(emojiList.length===0 && newEmojiList.length>0){
-      let scrollTop=ele.scrollTop
       let {top,left}=getCaretCoordinates(ele,selectionStart)
-      newEmojiListPos=[top,left,scrollTop]
+      newEmojiListPos=[top,left]
     }
     // 替换已经存在的表情符号
     let result=replaceExistEmoji2(value,selectionStart,str),
@@ -214,8 +212,8 @@ export default class InputContainer extends React.PureComponent {
   }
 
   turnOffEmojiPreviewList(event){
-    // console.log(event)
-    if(event.target && (event.target.id!=="veditor" && event.target.parentNode.className!=='vemoji-preview-list')){
+    // console.log(event.target.parentNode)
+    if(event.target && (event.target.id!=="veditor" && (!event.target.parentNode || event.target.parentNode.className!=='vemoji-preview-list'))){
       this.setState({
         emojiList:[],
         emojiChooseId:0

@@ -52,7 +52,7 @@ describe('Test InputContainer List', ()=>{
   //   })
   //   wrapper.find('.veditor').at(0).simulate('click')
   //   expect(wrapper.find(".vemoji-preview-list").length).toBe(1)
-  //   wrapper.find('.vinputs').at(0).simulate('click')
+  //   wrapper.find('body').at(0).simulate('click')
   //   expect(wrapper.find(".vemoji-preview-list").length).toBe(0)
   //   expect(wrapper.find('.veditor').at(0).text()).toBe("")
   // })

@@ -5,7 +5,7 @@ import {xssMarkdown,modify_hljs} from './xssMarkdown'
 import {getEmojiPrefix,calcValueAndPos,resolveTAB} from './insertAtCaret'
 import {mergeNestComment,convert2SimplyList,simplyObj} from './nestComment'
 import getWordList from './emojiTire'
-
+import getCaretCoordinates from './textarea-creat'
 
 export {
   timeAgo,
@@ -23,5 +23,6 @@ export {
   convert2SimplyList,
   simplyObj,
   getWordList,
-  resolveTAB
+  resolveTAB,
+  getCaretCoordinates
 }

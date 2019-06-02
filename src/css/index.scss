@@ -137,8 +137,16 @@
         margin-left:2px;
         min-width:10rem;
         border: 1px solid #ccc;
+        border-radius:4px;
         border-top: none;
         background:#fff;
+
+        li:first-child{
+          border-radius:4px 4px 0 0;
+        }
+        li:last-child{
+          border-radius:0 0 4px 4px;
+        }
         li{
           cursor:pointer;
           border-top:1px solid #ccc;
