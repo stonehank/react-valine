@@ -20,14 +20,14 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">64.52% </span>
+        <span class="strong">64.75% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>80/124</span>
+        <span class='fraction'>79/122</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">46.43% </span>
+        <span class="strong">45.61% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>26/56</span>
+        <span class='fraction'>26/57</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">63.64% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>14/22</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">65.52% </span>
+        <span class="strong">65.79% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>76/116</span>
+        <span class='fraction'>75/114</span>
       </div>
     </div>
     <p class="quiet">
@@ -354,9 +354,7 @@
 <a name='L306'></a><a href='#L306'>306</a>
 <a name='L307'></a><a href='#L307'>307</a>
 <a name='L308'></a><a href='#L308'>308</a>
-<a name='L309'></a><a href='#L309'>309</a>
-<a name='L310'></a><a href='#L310'>310</a>
-<a name='L311'></a><a href='#L311'>311</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L309'></a><a href='#L309'>309</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -366,7 +364,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -492,7 +489,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -671,12 +667,11 @@ import emojiData from '../assets/emoji.json'
 import EditAreaComponent from "./edit-components/EditAreaComponent";
 import ButtonContainer from "./button-components/ButtonContainer";
 import TextAreaComponent from "./edit-components/TextAreaComponent";
-import {calcValueAndPos, getEmojiPrefix,resolveTAB,replaceExistEmoji2} from "../utils";
+import {calcValueAndPos, getEmojiPrefix,resolveTAB,replaceExistEmoji2,getCaretCoordinates} from "../utils";
 import getWordList from "../utils/emojiTire";
 import EmojiPreviewComponent from "./EmojiPreviewComponent";
 const avatarsList=["mp","identicon", "monsterid",  "retro", "robohash", "wavatar","blank",]
 &nbsp;
-const getCaretCoordinates=require('textarea-caret')
 &nbsp;
 export default class InputContainer extends React.PureComponent {
   constructor(props){
@@ -689,7 +684,7 @@ export default class InputContainer extends React.PureComponent {
       emojiList:[],
       emojiPrefix:'',
       emojiChooseId:0,
-      emojiListPos:[0,0,0],
+      emojiListPos:[0,0],
       avatarSrc:`${props.GRAVATAR_URL}/?d=${avatarsList[Math.floor(Math.random()*avatarsList.length)]}&amp;size=50`,
     }
     this.emailOnChange=this.emailOnChange.bind(this)
@@ -802,9 +797,8 @@ export default class InputContainer extends React.PureComponent {
 &nbsp;
     // 当开始出现表情列表时，获取top,left
     <span class="missing-if-branch" title="if path not taken" >I</span>if(emojiList.length===0 &amp;&amp; newEmojiList.length&gt;0){
-      let scrollTop=<span class="cstat-no" title="statement not covered" >ele.scrollTop</span>
       let {top,left}=<span class="cstat-no" title="statement not covered" >getCaretCoordinates(ele,selectionStart)</span>
-<span class="cstat-no" title="statement not covered" >      newEmojiListPos=[top,left,scrollTop]</span>
+<span class="cstat-no" title="statement not covered" >      newEmojiListPos=[top,left]</span>
     }
     // 替换已经存在的表情符号
     let result=replaceExistEmoji2(value,selectionStart,str),
@@ -882,8 +876,8 @@ export default class InputContainer extends React.PureComponent {
   }
 &nbsp;
 <span class="fstat-no" title="function not covered" >  tu</span>rnOffEmojiPreviewList(event){
-    // console.log(event)
-<span class="cstat-no" title="statement not covered" >    if(event.target &amp;&amp; (event.target.id!=="veditor" &amp;&amp; event.target.parentNode.className!=='vemoji-preview-list')){</span>
+    // console.log(event.target.parentNode)
+<span class="cstat-no" title="statement not covered" >    if(event.target &amp;&amp; (event.target.id!=="veditor" &amp;&amp; (!event.target.parentNode || event.target.parentNode.className!=='vemoji-preview-list'))){</span>
 <span class="cstat-no" title="statement not covered" >      this.setState({</span>
         emojiList:[],
         emojiChooseId:0
@@ -982,7 +976,7 @@ export default class InputContainer extends React.PureComponent {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Jun 01 2019 13:44:40 GMT+0800 (中国标准时间)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Jun 02 2019 17:36:39 GMT+0800 (中国标准时间)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>
