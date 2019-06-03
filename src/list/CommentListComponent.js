@@ -46,7 +46,8 @@ export default class CommentListComponent extends React.PureComponent{
                         commentContent=xssMarkdown(commentObj['comment']),
                         curId=commentObj['id'],
                         rid=commentObj['rid'],
-                        child=nest ? commentObj['child'] : null
+                        child=nest ? commentObj['child'] : null,
+                        initShowChild=!!commentObj['initShowChild']
 
                       return <CommentCardContainer curId={curId}
                                                     key={curId}
@@ -58,6 +59,7 @@ export default class CommentListComponent extends React.PureComponent{
                                                    GRAVATAR_URL={GRAVATAR_URL}
                                                    avatarSrc={avatarSrc}
                                                    link={link}
+                                                   initShowChild={initShowChild}
                                                    handleReply={handleReply }
                                                    nickName={nickName}
                                                    commentContent={commentContent}
@@ -66,15 +68,14 @@ export default class CommentListComponent extends React.PureComponent{
                     })
                 }
               </div>
-              <PageComponent  langCtrl={curLang["ctrl"]}
-                              commentCounts={commentCounts}
-                              currentCounts={currentCounts}
-                              fillNxtCommentList={fillNxtCommentList}
-              />
               {
                 fetchMoreLoading
                   ? <Loading />
-                  : null
+                  : <PageComponent  langCtrl={curLang["ctrl"]}
+                                    commentCounts={commentCounts}
+                                    currentCounts={currentCounts}
+                                    fillNxtCommentList={fillNxtCommentList}
+                    />
               }
             </React.Fragment>
         }

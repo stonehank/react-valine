@@ -10,9 +10,12 @@ export default class CommentCardContainer extends React.PureComponent{
   constructor(props){
     super(props)
     this.state={
-      showChild:false
+      showChild:props.initShowChild,
+      needExpand:false
     }
+    this.expandContent=this.expandContent.bind(this)
     this.toggleShowChild=this.toggleShowChild.bind(this)
+    this.cardRef=React.createRef()
   }
 
   toggleShowChild(){
@@ -21,9 +24,30 @@ export default class CommentCardContainer extends React.PureComponent{
     }))
   }
 
+  expandContent(){
+    this.setState({
+      needExpand:false
+    })
+  }
+  componentDidUpdate(prevProps,prevState){
+    const {child:prevChild}=prevProps
+    const {child:curChild,nest,initShowChild}=this.props
+    if(nest && curChild.length!==prevChild.length && prevState.showChild!==initShowChild){
+      this.toggleShowChild()
+    }
+  }
+
+  componentDidMount(){
+    let cardEle=this.cardRef.current
+    if(cardEle.offsetHeight>220){
+      this.setState({
+        needExpand:true
+      })
+    }
+  }
 
   render(){
-    const {showChild}=this.state
+    const {showChild,needExpand}=this.state
     const {
       GRAVATAR_URL,
       curId,
@@ -41,12 +65,22 @@ export default class CommentCardContainer extends React.PureComponent{
     }=this.props
 
     return (
-      <div id={curId} className={'vcard'} >
+      <div  id={curId} className={'vcard'} ref={this.cardRef}>
         <CardAvatar avatarSrc={avatarSrc} GRAVATAR_URL={GRAVATAR_URL}/>
         <div className={'vh'}>
           <CardHead link={link} nickName={nickName}/>
-          <CardMeta langTime={langTime} txt_reply={langCtrl["reply"]} curId={curId} rid={rid} nickName={nickName} createdAt={createdAt} handleReply={handleReply}/>
-          <CardContent commentContent={commentContent}/>
+          <CardMeta langTime={langTime}
+                    txt_reply={langCtrl["reply"]}
+                    curId={curId}
+                    rid={rid}
+                    nickName={nickName}
+                    createdAt={createdAt}
+                    handleReply={handleReply}
+          />
+          <CardContent commentContent={commentContent}
+                       needExpand={needExpand}
+                       expandContent={this.expandContent}
+          />
           {
             nest && child.length>0
             ? showChild
@@ -59,8 +93,9 @@ export default class CommentCardContainer extends React.PureComponent{
                         link=commentObj["link"],
                         createdAt=commentObj['createdAt'],
                         commentContent=xssMarkdown(commentObj['comment']),
-                        curId=commentObj['id']
-                      let child=nest ? commentObj['child'] : null
+                        curId=commentObj['id'],
+                        child=nest ? commentObj['child'] : null,
+                        initShowChild=commentObj['initShowChild']
 
                       return <CommentCardContainer curId={curId}
                                                    key={curId}
@@ -69,6 +104,7 @@ export default class CommentCardContainer extends React.PureComponent{
                                                    langCtrl={langCtrl}
                                                    nest={nest}
                                                    child={child}
+                                                   initShowChild={initShowChild}
                                                    GRAVATAR_URL={GRAVATAR_URL}
                                                    avatarSrc={avatarSrc}
                                                    link={link}
@@ -82,7 +118,7 @@ export default class CommentCardContainer extends React.PureComponent{
                     </div>
                   <span className={"showchild-button-off"} onClick={this.toggleShowChild}>{langCtrl["collapse_reply"]}</span>
                 </React.Fragment>
-              : <span className={"showchild-button-on"} onClick={this.toggleShowChild}>{langCtrl["expand_reply"]}</span>
+              : <span className={"showchild-button-on"} onClick={this.toggleShowChild}>{langCtrl["expand_reply"]}({child.length}条)</span>
             : null
           }
         </div>

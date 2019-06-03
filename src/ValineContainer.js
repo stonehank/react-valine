@@ -17,6 +17,15 @@ import {
 import ErrorLog from "./info/ErrorLog";
 const GRAVATAR_URL='https://gravatar.loli.net/avatar'
 
+function scrollTo(eles,vals){
+  for(let i=0;i<eles.length;i++){
+    eles[i].scrollTo({
+      top:vals[i],
+      behavior: 'smooth'
+    })
+  }
+}
+
 
 export default class ValineContainer extends React.Component{
 
@@ -36,23 +45,28 @@ export default class ValineContainer extends React.Component{
     }
 
     this.fetchNest=this.fetchNest.bind(this)
-    this.initQuery=this.initQuery.bind(this)
+    this.fetchMoreNest=this.fetchMoreNest.bind(this)
+    this.fetchCommentList=this.fetchCommentList.bind(this)
+    this.fetchMoreCommentList=this.fetchMoreCommentList.bind(this)
+    this.fillNxtCommentList=this.fillNxtCommentList.bind(this)
+    this.setCommentList=this.setCommentList.bind(this)
     this.handleReply=this.handleReply.bind(this)
     this.submitVerify=this.submitVerify.bind(this)
     this.createNewObj=this.createNewObj.bind(this)
-    this.fetchMoreNest=this.fetchMoreNest.bind(this)
     this.submitComment=this.submitComment.bind(this)
     this.togglePreviewShow=this.togglePreviewShow.bind(this)
-    this.setCommentList=this.setCommentList.bind(this)
-    this.fillNxtCommentList=this.fillNxtCommentList.bind(this)
     this.resetDefaultComment=this.resetDefaultComment.bind(this)
-    this.fetchNxtCommentList=this.fetchNxtCommentList.bind(this)
+    this.getScrollTop=this.getScrollTop.bind(this)
+    this.getParentElement=this.getParentElement.bind(this)
+    this.calculateTopPosition=this.calculateTopPosition.bind(this)
 
 
     this.resetDefaultComment()
     this.wrapRef=React.createRef()
     this.inputContainerRef=React.createRef()
-    this.rScrollTop=null
+    this.outerScrTop=null
+    this.panelParentEle=null
+    this.rScrollID=null
   }
 
   resetDefaultComment(){
@@ -111,7 +125,7 @@ export default class ValineContainer extends React.Component{
         this.setState((prevState,)=>{
           let newCommentList=[]
           if(nest && this.defaultComment.pid!==''){
-            newCommentList=mergeNestComment(prevState.commentList,[simplyItem],nestLayers)
+            newCommentList=mergeNestComment(prevState.commentList,[simplyItem],nestLayers,true)
           }else{
             newCommentList=[simplyItem].concat(prevState.commentList)
           }
@@ -125,23 +139,49 @@ export default class ValineContainer extends React.Component{
         },()=>{
           updateCount(uniqStr,this.state.commentCounts)
         })
-        if(this.rScrollTop!=null){
-          // document.documentElement.scrollTo(0,this.rScrollTop)
-          window.scrollTo({
-            top: this.rScrollTop,
-            behavior: 'smooth'
-          })
+        if(this.rScrollID!=null){
+          let ele=document.getElementById(this.rScrollID),
+            eleH=ele.offsetHeight
+          let childEles=ele.getElementsByClassName("vquote")[0].childNodes,
+            lastChildH=childEles[childEles.length-1].offsetHeight
+          let [innerScrTop,outerScrTop]=this.getScrollTop(ele,this.panelParentEle)
+          if(this.props.useWindow){
+            scrollTo([window],[eleH+outerScrTop-lastChildH])
+            // console.log(this.outerScrTop,ele.offsetHeight,outerScrTop)
+            // window.scrollTo({
+            //   top:eleH+outerScrTop-lastChildH,
+            //   behavior: 'smooth'
+            // })
+          }else{
+            scrollTo([window,this.panelParentEle],[this.outerScrTop,eleH+innerScrTop-lastChildH])
+            // window.scrollTo({
+            //   top:this.outerScrTop,
+            //   behavior: 'smooth'
+            // })
+            // this.panelParentEle.scrollTo({
+            //   top:eleH+innerScrTop-lastChildH,
+            //   behavior: 'smooth'
+            // })
+          }
+          // window.scrollTo({
+          //   top: this.rScrollTop+this.rScrollID!=null ? document.getElementById(this.rScrollID).offsetHeight : 0,
+          //   behavior: 'smooth'
+          // })
         }
         this.resetDefaultComment()
       }).catch(ex => {
         console.error("Something wrong with submit!",curLang.error[ex.code])
         this.setState({
           submitBtnDisable:false,
-          submitLoading:false
+          submitLoading:false,
+          errorLog:"Something wrong with submit!"
         })
       })
     })
   }
+
+
+
 
   togglePreviewShow(){
     this.setState((prevState)=>({
@@ -207,17 +247,54 @@ export default class ValineContainer extends React.Component{
     return {state,errorStr}
   }
 
+  getParentElement(el) {
+    const scrollParent = this.props.getPanelParent && this.props.getPanelParent();
+    if (scrollParent != null) {
+      return scrollParent;
+    }
+    return el && el.parentNode;
+  }
+
+  calculateTopPosition(el) {
+    if(!el)return 0
+    return el.offsetTop + this.calculateTopPosition(el.offsetParent);
+  }
+
+  getScrollTop(ele,parentEle){
+    let innerScrollTop=0,outerScrollTop=0
+    if(this.props.useWindow){
+      let doc=document.documentElement || document.body.parentNode || document.body
+      let scrollTop=window.pageYOffset!=null ? window.pageYOffset : doc.scrollTop
+      let screenTop=ele.getBoundingClientRect().top
+      outerScrollTop=scrollTop+screenTop
+    }else{
+      // let parentEle=this.getParentElement(ele)
+      if(ele.offsetParent===parentEle){
+        innerScrollTop=ele.offsetTop
+      }else{
+        innerScrollTop=ele.offsetTop-parentEle.offsetTop
+      }
+      outerScrollTop=this.calculateTopPosition(parentEle)
+    }
+    return [innerScrollTop,outerScrollTop]
+  }
 
   handleReply(replyId,replyName,rid){
     this.defaultComment.pid=replyId
     this.defaultComment.at=replyName
     this.defaultComment.rid=rid
     let ele=this.wrapRef.current
-    let scrTop=window.pageYOffset || document.documentElement.scrollTop
-    let boundTop=ele.getBoundingClientRect().top
-    let reachCeilTop=ele.offsetTop || scrTop+boundTop
+    this.panelParentEle=this.getParentElement(ele)
+    // let parentNode=this.props.parentNode
+    let [innerScrTop,outerScrTop]=this.getScrollTop(ele,this.panelParentEle)
+    // let scrTop=window.pageYOffset || document.documentElement.scrollTop
+    // if(useWindow)
+    // let wrapTop=wrapEle.getBoundingClientRect().top
+    // let reachCeilTop=scrTop+wrapTop
     if(this.props.nest){
-      this.rScrollTop=scrTop
+      // this.innerScrTop=innerScrTop
+      this.outerScrTop=outerScrTop
+      this.rScrollID=replyId
     }
     let inputContainer= this.inputContainerRef.current
     if(!inputContainer){
@@ -231,14 +308,34 @@ export default class ValineContainer extends React.Component{
     this.setState((prevState)=>({
       toggleTextAreaFocus:!prevState.toggleTextAreaFocus
     }),()=>{
-      window.scrollTo({
-        top: reachCeilTop,
-        behavior: 'smooth'
-      })
+      if(this.props.useWindow){
+        scrollTo([window],[outerScrTop])
+        // window.scrollTo({
+        //   top:outerScrTop,
+        //   behavior: 'smooth'
+        // })
+      }else{
+        // console.log(this.panelParentEle)
+        scrollTo([this.panelParentEle,window],[innerScrTop,outerScrTop])
+        // window.scrollTo({
+        //   top:outerScrTop,
+        //   behavior: 'smooth'
+        // })
+        // setTimeout(()=>{
+        //   this.panelParentEle.scrollTo({
+        //     top:innerScrTop,
+        //     behavior: 'smooth'
+        //   })
+        // },500)
+      }
+      // window.scrollTo({
+      //   top: reachCeilTop,
+      //   behavior: 'smooth'
+      // })
     })
   }
 
-  fetchNxtCommentList(){
+  fetchMoreCommentList(){
     const {AV,pageSize,uniqStr}=this.props
     const {currentCounts,commentCounts}=this.state
     return new AV.Query('Comment')
@@ -256,7 +353,7 @@ export default class ValineContainer extends React.Component{
         }
       })
   }
-  initQuery(){
+  fetchCommentList(){
     const {AV,pageSize,uniqStr,fetchCount}=this.props
     let commentCounts=0
     return fetchCount(uniqStr).then(counts=>{
@@ -286,12 +383,11 @@ export default class ValineContainer extends React.Component{
         this.setCommentList(list,true)
       })
     }else{
-      this.fetchNxtCommentList().then(list=>{
+      this.fetchMoreCommentList().then(list=>{
         this.setCommentList(list,false)
       })
     }
   }
-
   fetchMoreNest(){
     let contains=[],simplyList=[]
     const {AV,uniqStr,pageSize}=this.props
@@ -323,7 +419,6 @@ export default class ValineContainer extends React.Component{
           .then(items=>[items,simplyList,addCounts,null,null])
       })
   }
-
   fetchNest(){
     let contains=[],simplyList=[]
     const {AV,pageSize,fetchCount,uniqStr}=this.props
@@ -357,7 +452,6 @@ export default class ValineContainer extends React.Component{
         })
     })
   }
-
   setCommentList([items,simplyList,counts,commentCounts,errorLog],nest){
     if(commentCounts===0 || errorLog!=null){
       this.setState({
@@ -366,7 +460,8 @@ export default class ValineContainer extends React.Component{
       })
       if(errorLog!==this.state.errorLog){
         this.setState({
-          errorLog
+          errorLog,
+          currentCounts:this.state.commentCounts
         },()=>{
           setTimeout(()=>{
             this.setState({
@@ -382,7 +477,7 @@ export default class ValineContainer extends React.Component{
     if(nest){
       let simplyItems=[]
       for(let obj of items)simplyItems.push(simplyObj(obj))
-      commentList=mergeNestComment(simplyList,simplyItems,this.props.nestLayers)
+      commentList=mergeNestComment(simplyList,simplyItems,this.props.nestLayers,false)
     }else{
       commentList=convert2SimplyList(items)
     }
@@ -405,7 +500,7 @@ export default class ValineContainer extends React.Component{
           this.setCommentList(list,true)
         })
     }else{
-      this.initQuery()
+      this.fetchCommentList()
         .then(list=>{
           this.setCommentList(list,false)
         })
@@ -418,6 +513,7 @@ export default class ValineContainer extends React.Component{
       requireEmail,
       curLang,
       nest,
+      showEmojiNum
     }=this.props
 
     const {
@@ -446,6 +542,7 @@ export default class ValineContainer extends React.Component{
                           requireEmail={requireEmail}
                           curLang={curLang}
                           GRAVATAR_URL={GRAVATAR_URL}
+                          showEmojiNum={showEmojiNum}
                           toggleTextAreaFocus={toggleTextAreaFocus}
                           previewShow={previewShow}
                           submitComment={this.submitComment}

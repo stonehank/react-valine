@@ -7,7 +7,8 @@
 *.log
 .travis.yml
 devInfo.md
-
+coverage
+__mocks__
 node_modules
 package-lock.json
 *.lock

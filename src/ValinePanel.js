@@ -1,6 +1,7 @@
 import React from 'react'
 import ValineContext from './ValineContext'
 import ValineContainer from "./ValineContainer";
+import PropTypes from "prop-types";
 
 
 export default class ValinePanel extends React.Component{
@@ -8,8 +9,9 @@ export default class ValinePanel extends React.Component{
   constructor(props){
     super(props)
     this.state={
-      AV:window.AV,
-      uniqStr:props.uniqStr
+      uniqStr:props.uniqStr,
+      useWindow:props.useWindow,
+      getPanelParent:props.getPanelParent
     }
   }
 
@@ -18,9 +20,9 @@ export default class ValinePanel extends React.Component{
     return (
       <ValineContext.Consumer>
         {contextProps=>{
-          const {uniqStr,AV}=this.state
+          // const {uniqStr,AV}=
           const {fetchCount,updateCount,...otherProps}=contextProps
-          return <ValineContainer uniqStr={uniqStr} fetchCount={fetchCount} updateCount={updateCount} av={AV} {...otherProps}/>
+          return <ValineContainer  fetchCount={fetchCount} updateCount={updateCount}  {...this.state} {...otherProps}/>
         }}
       </ValineContext.Consumer>
     )
@@ -29,6 +31,13 @@ export default class ValinePanel extends React.Component{
 }
 
 ValinePanel.defaultProps={
-  uniqStr:decodeURI(window.location.origin+window.location.pathname)
+  uniqStr:decodeURI(window.location.origin+window.location.pathname),
+  useWindow:true,
+  getPanelParent:null
+}
+
+ValinePanel.propTypes = {
+  useWindow:PropTypes.bool,
+  getPanelParent:PropTypes.func
 }
 

@@ -139,51 +139,157 @@ it("复杂对象简单化(针对Leancloud对象)",()=>{
   complicateObj.attributes={a:1,b:2,c:3}
   complicateObj.get=(str)=>"2019-06-01"
   complicateObj.id='001'
-  expect(simplyObj(complicateObj)).toEqual({a:1,b:2,c:3,child:[],id:"001",createdAt:"2019-06-01"})
+  expect(simplyObj(complicateObj)).toEqual({a:1,b:2,c:3,child:[],id:"001",createdAt:"2019-06-01",initShowChild: false})
 })
 
-it("获取数据合并",()=>{
+
+describe("获取数据合并",()=>{
   let list=[
-    {id:'001',rid:'001',pid:'',child:[]},
-    {id:'002',rid:'002',pid:'',child:[]},
-    {id:'007',rid:'007',pid:'',child:[]},
-    {id:'008',rid:'008',pid:'',child:[]},
+      {id:'001',rid:'001',pid:'',child:[],initShowChild:false},
+      {id:'002',rid:'002',pid:'',child:[],initShowChild:false},
+      {id:'007',rid:'007',pid:'',child:[],initShowChild:false},
+      {id:'008',rid:'008',pid:'',child:[],initShowChild:false},
     ],
     arr=[
-      {id:'003',rid:'001',pid:'001',child:[]},
-      {id:'004',rid:'002',pid:'002',child:[]},
-      {id:'005',rid:'001',pid:'003',child:[]},
-      {id:'006',rid:'002',pid:'004',child:[]},
+      {id:'003',rid:'001',pid:'001',child:[],initShowChild:false},
+      {id:'004',rid:'002',pid:'002',child:[],initShowChild:false},
+      {id:'005',rid:'001',pid:'003',child:[],initShowChild:false},
+      {id:'006',rid:'002',pid:'004',child:[],initShowChild:false},
 
-      ]
-  expect(mergeNestComment(list,arr)).toEqual([
+    ]
+
+  it("默认合并",()=> {
+    expect(mergeNestComment(list, arr)).toEqual([
       {
         child: [{
           child: [{
             child: [],
             id: "005",
             pid: "003",
-            rid: "001"}],
+            rid: "001",
+            initShowChild: false
+          }],
           id: "003",
           pid: "001",
-          rid: "001"}],
+          rid: "001",
+          initShowChild: false
+        }],
         id: "001",
         pid: "",
-        rid: "001"},
+        rid: "001",
+        initShowChild: false
+      },
       {
         child: [{
           child: [{
             child: [],
             id: "006",
             pid: "004",
-            rid: "002",},],
+            rid: "002",
+            initShowChild: false
+          },],
           id: "004",
           pid: "002",
-          rid: "002",},],
+          rid: "002",
+          initShowChild: false
+        },],
         id: "002",
         pid: "",
-        rid: "002",},
-      {id:'007',rid:'007',pid:'',child:[]},
-      {id:'008',rid:'008',pid:'',child:[]},
-  ])
+        rid: "002",
+        initShowChild: false
+      },
+      {id: '007', rid: '007', pid: '', child: [], initShowChild: false},
+      {id: '008', rid: '008', pid: '', child: [], initShowChild: false},
+    ])
+  })
+
+  it("只嵌套1层",()=> {
+    expect(mergeNestComment(list, arr, 1)).toEqual([
+      {
+        child: [
+          {
+            child: [],
+            id: "003",
+            pid: "001",
+            rid: "001",
+            initShowChild: false
+          },
+          {
+            child: [],
+            id: "005",
+            pid: "003",
+            rid: "001",
+            initShowChild: false
+          }
+        ],
+        id: "001",
+        pid: "",
+        rid: "001",
+        initShowChild: false
+      },
+      {
+        child: [
+          {
+            child: [],
+            id: "004",
+            pid: "002",
+            rid: "002",
+            initShowChild: false
+          },
+          {
+            child: [],
+            id: "006",
+            pid: "004",
+            rid: "002",
+            initShowChild: false
+          }
+        ],
+        id: "002",
+        pid: "",
+        rid: "002",
+        initShowChild: false
+      },
+      {id: '007', rid: '007', pid: '', child: [], initShowChild: false},
+      {id: '008', rid: '008', pid: '', child: [], initShowChild: false},
+    ])
+  })
+
+  it("无限层嵌套，默认展示回复",()=>{
+    expect(mergeNestComment(list,arr,Infinity,true)).toEqual([
+      {
+        child: [{
+          child: [{
+            child: [],
+            id: "005",
+            pid: "003",
+            rid: "001",
+            initShowChild:false}],
+          id: "003",
+          pid: "001",
+          rid: "001",
+          initShowChild:true}],
+        id: "001",
+        pid: "",
+        rid: "001",
+        initShowChild:true},
+      {
+        child: [{
+          child: [{
+            child: [],
+            id: "006",
+            pid: "004",
+            rid: "002",
+            initShowChild:false},],
+          id: "004",
+          pid: "002",
+          rid: "002",
+          initShowChild:true},],
+        id: "002",
+        pid: "",
+        rid: "002",
+        initShowChild:true},
+      {id:'007',rid:'007',pid:'',child:[],initShowChild:false},
+      {id:'008',rid:'008',pid:'',child:[],initShowChild:false},
+    ])
+  })
 })

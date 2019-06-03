@@ -21,7 +21,10 @@ export default class Valine extends React.Component{
       previewShow:props.previewShow,
       updateCountHash:0,
       lang:props.lang,
-      nestLayers:props.nestLayers
+      nestLayers:props.nestLayers,
+      showEmojiNum:props.showEmojiNum,
+      // useWindow:props.useWindow,
+      // getPanelParent:props.getPanelParent
     }
     if(props.customTxt!=null){
       let customTxt=props.customTxt
@@ -156,7 +159,8 @@ Valine.defaultProps={
   pageSize:10,
   previewShow:true,
   lang:'zh-cn',
-  nestLayers:Infinity
+  nestLayers:Infinity,
+  showEmojiNum:5
 }
 
 Valine.propTypes = {
@@ -165,11 +169,14 @@ Valine.propTypes = {
   requireName:PropTypes.bool,
   requireEmail:PropTypes.bool,
   nest:PropTypes.bool,
+  // useWindow:PropTypes.bool,
   pageSize:PropTypes.number,
   previewShow:PropTypes.bool,
   lang:PropTypes.oneOf(['zh-cn','en']),
   placeholder:PropTypes.string,
   sofaEmpty:PropTypes.string,
   customTxt:PropTypes.object,
-  nestLayers:PropTypes.number
+  nestLayers:PropTypes.number,
+  showEmojiNum:PropTypes.number,
+  // getPanelParent:PropTypes.func
 }

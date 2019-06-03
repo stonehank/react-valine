@@ -535,7 +535,7 @@ html{
         }
         &.expand {
           cursor: pointer;
-          max-height: 11.25rem;
+          max-height: 220px;
           overflow: hidden;
           &:before {
             display: block;
