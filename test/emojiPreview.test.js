@@ -22,5 +22,7 @@ describe('Test EmojiPreview List', ()=>{
   it('can render list', () => {
     expect(list.length).toBe(1)
   });
-
+  it("length is 5",()=>{
+    expect(list[0].childNodes.length).toBe(5)
+  })
 })

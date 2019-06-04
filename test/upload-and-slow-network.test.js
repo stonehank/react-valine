@@ -5,7 +5,15 @@ import TestUtil from 'react-dom/test-utils';
 
 const test_uniq_str="test-1-reply"
 
-
+Object.defineProperties(window.HTMLElement.prototype, {
+  offsetHeight: {
+    get: function() {
+      let match=this.getElementsByClassName("vcontent")[0].innerHTML.match(/\n/g)
+      let countLineBreak=match?match.length:0
+      return countLineBreak*50
+    }
+  }
+});
 global.AV=require("leancloud-storage")
 
 const nock = require('nock')
@@ -224,7 +232,7 @@ describe('test App with slow-network', ()=>{
       expect(contentNodes[1].innerHTML).toBe("<div><p>something...</p>\n</div>")
       expect(contentNodes[2].innerHTML).toBe("<div><p>sdfsadf</p>\n</div>")
       expect(contentNodes[2].innerHTML).toBe("<div><p>sdfsadf</p>\n</div>")
-      // expect(container.getElementsByClassName("vcontent expand").length).toBe(1)
+      expect(container.getElementsByClassName("vcontent expand").length).toBe(1)
       done()
     },3000)
   })

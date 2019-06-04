@@ -49,10 +49,14 @@ export default class Valine extends React.Component{
     if(!window.AV){
       throw new Error("leancloud 导入失败，请刷新重试！")
     }
-    window.AV.init({
-      appId:props.appId,
-      appKey:props.appKey
-    })
+    try{
+      window.AV.init({
+        appId:props.appId,
+        appKey:props.appKey
+      })
+    }catch(e){
+      // do nothing
+    }
   }
 
   fetchCount(uniqStr){

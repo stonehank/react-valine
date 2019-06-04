@@ -211,7 +211,6 @@ export default class InputContainer extends React.PureComponent {
   }
 
   turnOffEmojiPreviewList(event){
-    // console.log(event.target.parentNode)
     if(event.target && (event.target.id!=="veditor" && (!event.target.parentNode || event.target.parentNode.className!=='vemoji-preview-list'))){
       this.setState({
         emojiList:[],
@@ -221,6 +220,7 @@ export default class InputContainer extends React.PureComponent {
   }
 
   componentDidMount(){
+    document.addEventListener("click",this.turnOffEmojiPreviewList)
     if(localStorage){
       let item=localStorage.getItem("ValineCache")
       if(!item)return
@@ -232,7 +232,6 @@ export default class InputContainer extends React.PureComponent {
         avatarSrc:obj.avatarSrc || this.state.avatarSrc
       })
     }
-    document.addEventListener("click",this.turnOffEmojiPreviewList)
   }
   componentWillUnmount(){
     document.removeEventListener("click",this.turnOffEmojiPreviewList)
