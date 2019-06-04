@@ -23,8 +23,6 @@ export default class Valine extends React.Component{
       lang:props.lang,
       nestLayers:props.nestLayers,
       showEmojiNum:props.showEmojiNum,
-      // useWindow:props.useWindow,
-      // getPanelParent:props.getPanelParent
     }
     if(props.customTxt!=null){
       let customTxt=props.customTxt
@@ -104,7 +102,7 @@ export default class Valine extends React.Component{
               item.save().then(()=>{
                 this.pageviewMap.set(uniqStr,updateTime)
                 resolve(updateTime)
-              }).catch(ex=>{
+              }).catch(()=>{
                 resolve(updateTime-1)
               })
             }
@@ -169,7 +167,6 @@ Valine.propTypes = {
   requireName:PropTypes.bool,
   requireEmail:PropTypes.bool,
   nest:PropTypes.bool,
-  // useWindow:PropTypes.bool,
   pageSize:PropTypes.number,
   previewShow:PropTypes.bool,
   lang:PropTypes.oneOf(['zh-cn','en']),
@@ -178,5 +175,4 @@ Valine.propTypes = {
   customTxt:PropTypes.object,
   nestLayers:PropTypes.number,
   showEmojiNum:PropTypes.number,
-  // getPanelParent:PropTypes.func
 }

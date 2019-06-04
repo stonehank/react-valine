@@ -43,7 +43,7 @@
       "require_nick":"昵称为必填项！",
       "require_mail":"email为必填项！",
       "email_format_failed":"email格式错误！",
-      "link_format_failed":"网址格式错误！请以http/https开头"
+      "link_format_failed":"网址格式错误！请以http(s)开头"
     }
   },
   "en": {

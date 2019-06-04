@@ -1,7 +1,7 @@
 import React from 'react'
 import ValineContext from './ValineContext'
-import ValineContainer from "./ValineContainer";
 import PropTypes from "prop-types";
+import FetchResourceContainer from "./core/FetchResourceContainer";
 
 
 export default class ValinePanel extends React.Component{
@@ -20,9 +20,8 @@ export default class ValinePanel extends React.Component{
     return (
       <ValineContext.Consumer>
         {contextProps=>{
-          // const {uniqStr,AV}=
           const {fetchCount,updateCount,...otherProps}=contextProps
-          return <ValineContainer  fetchCount={fetchCount} updateCount={updateCount}  {...this.state} {...otherProps}/>
+          return <FetchResourceContainer  fetchCount={fetchCount} updateCount={updateCount}  {...this.state} {...otherProps}/>
         }}
       </ValineContext.Consumer>
     )
