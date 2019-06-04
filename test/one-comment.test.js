@@ -38,7 +38,7 @@ nock("https://i5daxohp.api.lncld.net")
   .get("/1.1/classes/Counter?where=%7B%22uniqStr%22%3A%22test-1-reply%22%7D")
   .reply(200, {"results":[{"uniqStr":"test-1-reply","title":"\u6d4b\u8bd5\u9875\u9762localhost","time":9999,"createdAt":"2019-05-29T14:53:57.872Z","updatedAt":"2019-05-30T08:08:47.209Z","objectId":"5cee9d0530863b006861c98c"}]})
 
-
+global.scrollTo=()=>{}
 
 describe('test App with 1 reply', ()=>{
   let container=document.createElement("div"),
@@ -152,14 +152,14 @@ describe('test App with 1 reply', ()=>{
       linkEle
     )
     TestUtil.Simulate.click(submitBtn)
-    expect(errlog[0].innerHTML).toBe("网址格式错误！请以http/https开头")
+    expect(errlog[0].innerHTML).toBe("网址格式错误！请以http(s)开头")
 
     linkEle.value="www.abc.com"
     TestUtil.Simulate.change(
       linkEle
     )
     TestUtil.Simulate.click(submitBtn)
-    expect(errlog[0].innerHTML).toBe("网址格式错误！请以http/https开头")
+    expect(errlog[0].innerHTML).toBe("网址格式错误！请以http(s)开头")
   })
   it("toggle emoji panel",()=>{
     TestUtil.Simulate.click(vemojiBtn)
@@ -178,10 +178,7 @@ describe('test App with 1 reply', ()=>{
 
   it('click reply',()=>{
     let replyBtn=container.getElementsByClassName("vat")[0]
-    try{
-      TestUtil.Simulate.click(replyBtn)
-    }catch(e){
-    }
+    TestUtil.Simulate.click(replyBtn)
     expect(textAreaEle.value).toBe("@fsf something...")
   })
 
