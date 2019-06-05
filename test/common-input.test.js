@@ -73,9 +73,17 @@ describe('test common usage', ()=>{
     expect(avatarBtn).not.toBe(null)
   });
 
+  it("toggle protocol",()=>{
+    let protoBtn=vinputs.childNodes[2].childNodes[0]
+    expect(protoBtn.innerHTML).toBe("https://")
+    TestUtil.Simulate.click(protoBtn)
+    expect(protoBtn.innerHTML).toBe("http://")
+  })
 
   it('verify inputs',()=>{
-    let nickEle=vinputs.childNodes[0],emailEle=vinputs.childNodes[1],linkEle=vinputs.childNodes[2]
+    let nickEle=vinputs.childNodes[0].childNodes[0],
+      emailEle=vinputs.childNodes[1].childNodes[0],
+      linkEle=vinputs.childNodes[2].childNodes[1]
     TestUtil.Simulate.click(submitBtn)
     expect(errlog[0].innerHTML).toBe("内容不能为空！")
     textAreaEle.value='something...'
@@ -107,14 +115,14 @@ describe('test common usage', ()=>{
       linkEle
     )
     TestUtil.Simulate.click(submitBtn)
-    expect(errlog[0].innerHTML).toBe("网址格式错误！请以http(s)开头")
+    expect(errlog[0].innerHTML).toBe("网址格式错误！")
 
-    linkEle.value="www.abc.com"
+    linkEle.value="http://www.abc.com"
     TestUtil.Simulate.change(
       linkEle
     )
     TestUtil.Simulate.click(submitBtn)
-    expect(errlog[0].innerHTML).toBe("网址格式错误！请以http(s)开头")
+    expect(errlog[0].innerHTML).toBe("网址格式错误！")
   })
   it("toggle emoji panel",()=>{
     TestUtil.Simulate.click(vemojiBtn)

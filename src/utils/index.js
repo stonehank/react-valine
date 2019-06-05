@@ -6,6 +6,7 @@ import {getEmojiPrefix,calcValueAndPos,resolveTAB} from './insertAtCaret'
 import {mergeNestComment,convert2SimplyList,simplyObj} from './nestComment'
 import getWordList from './emojiTire'
 import getCaretCoordinates from './textarea-creat'
+import {getLinkWithoutProtocol} from './getLinkWithoutProtocol'
 
 export {
   timeAgo,
@@ -24,5 +25,6 @@ export {
   simplyObj,
   getWordList,
   resolveTAB,
-  getCaretCoordinates
+  getCaretCoordinates,
+  getLinkWithoutProtocol
 }

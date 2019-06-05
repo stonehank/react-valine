@@ -1,4 +1,4 @@
-import {resolveTAB,replaceExistEmoji2,getEmojiPrefix,mergeNestComment,simplyObj} from '../src/utils'
+import {resolveTAB,replaceExistEmoji2,getEmojiPrefix,mergeNestComment,simplyObj,getLinkWithoutProtocol} from '../src/utils'
 
 
 
@@ -140,6 +140,16 @@ it("复杂对象简单化(针对Leancloud对象)",()=>{
   complicateObj.get=(str)=>"2019-06-01"
   complicateObj.id='001'
   expect(simplyObj(complicateObj)).toEqual({a:1,b:2,c:3,child:[],id:"001",createdAt:"2019-06-01",initShowChild: false})
+})
+
+it("获取去除协议部分的url",()=>{
+  let link1="https://www.abc.com",
+    link2="http://www.abc.com",
+    link3="http://"
+
+  expect(getLinkWithoutProtocol(link1)).toBe("www.abc.com")
+  expect(getLinkWithoutProtocol(link2)).toBe("www.abc.com")
+  expect(getLinkWithoutProtocol(link3)).toBe("")
 })
 
 

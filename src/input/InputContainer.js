@@ -16,6 +16,7 @@ export default class InputContainer extends React.PureComponent {
       email:'',
       link:'',
       commentContent:'',
+      protocol:'https',
       emojiList:[],
       emojiPrefix:'',
       emojiChooseId:0,
@@ -28,12 +29,19 @@ export default class InputContainer extends React.PureComponent {
     this.linkOnChange=this.linkOnChange.bind(this)
     this.nameOnChange=this.nameOnChange.bind(this)
     this.avatarOnChange=this.avatarOnChange.bind(this)
+    this.toggleProtocol=this.toggleProtocol.bind(this)
     this.handleOnSubmit=this.handleOnSubmit.bind(this)
     this.contentOnKeyDown=this.contentOnKeyDown.bind(this)
     this.commentContentOnChange=this.commentContentOnChange.bind(this)
     this.turnOffEmojiPreviewList=this.turnOffEmojiPreviewList.bind(this)
 
     this.textAreaRef=React.createRef()
+  }
+
+  toggleProtocol(){
+    this.setState(prevState=>({
+      protocol:prevState.protocol==="https" ? "http" : "https"
+    }))
   }
 
   chooseEmoji(emoji,prefix){
@@ -193,21 +201,20 @@ export default class InputContainer extends React.PureComponent {
     })
   }
   handleOnSubmit(){
-    const {nickName,email,link,avatarSrc,commentContent}=this.state
+    const {nickName,email,link,protocol,avatarSrc,commentContent}=this.state
     const {submitComment}=this.props
-    submitComment({mail:email,link,nick:nickName,avatarSrc,comment:commentContent})
+    submitComment({
+      mail:email,
+      link:link==="" ? link : protocol+"://" + link,
+      nick:nickName,
+      avatarSrc,
+      comment:commentContent
+    })
       .then(()=>{
         this.setState({
           commentContent:''
         })
-      })
-      .catch(()=>{})
-  }
-
-  componentDidUpdate(prevProps){
-    if(this.props.toggleTextAreaFocus!==prevProps.toggleTextAreaFocus){
-      this.textAreaRef.current.focus()
-    }
+      }).catch(()=>{})
   }
 
   turnOffEmojiPreviewList(event){
@@ -219,6 +226,11 @@ export default class InputContainer extends React.PureComponent {
     }
   }
 
+  componentDidUpdate(prevProps){
+    if(this.props.toggleTextAreaFocus!==prevProps.toggleTextAreaFocus){
+      this.textAreaRef.current.focus()
+    }
+  }
   componentDidMount(){
     document.addEventListener("click",this.turnOffEmojiPreviewList)
     if(localStorage){
@@ -244,6 +256,7 @@ export default class InputContainer extends React.PureComponent {
       nickName,
       avatarSrc,
       commentContent,
+      protocol,
       emojiList,
       emojiChooseId,
       emojiPrefix,
@@ -268,6 +281,7 @@ export default class InputContainer extends React.PureComponent {
                            email={email}
                            nickName={nickName}
                            avatarSrc={avatarSrc}
+                           protocol={protocol}
                            curLang={curLang}
                            requireName={requireName}
                            requireEmail={requireEmail}
@@ -276,6 +290,7 @@ export default class InputContainer extends React.PureComponent {
                            linkOnChange={this.linkOnChange}
                            nameOnChange={this.nameOnChange}
                            avatarOnChange={this.avatarOnChange}
+                           toggleProtocol={this.toggleProtocol}
         />
         <div className="vedit">
           <TextAreaComponent ref={this.textAreaRef}

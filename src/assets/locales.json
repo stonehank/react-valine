@@ -3,8 +3,8 @@
     "head": {
       "nick": "昵称",
       "mail": "邮箱",
-      "link": "网址(http://)",
-      "require":"(必填)",
+      "link": "👈切换协议",
+      "require":"(*)",
       "change_avatar":"更改"
     },
     "tips": {
@@ -43,14 +43,14 @@
       "require_nick":"昵称为必填项！",
       "require_mail":"email为必填项！",
       "email_format_failed":"email格式错误！",
-      "link_format_failed":"网址格式错误！请以http(s)开头"
+      "link_format_failed":"网址格式错误！"
     }
   },
   "en": {
     "head": {
       "nick": "NickName",
       "mail": "E-Mail",
-      "link": "Website<http(s)>",
+      "link": "👈toggle protocol",
       "require":"(require)",
       "change_avatar":"Change"
     },
@@ -89,7 +89,7 @@
       "require_nick":"NickName is required!",
       "require_mail":"E-Mail is required!",
       "email_format_failed":"Incorrect email format!",
-      "link_format_failed":"Incorrect website format! Please start with http(s)"
+      "link_format_failed":"Incorrect website format! "
     }
   }
 }

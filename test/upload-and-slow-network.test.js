@@ -172,8 +172,9 @@ describe('test App with slow-network', ()=>{
 
 
   it('测试提交按钮的disabled，头像切换和点击提交',(done)=>{
-    let nickEle=vinputs.childNodes[0],
+    let nickEle=vinputs.childNodes[0].childNodes[0],
       avatarList=container.getElementsByClassName("vavatars-select-list")
+    expect(nickEle.nodeName).toBe("INPUT")
     textAreaEle.value='something...'
     nickEle.value="my-nick-name"
     TestUtil.Simulate.change(textAreaEle)
@@ -207,7 +208,8 @@ describe('test App with slow-network', ()=>{
   })
 
   it('评论过长会折叠',(done)=>{
-    let nickEle=vinputs.childNodes[0]
+    let nickEle=vinputs.childNodes[0].childNodes[0]
+    expect(nickEle.nodeName).toBe("INPUT")
     textAreaEle.value='This is some long text...\nThis is some long text...\nThis is some long text...\nThis is some long text...\nThis is some long text...\nThis is some long text...'
     nickEle.value="my-nick-name"
     TestUtil.Simulate.change(textAreaEle)

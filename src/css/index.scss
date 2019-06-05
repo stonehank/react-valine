@@ -190,6 +190,7 @@ html{
       vertical-align: middle;
     }
     .vedit .vpreview {
+      min-height:4rem;
       padding: 7px;
       box-shadow: 0px 0 1px #f0f0f0;
       img,frame,iframe{
@@ -235,27 +236,42 @@ html{
       .vinputs{
         flex:4;
         display:flex;
-        .vinput {
-          width: 33.33%;
-          border-bottom: 1px #dedede dashed;
-        }
-        &.item2 .vinput {
-          width: 50%;
-        }
-        &.item1 .vinput {
-          width: 100%;
-        }
-        .vinput:focus {
-          border-bottom-color: #eb5055;
-        }
-        @media screen and (max-width:520px) {
+        .vinput-cell{
+          width:33.33%;
+          display:flex;
           .vinput {
             width: 100%;
+            border-bottom: 1px #dedede dashed;
+            flex:5
           }
-          &.item2 .vinput {
-            width: 100%;
+          .vinput:focus {
+            border-bottom-color: #eb5055;
+          }
+          .vinput-label{
+            flex-basis:4rem;
+            font-size: 0.775rem;
+            font-weight: 700;
+            border: none;
+            background: #ccc;
+            padding: 0.775rem 0.3rem 0.775rem 0.3rem;
+            text-align: center;
+            border-radius: 4px;
+            cursor:pointer;
+            user-select: none;
+            &:active{
+              background: #e4e4e4
+            }
           }
         }
+
+        //@media screen and (max-width:520px) {
+        //  .vinput {
+        //    width: 100%;
+        //  }
+        //  &.item2 .vinput {
+        //    width: 100%;
+        //  }
+        //}
       }
     }
     .vcontrol {
@@ -424,7 +440,7 @@ html{
         .vnick a{
           position:relative;
           font-size: .875rem;
-          font-weight: 500;
+          font-weight: 700;
           margin-right: .875rem;
           cursor: pointer;
           //color: #1abc9c;

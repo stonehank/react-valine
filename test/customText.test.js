@@ -126,9 +126,11 @@ describe('test nest with no comments', ()=>{
   })
 
   it('require email text',()=>{
-    let nickEle=vinputs.childNodes[0],mailEle=vinputs.childNodes[1]
+    let nickEle=vinputs.childNodes[0].childNodes[0],
+      emailEle=vinputs.childNodes[1].childNodes[0]
+
     expect(nickEle.getAttribute('placeholder')).toBe("你的大名(别漏哦)")
-    expect(mailEle.getAttribute('placeholder')).toBe("邮箱(别漏哦)")
+    expect(emailEle.getAttribute('placeholder')).toBe("邮箱(别漏哦)")
     textAreaEle.value='something...'
     TestUtil.Simulate.change(textAreaEle)
     nickEle.value="my-nick-name"

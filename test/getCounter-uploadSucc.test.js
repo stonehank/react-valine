@@ -20,7 +20,7 @@ nock("https://i5daxohp.api.lncld.net")
   .reply(200, {"results":[{"uniqStr":"test-no-reply","title":"\u6d4b\u8bd5\u9875\u9762localhost","time":9999,"createdAt":"2019-05-29T14:53:57.872Z","updatedAt":"2019-05-30T08:08:47.209Z","objectId":"5cee9d0530863b006861c98c"}]})
 
 nock("https://i5daxohp.api.lncld.net:443")
-  .log(console.log)
+  // .log(console.log)
   .persist()
   .put("/1.1/classes/Counter/5cee9d0530863b006861c98c",{"time":{"__op":"Increment","amount":1},"title":""})
   .reply(200,{"updatedAt":"2019-06-05T06:03:34.901Z","objectId":"5cee9d0530863b006861c98c"})

@@ -12,6 +12,7 @@ export default class EditAreaComponent extends React.PureComponent {
       link,
       email,
       nickName,
+      protocol,
       requireEmail,
       requireName,
       avatarSrc,
@@ -20,6 +21,7 @@ export default class EditAreaComponent extends React.PureComponent {
       linkOnChange,
       nameOnChange,
       avatarOnChange,
+      toggleProtocol,
       curLang
     } = this.props;
     // console.log(11)
@@ -30,7 +32,7 @@ export default class EditAreaComponent extends React.PureComponent {
         <div className={"vinputs"}>
           <NickNameComponent nickName={nickName} langHead={langHead} requireName={requireName} nameOnChange={nameOnChange}/>
           <MailComponent email={email} langHead={langHead} requireEmail={requireEmail} emailOnChange={emailOnChange} />
-          <LinkComponent link={link} langHead={langHead} linkOnChange={linkOnChange} />
+          <LinkComponent link={link} langHead={langHead} protocol={protocol} toggleProtocol={toggleProtocol} linkOnChange={linkOnChange} />
         </div>
       </div>
     )

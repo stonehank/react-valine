@@ -10,7 +10,7 @@ import {
   emailVerify,
   mergeNestComment,
   convert2SimplyList,
-  simplyObj
+  simplyObj, getLinkWithoutProtocol
 } from '../utils'
 import ErrorLog from "../info/ErrorLog";
 const GRAVATAR_URL='https://gravatar.loli.net/avatar'
@@ -81,57 +81,57 @@ export default class ValineContainer extends React.Component{
   createNewObj(){
     const {nest,updateCount,uniqStr,curLang,nestLayers,uploadComment}=this.props
     return uploadComment(this.defaultComment).then((commentItem) => {
-        let simplyItem=simplyObj(commentItem)
-        localStorage && localStorage.setItem('ValineCache', JSON.stringify({
-          nick: this.defaultComment['nick'],
-          link: this.defaultComment['link'],
-          mail: this.defaultComment['mail'],
-          avatarSrc:this.defaultComment['avatarSrc']
-        }));
+      let simplyItem=simplyObj(commentItem)
+      localStorage && localStorage.setItem('ValineCache', JSON.stringify({
+        nick: this.defaultComment['nick'],
+        link: getLinkWithoutProtocol(this.defaultComment['link']),
+        mail: this.defaultComment['mail'],
+        avatarSrc:this.defaultComment['avatarSrc']
+      }));
 
-        this.setState((prevState,)=>{
-          let newCommentList=[]
-          if(nest && this.defaultComment.pid!==''){
-            newCommentList=mergeNestComment(prevState.commentList,[simplyItem],nestLayers,true)
-          }else{
-            newCommentList=[simplyItem].concat(prevState.commentList)
-          }
-          // 在初始获取的时候进行添加，有可能会重复，当检测到id相同，删除开头(避免重复)
-          if(newCommentList.length>1 && newCommentList[0].id===newCommentList[1].id){
-            newCommentList.shift()
-          }
-
-          return {
-            commentList:newCommentList,
-            commentCounts:prevState.commentCounts+1,
-            currentCounts:prevState.currentCounts+1,
-            submitBtnDisable:false,
-            submitLoading:false
-          }
-        },()=>{
-          updateCount(uniqStr,this.state.commentCounts)
-        })
-        if(this.rScrollID!=null){
-          let ele=document.getElementById(this.rScrollID),
-            eleH=ele.offsetHeight
-          let childEles=ele.getElementsByClassName("vquote")[0].childNodes,
-            lastChildH=childEles[childEles.length-1].offsetHeight
-          let [innerScrTop,outerScrTop]=this.getScrollTop(ele,this.panelParentEle)
-          if(this.props.useWindow){
-            scrollTo([window],[eleH+outerScrTop-lastChildH])
-          }else{
-            scrollTo([window,this.panelParentEle],[this.outerScrTop,eleH+innerScrTop-lastChildH])
-          }
+      this.setState((prevState,)=>{
+        let newCommentList=[]
+        if(nest && this.defaultComment.pid!==''){
+          newCommentList=mergeNestComment(prevState.commentList,[simplyItem],nestLayers,true)
+        }else{
+          newCommentList=[simplyItem].concat(prevState.commentList)
         }
-        this.resetDefaultComment()
-      }).catch(ex => {
-        console.error("Something wrong with submit!",curLang.error[ex.code],ex)
-        this.setState({
+        // 在初始获取的时候进行添加，有可能会重复，当检测到id相同，删除开头(避免重复)
+        if(newCommentList.length>1 && newCommentList[0].id===newCommentList[1].id){
+          newCommentList.shift()
+        }
+
+        return {
+          commentList:newCommentList,
+          commentCounts:prevState.commentCounts+1,
+          currentCounts:prevState.currentCounts+1,
           submitBtnDisable:false,
-          submitLoading:false,
-          errorLog:"Something wrong with submit!"
-        })
+          submitLoading:false
+        }
+      },()=>{
+        updateCount(uniqStr,this.state.commentCounts)
       })
+      if(this.rScrollID!=null){
+        let ele=document.getElementById(this.rScrollID),
+          eleH=ele.offsetHeight
+        let childEles=ele.getElementsByClassName("vquote")[0].childNodes,
+          lastChildH=childEles[childEles.length-1].offsetHeight
+        let [innerScrTop,outerScrTop]=this.getScrollTop(ele,this.panelParentEle)
+        if(this.props.useWindow){
+          scrollTo([window],[eleH+outerScrTop-lastChildH])
+        }else{
+          scrollTo([window,this.panelParentEle],[this.outerScrTop,eleH+innerScrTop-lastChildH])
+        }
+      }
+      this.resetDefaultComment()
+    }).catch(ex => {
+      console.error("Something wrong with submit!",curLang.error[ex.code],ex)
+      this.setState({
+        submitBtnDisable:false,
+        submitLoading:false,
+        errorLog:"Something wrong with submit!"
+      })
+    })
   }
 
   togglePreviewShow(){
