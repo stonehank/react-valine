@@ -3,10 +3,11 @@ import {Valine,ValineCount,ValinePageview,ValinePanel} from '../src/react-valine
 import ReactDOM from 'react-dom';
 import TestUtil from 'react-dom/test-utils';
 
+const nock = require('nock')
 const test_uniq_str="test-1-reply"
 const delayTime=500
-const waitTime=10000
-jest.setTimeout(400000);
+const waitTime=3000
+jest.setTimeout(10000);
 Object.defineProperties(window.HTMLElement.prototype, {
   offsetHeight: {
     get: function() {
@@ -16,9 +17,8 @@ Object.defineProperties(window.HTMLElement.prototype, {
     }
   }
 });
-global.AV=require("leancloud-storage")
 
-const nock = require('nock')
+
 
 nock('https://app-router.leancloud.cn')
   .persist()
