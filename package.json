@@ -5,7 +5,8 @@
   "main": "dist/react-valine.js",
   "author": "stonehank <stonehank310@gmail.com>",
   "scripts": {
-    "test": "jest && codecov",
+    "test:build": "jest --runInBand && codecov",
+    "test": "jest  && codecov",
     "build": "npm run build:main",
     "build:main": "webpack",
     "build:lib": "babel src --out-dir lib --copy-files",
