@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "11.12.0"
+  - "8.11.2"
 
 # S: Build Lifecycle
 install:
