@@ -117,7 +117,7 @@ describe('test nest with no comments', ()=>{
   it('pageview Counts has 9999',()=>{
     expect(container.querySelector("#pageviewCounts").innerHTML).toBe("浏览量：<span>9999</span>")
   })
-  it('list has 1 child',()=>{
+  it('list has no child',()=>{
     expect(list[0].childNodes.length).toBe(1)
     let sofaDiv=list[0].childNodes[0]
     expect(sofaDiv.innerHTML).toBe("快来做第一个评论的人吧~")
