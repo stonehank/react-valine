@@ -14,10 +14,22 @@ describe('Test InputContainer List', ()=>{
   const wrapper=mount(<InputContainer submitBtnDisable={false}
                                       curLang={{tips:{},head:{},ctrl:{}}}
   />)
-
-  it("cancel emoji panel by click",()=>{
+  it("toggle emoji panel by click button",()=>{
     expect(wrapper.find(".vemojis").length).toBe(0)
     wrapper.find('.vemoji-btn').at(0).simulate('click')
+    expect(wrapper.find(".vemojis").length).toBe(1)
+    wrapper.find('.vemoji-btn').at(0).simulate('click')
+    expect(wrapper.find(".vemojis").length).toBe(0)
+  })
+  it("choose emoji won't close panel",()=>{
+    wrapper.find('.vemoji-btn').at(0).simulate('click')
+    expect(wrapper.find(".vemojis").length).toBe(1)
+    expect(wrapper.find(".vemoji").length).not.toBe(0)
+    wrapper.find('.vemoji').at(0).simulate('click')
+    expect(wrapper.find(".vemojis").length).toBe(1)
+  })
+
+  it("cancel emoji panel by click",()=>{
     expect(wrapper.find(".vemojis").length).toBe(1)
     map.click.forEach(fn=>fn({target:{className:"veditors"},stopPropagation:()=>{}}))
     // turnoff by click
@@ -47,6 +59,7 @@ describe('Test InputContainer List', ()=>{
   it('choose by click', () => {
     expect(wrapper.find(".vemoji-preview-list").length).toBe(0)
     wrapper.setState({
+      commentContent:'',
       emojiList:["100", "+1", "-1", "heavy_check_mark", "grin"],
       emojiListPos:[5,10,15],
       emojiChooseId:0,
@@ -75,7 +88,7 @@ describe('Test InputContainer List', ()=>{
     expect(wrapper.find('.veditor').at(0).text()).toBe("✔️ ")
   });
 
-  it("click on some element can not cancel",()=>{
+  it("click on some element can not cancel emojiPreview",()=>{
     expect(wrapper.find(".vemoji-preview-list").length).toBe(0)
     wrapper.setState({
       commentContent:":",
@@ -91,7 +104,7 @@ describe('Test InputContainer List', ()=>{
 
   })
 
-  it("cancel by click",()=>{
+  it("emojiPreview cancel by click",()=>{
     expect(wrapper.state('emojiList')).toEqual(["100", "+1", "-1", "heavy_check_mark", "grin"])
     expect(wrapper.find(".vemoji-preview-list").length).toBe(1)
     map.click.forEach(fn=>fn({target:{parentNode:{className:"vinputs"}},stopPropagation:()=>{}}))
@@ -101,7 +114,7 @@ describe('Test InputContainer List', ()=>{
 
   })
 
-  it("cancel by keyboard",()=>{
+  it("emojiPreview cancel by keyboard",()=>{
     expect(wrapper.state('emojiList')).toEqual([])
     expect(wrapper.render().find(".vemoji-preview-list").length).toBe(0)
     wrapper.setState({
@@ -118,4 +131,6 @@ describe('Test InputContainer List', ()=>{
     expect(wrapper.find(".vemoji-preview-list").length).toBe(0)
     expect(wrapper.find('.veditor').at(0).text()).toBe(":")
   })
+
+
 })

@@ -134,76 +134,13 @@ describe('test nest with one comment', ()=>{
   it('show last',()=>{
     expect(page[0].innerHTML).toBe("<span>已经到最后啦</span>")
   })
-  it('verify inputs',()=>{
-    let nickEle=vinputs.childNodes[0],emailEle=vinputs.childNodes[1],linkEle=vinputs.childNodes[2]
-    TestUtil.Simulate.click(submitBtn)
-    expect(errlog[0].innerHTML).toBe("内容不能为空！")
-    textAreaEle.value='something...'
-    TestUtil.Simulate.change(
-      textAreaEle
-    )
-    TestUtil.Simulate.click(submitBtn)
-
-    expect(errlog[0].innerHTML).toBe("昵称为必填项！")
-    nickEle.value="my-nick-name"
-    TestUtil.Simulate.change(
-      nickEle
-    )
-    TestUtil.Simulate.click(submitBtn)
-    expect(errlog[0].innerHTML).toBe("email为必填项！")
-    emailEle.value="invalid email format"
-    TestUtil.Simulate.change(
-      emailEle
-    )
-    TestUtil.Simulate.click(submitBtn)
-    expect(errlog[0].innerHTML).toBe("email格式错误！")
-
-    emailEle.value="valid@valid.com"
-    linkEle.value="invalid link format"
-    TestUtil.Simulate.change(
-      emailEle
-    )
-    TestUtil.Simulate.change(
-      linkEle
-    )
-    TestUtil.Simulate.click(submitBtn)
-    expect(errlog[0].innerHTML).toBe("网址格式错误！请以http(s)开头")
-
-    linkEle.value="www.abc.com"
-    TestUtil.Simulate.change(
-      linkEle
-    )
-    TestUtil.Simulate.click(submitBtn)
-    expect(errlog[0].innerHTML).toBe("网址格式错误！请以http(s)开头")
-  })
-  it("toggle emoji panel",()=>{
-    TestUtil.Simulate.click(vemojiBtn)
-    let emojiPanelEles=container.getElementsByClassName("vemojis")
-    expect(emojiPanelEles.length).toBe(1)
-    TestUtil.Simulate.click(vemojiBtn)
-    expect(emojiPanelEles.length).toBe(0)
-    TestUtil.Simulate.click(vemojiBtn)
-  })
-  it("toggle preview panel",()=>{
-    TestUtil.Simulate.click(vpreviewBtn)
-    let previewPanelEles=container.getElementsByClassName("vinput vpreview")
-    expect(previewPanelEles.length).toBe(0)
-    TestUtil.Simulate.click(vpreviewBtn)
-    expect(previewPanelEles.length).toBe(1)
-  })
 
   it('click reply',()=>{
     let replyBtn=container.getElementsByClassName("vat")[0]
     TestUtil.Simulate.click(replyBtn)
-    expect(textAreaEle.value).toBe("@fsf something...")
+    expect(textAreaEle.value).toBe("@fsf ")
   })
 
-  it('change avatar',()=>{
-    let avatarList=container.getElementsByClassName("vavatars-select-list")
-    expect(avatarList.length).toBe(0)
-    TestUtil.Simulate.click(avatarBtn)
-    expect(avatarList.length).toBe(1)
-  })
 })
 
 
@@ -288,73 +225,12 @@ describe('test list with one comment', ()=>{
   it('show last',()=>{
     expect(page[0].innerHTML).toBe("<span>已经到最后啦</span>")
   })
-  it('verify inputs',()=>{
-    let nickEle=vinputs.childNodes[0],emailEle=vinputs.childNodes[1],linkEle=vinputs.childNodes[2]
-    TestUtil.Simulate.click(submitBtn)
-    expect(errlog[0].innerHTML).toBe("内容不能为空！")
-    textAreaEle.value='something...'
-    TestUtil.Simulate.change(
-      textAreaEle
-    )
-    TestUtil.Simulate.click(submitBtn)
-
-    expect(errlog[0].innerHTML).toBe("昵称为必填项！")
-    nickEle.value="my-nick-name"
-    TestUtil.Simulate.change(
-      nickEle
-    )
-    TestUtil.Simulate.click(submitBtn)
-    expect(errlog[0].innerHTML).toBe("email为必填项！")
-    emailEle.value="invalid email format"
-    TestUtil.Simulate.change(
-      emailEle
-    )
-    TestUtil.Simulate.click(submitBtn)
-    expect(errlog[0].innerHTML).toBe("email格式错误！")
-
-    emailEle.value="valid@valid.com"
-    linkEle.value="invalid link format"
-    TestUtil.Simulate.change(
-      emailEle
-    )
-    TestUtil.Simulate.change(
-      linkEle
-    )
-    TestUtil.Simulate.click(submitBtn)
-    expect(errlog[0].innerHTML).toBe("网址格式错误！请以http(s)开头")
-
-    linkEle.value="www.abc.com"
-    TestUtil.Simulate.change(
-      linkEle
-    )
-    TestUtil.Simulate.click(submitBtn)
-    expect(errlog[0].innerHTML).toBe("网址格式错误！请以http(s)开头")
-  })
-  it("toggle emoji panel",()=>{
-    TestUtil.Simulate.click(vemojiBtn)
-    let emojiPanelEles=container.getElementsByClassName("vemojis")
-    expect(emojiPanelEles.length).toBe(1)
-    TestUtil.Simulate.click(vemojiBtn)
-    expect(emojiPanelEles.length).toBe(0)
-  })
-  it("toggle preview panel",()=>{
-    TestUtil.Simulate.click(vpreviewBtn)
-    let previewPanelEles=container.getElementsByClassName("vinput vpreview")
-    expect(previewPanelEles.length).toBe(0)
-    TestUtil.Simulate.click(vpreviewBtn)
-    expect(previewPanelEles.length).toBe(1)
-  })
 
   it('click reply',()=>{
     let replyBtn=container.getElementsByClassName("vat")[0]
     TestUtil.Simulate.click(replyBtn)
-    expect(textAreaEle.value).toBe("@fsf something...")
+    expect(textAreaEle.value).toBe("@fsf ")
   })
 
-  it('change avatar',()=>{
-    let avatarList=container.getElementsByClassName("vavatars-select-list")
-    expect(avatarList.length).toBe(0)
-    TestUtil.Simulate.click(avatarBtn)
-    expect(avatarList.length).toBe(1)
-  })
+
 })

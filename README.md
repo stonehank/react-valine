@@ -1,5 +1,10 @@
 > 轻量级评论插件[Valine](https://github.com/xCss/Valine)的`React`版本。
 
+[![Build Status](https://travis-ci.org/stonehank/react-valine.svg?branch=master)](https://travis-ci.org/stonehank/react-valine)
+[![npm](https://img.shields.io/npm/v/react-valine.svg)](https://www.npmjs.com/package/react-valine)
+[![codecov](https://codecov.io/gh/stonehank/react-valine/branch/master/graph/badge.svg)](https://codecov.io/gh/stonehank/react-valine)
+
+
 ### 新增特性
 
 1. 增加评论数和阅读量统计组件，可以在任意位置调用。

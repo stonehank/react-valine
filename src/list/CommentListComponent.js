@@ -71,11 +71,13 @@ export default class CommentListComponent extends React.PureComponent{
               {
                 fetchMoreLoading
                   ? <Loading />
-                  : <PageComponent  langCtrl={curLang["ctrl"]}
-                                    commentCounts={commentCounts}
-                                    currentCounts={currentCounts}
-                                    fillNxtCommentList={fillNxtCommentList}
-                    />
+                  : commentCounts===0
+                    ? null
+                    : <PageComponent  langCtrl={curLang["ctrl"]}
+                                      commentCounts={commentCounts}
+                                      currentCounts={currentCounts}
+                                      fillNxtCommentList={fillNxtCommentList}
+                      />
               }
             </React.Fragment>
         }

@@ -23,32 +23,32 @@ Object.defineProperties(window.HTMLElement.prototype, {
 nock('https://app-router.leancloud.cn')
   .persist()
   .get('/2/route?appId=I5DAxOhp2kPXkbj9VXPyKoEB-gzGzoHsz')
-  // .delay(delayTime)
+  .delay(delayTime)
   .reply(200, {"ttl":3600,"stats_server":"i5daxohp.stats.lncld.net","rtm_router_server":"i5daxohp.rtm.lncld.net","push_server":"i5daxohp.push.lncld.net","play_server":"i5daxohp.play.lncld.net","engine_server":"i5daxohp.engine.lncld.net","api_server":"i5daxohp.api.lncld.net"})
 
 /* fetch list--start */
 nock('https://i5daxohp.api.lncld.net:443')
   .persist()
   .get('/1.1/classes/Comment?where=%7B%22uniqStr%22%3A%22test-1-reply%22%2C%22pid%22%3A%22%22%7D&keys=nick%2Ccomment%2Clink%2Cpid%2CavatarSrc%2Crid&limit=10&order=-createdAt')
-  // .delay(delayTime)
+  .delay(delayTime)
   .reply(200, {"results":[{"nick":"fsf","updatedAt":"2019-05-29T13:33:18.710Z","objectId":"5cee8a1d43e78c006734fc8e","createdAt":"2019-05-29T13:33:17.983Z","pid":"","link":"","comment":"<p>sdfsadf<\/p>\n","avatarSrc":"https:\/\/gravatar.loli.net\/avatar\/?d=robohash&size=50","rid":"5cee8a1d43e78c006734fc8e"}]})
 
 nock('https://i5daxohp.api.lncld.net:443')
   .persist()
   .get('/1.1/classes/Comment?where=%7B%22uniqStr%22%3A%22test-1-reply%22%2C%22pid%22%3A%7B%22%24ne%22%3A%22%22%7D%2C%22rid%22%3A%7B%22%24in%22%3A%5B%225cee8a1d43e78c006734fc8e%22%5D%7D%7D&keys=nick%2Ccomment%2Clink%2Cpid%2CavatarSrc%2Crid&order=createdAt')
-  // .delay(delayTime)
+  .delay(delayTime)
   .reply(200, {"results":[]})
 /* fetch list--end */
 nock('https://i5daxohp.api.lncld.net')
   .persist()
   .get('/1.1/classes/Comment?where=%7B%22uniqStr%22%3A%22test-1-reply%22%7D&limit=0&count=1')
-  // .delay(delayTime)
+  .delay(delayTime)
   .reply(200, {"results":[],"count":1})
 
 nock("https://i5daxohp.api.lncld.net")
   .persist()
   .get("/1.1/classes/Counter?where=%7B%22uniqStr%22%3A%22test-1-reply%22%7D")
-  // .delay(delayTime)
+  .delay(delayTime)
   .reply(200, {"results":[{"uniqStr":"test-1-reply","title":"\u6d4b\u8bd5\u9875\u9762localhost","time":9999,"createdAt":"2019-05-29T14:53:57.872Z","updatedAt":"2019-05-30T08:08:47.209Z","objectId":"5cee9d0530863b006861c98c"}]})
 
 // 处理提交评论1-1
@@ -56,14 +56,14 @@ nock("https://i5daxohp.api.lncld.net")
   // .log(console.log)
   .persist()
   .post("/1.1/classes/Comment", {"rid":"","pid":"","mail":"","avatarSrc":"https://gravatar.loli.net/avatar/?d=mp&size=50","link":"","comment":"<p>something...</p>\n","nick":"my-nick-name","uniqStr":"test-1-reply","ua":"Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/11.12.0","url":"/"})
-  // .delay(delayTime)
+  .delay(delayTime)
   .reply(200, {"objectId":"5cf63560d5de2b0070e51466","createdAt":"2019-06-04T09:09:52.806Z"})
 
 // 处理提交评论1-2
 nock("https://i5daxohp.api.lncld.net")
   .persist()
   .put("/1.1/classes/Comment/5cf63560d5de2b0070e51466", {"rid":"5cf63560d5de2b0070e51466","ACL":{"*":{"read":true}}})
-  // .delay(delayTime)
+  .delay(delayTime)
   .reply(200, {"updatedAt":"2019-06-04T10:42:41.358Z","objectId":"5cf64b207b968a0076d21d8b"})
 
 // 处理提交长评论2-1
@@ -71,14 +71,14 @@ nock("https://i5daxohp.api.lncld.net")
   // .log(console.log)
   .persist()
   .post("/1.1/classes/Comment", {"rid":"","pid":"","mail":"","avatarSrc":"https://gravatar.loli.net/avatar/?d=mp&size=50","link":"","comment":"<p>This is some long text...\nThis is some long text...\nThis is some long text...\nThis is some long text...\nThis is some long text...\nThis is some long text...</p>\n","nick":"my-nick-name","uniqStr":"test-1-reply","ua":"Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/11.12.0","url":"/"})
-  // .delay(delayTime)
+  .delay(delayTime)
   .reply(200, {"objectId":"5cf63560d5de2b0070e51467","createdAt":"2019-06-04T09:09:52.806Z"})
 
 // 处理提交长评论2-2
 nock("https://i5daxohp.api.lncld.net")
   .persist()
   .put("/1.1/classes/Comment/5cf63560d5de2b0070e51467", {"rid":"5cf63560d5de2b0070e51467","ACL":{"*":{"read":true}}})
-  // .delay(delayTime)
+  .delay(delayTime)
   .reply(200, {"updatedAt":"2019-06-04T10:42:41.358Z","objectId":"5cf64b207b968a0076d21d8c"})
 
 
