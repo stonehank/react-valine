@@ -347,7 +347,7 @@ export default class ValineContainer extends React.Component{
       requireEmail,
       curLang,
       nest,
-      showEmojiNum
+      emojiListSize
     }=this.props
 
     const {
@@ -376,7 +376,7 @@ export default class ValineContainer extends React.Component{
                           requireEmail={requireEmail}
                           curLang={curLang}
                           GRAVATAR_URL={GRAVATAR_URL}
-                          showEmojiNum={showEmojiNum}
+                          emojiListSize={emojiListSize}
                           toggleTextAreaFocus={toggleTextAreaFocus}
                           previewShow={previewShow}
                           submitComment={this.submitComment}

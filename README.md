@@ -57,6 +57,7 @@
 |nest|否|回复样式是否为嵌套模式|true|
 |nestLayers|否|开启嵌套模式后有效，配置嵌套的层数|Infinity|
 |pageSize|否|评论列表分页，每页条数|10|
+|emojiListSize|否|输入`:`显示`emoji`的条数|5|
 |sofaEmpty|否|无评论时显示|快来做第一个评论的人吧~|
 |previewShow|否|是否默认开启实时预览|true|
 |lang|否|支持中文(zh-cn)和英文(en)|zh-cn|
@@ -168,6 +169,8 @@ class ArticleMeta extends React.Component{
 |参数|是否必须|作用|默认值|
 |:---:|:---:|:---:|:---:|
 |uniqStr|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
+|useWindow|否|配置执行滚动时所依赖的父元素|true|
+|getPanelParent|否|`useWindow`为`false`时，可以自定义滚动父组件，默认滚动父组件为`panel.parentNode`|null|
 
 > 注意：uniqStr必须是一个独立值，强烈建议自己填写一个独立值，而不是用默认值，因为如果使用默认值，当需要获取评论数时，并不一定在当前评论页的`uniqStr`上，就会获取错误或者失败。
 
@@ -201,6 +204,19 @@ modify_hljs((hljs)=>{
 参考[Valine-Admin](https://github.com/zhaojun1998/Valine-Admin)
 
 ### Changelog
+
+##### 0.3.7
+
+* 回复后自动展开
+* 精确滚动位置(点击回复和提交后的滚动)
+* 添加参数`useWindow`和`getPanelParent`，配置执行滚动时所依赖的父元素，默认为`true`
+* `Valine`新增参数`emojiListSize`，控制`emoji`列表的最大显示数，默认为`5`
+* 过长的内容展示`Click on expand`
+* 分离服务端获取数据模块`FetchResourceContainer`和更新数据模块`ValineContainer`
+* 修复获取更多时按钮不消失的bug
+* 修复初始获取数据时进行提交出现重复评论的bug
+* 修复无评论时出现"已经到最后"的bug
+* 增加测试
 
 ##### 0.3.6
 

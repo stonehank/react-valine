@@ -22,7 +22,7 @@ export default class Valine extends React.Component{
       updateCountHash:0,
       lang:props.lang,
       nestLayers:props.nestLayers,
-      showEmojiNum:props.showEmojiNum,
+      emojiListSize:props.emojiListSize,
     }
     if(props.customTxt!=null){
       let customTxt=props.customTxt
@@ -162,7 +162,7 @@ Valine.defaultProps={
   previewShow:true,
   lang:'zh-cn',
   nestLayers:Infinity,
-  showEmojiNum:5
+  emojiListSize:5
 }
 
 Valine.propTypes = {
@@ -178,5 +178,5 @@ Valine.propTypes = {
   sofaEmpty:PropTypes.string,
   customTxt:PropTypes.object,
   nestLayers:PropTypes.number,
-  showEmojiNum:PropTypes.number,
+  emojiListSize:PropTypes.number,
 }

@@ -128,7 +128,7 @@ export default class InputContainer extends React.PureComponent {
       value=ele.value
     // 获取表情prefix列表
     let prefix=getEmojiPrefix(value,selectionStart)
-    if(str==='')newEmojiList=getWordList(prefix,this.props.showEmojiNum)
+    if(str==='')newEmojiList=getWordList(prefix,this.props.emojiListSize)
 
     // 当开始出现表情列表时，获取top,left
     if(emojiList.length===0 && newEmojiList.length>0){
