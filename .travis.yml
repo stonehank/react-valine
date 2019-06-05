@@ -8,6 +8,7 @@ install:
 
 
 script:
+  - npm run test
   - npm run build:demo
 
 after_script:
