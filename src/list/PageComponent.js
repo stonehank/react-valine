@@ -3,15 +3,14 @@ import React from 'react'
 export default class PageComponent extends React.PureComponent{
 
   render(){
-    const {currentCounts,langCtrl,commentCounts,fillNxtCommentList}=this.props
+    const {currentCounts,langCtrl,commentCounts,handleReply,fillNxtCommentList}=this.props
     return (
       <div className="vpage txt-center">
+        <button className={"vdiscuss vbtn"} onClick={handleReply}>{langCtrl["discuss"]}</button>
         {
           currentCounts < commentCounts
-            // ? <button onClick={fillNxtCommentList}>{"加载更多评论"+(nestShow ? "" : `(剩余${commentCounts - currentCounts}条)`)}</button>
-            // ? <button onClick={fillNxtCommentList}>加载更多评论(剩余{commentCounts - currentCounts}条)</button>
-            ? <button onClick={fillNxtCommentList}>{langCtrl["more"]}</button>
-            : <span>{langCtrl["no_more"]}</span>
+            ? <button className={"vmore vbtn"} onClick={fillNxtCommentList}>{langCtrl["more"]}</button>
+            : <span style={{margin:"0 1rem"}}>{langCtrl["no_more"]}</span>
         }
       </div>
     )

@@ -76,6 +76,7 @@ export default class CommentListComponent extends React.PureComponent{
                     : <PageComponent  langCtrl={curLang["ctrl"]}
                                       commentCounts={commentCounts}
                                       currentCounts={currentCounts}
+                                      handleReply={handleReply}
                                       fillNxtCommentList={fillNxtCommentList}
                       />
               }

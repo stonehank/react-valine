@@ -130,6 +130,12 @@ export default class ValineContainer extends React.Component{
         submitBtnDisable:false,
         submitLoading:false,
         errorLog:"Something wrong with submit!"
+      },()=>{
+        setTimeout(()=>{
+          this.setState({
+            errorLog:null
+          })
+        },2000)
       })
     })
   }
@@ -180,7 +186,7 @@ export default class ValineContainer extends React.Component{
     const {requireName,requireEmail,curLang}=this.props
     const {nick,mail,comment,link,at,pid}=this.defaultComment
     let errorStr='',state=false,errObj=curLang.verify
-    if(comment==='')errorStr=errObj['empty_content']
+    if(comment.trim()==='')errorStr=errObj['empty_content']
     else if(requireName && nick.trim()==='')errorStr=errObj['require_nick']
     else if(requireEmail && mail.trim()==='')errorStr=errObj['require_mail']
     else if(mail.trim()!=='' && !emailVerify(mail))errorStr=errObj['email_format_failed']
@@ -235,19 +241,22 @@ export default class ValineContainer extends React.Component{
     let ele=this.wrapRef.current
     this.panelParentEle=this.getParentElement(ele)
     let [innerScrTop,outerScrTop]=this.getScrollTop(ele,this.panelParentEle)
-    if(this.props.nest){
+
+    let isReply=replyId && replyName && rid
+    if(isReply && this.props.nest){
       this.outerScrTop=outerScrTop
       this.rScrollID=replyId
     }
-    let inputContainer= this.inputContainerRef.current
-    if(!inputContainer){
-      setTimeout(()=>{
+    if(isReply){
+      let inputContainer= this.inputContainerRef.current
+      if(!inputContainer){
+        setTimeout(()=>{
+          inputContainer.commentContentOnChange(null,`@${replyName} `)
+        },0)
+      }else{
         inputContainer.commentContentOnChange(null,`@${replyName} `)
-      },0)
-    }else{
-      inputContainer.commentContentOnChange(null,`@${replyName} `)
+      }
     }
-
     this.setState((prevState)=>({
       toggleTextAreaFocus:!prevState.toggleTextAreaFocus
     }),()=>{
@@ -256,6 +265,7 @@ export default class ValineContainer extends React.Component{
       }else{
         scrollTo([this.panelParentEle,window],[innerScrTop,outerScrTop])
       }
+      location.hash="reply"
     })
   }
 

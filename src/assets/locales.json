@@ -17,6 +17,7 @@
     "ctrl": {
       "reply": "回复",
       "submit": "提交",
+      "discuss":"参与讨论",
       "expand_reply":"查看回复",
       "collapse_reply":"收起回复",
       "more": "加载更多评论",
@@ -65,6 +66,7 @@
       "reply": "Reply",
       "expand_reply":"Check reply",
       "collapse_reply":"Collapse reply",
+      "discuss":"Discuss",
       "more": "Load more comments",
       "no_more":"No more comments",
       "preview": "Preview",
