@@ -1,4 +1,13 @@
-import {resolveTAB,replaceExistEmoji2,getEmojiPrefix,mergeNestComment,simplyObj,getLinkWithoutProtocol} from '../src/utils'
+import {
+  resolveTAB,
+  replaceExistEmoji2,
+  getEmojiPrefix,
+  mergeNestComment,
+  simplyObj,
+  getLinkWithoutProtocol,
+  contentAtVerify
+} from '../src/utils'
+import timeAgo from "../src/utils/timeAgo";
 
 
 
@@ -302,4 +311,34 @@ describe("获取数据合并",()=>{
       {id:'008',rid:'008',pid:'',child:[],initShowChild:false},
     ])
   })
+})
+
+
+it("检测at的ID是否对应",()=>{
+  expect(contentAtVerify('@nick ','nick')).toBe(true)
+  expect(contentAtVerify('@nick','nick')).toBe(false)
+  expect(contentAtVerify('@ ',' ')).toBe(false)
+  expect(contentAtVerify('@nack ','nick')).toBe(false)
+  expect(contentAtVerify('@nick \nsadfsf \n','nick')).toBe(true)
+  expect(contentAtVerify('@nick\n sfasf \n','nick')).toBe(true)
+  expect(contentAtVerify('@nick\t sfasf \n','nick')).toBe(true)
+  expect(contentAtVerify('@nick\r sfasf \n','nick')).toBe(true)
+})
+
+it("检测时间",()=>{
+  let lang={
+    "seconds": "秒前",
+    "minutes": "分钟前",
+    "hours": "小时前",
+    "days": "天前",
+    "months":"个月前",
+    "now": "刚刚"
+  }
+  expect(timeAgo( {getTime:()=>new Date().getTime()+1},lang)).toBe('刚刚')
+  expect(timeAgo( {getTime:()=>new Date().getTime()-5000},lang)).toBe('5 秒前')
+  expect(timeAgo( {getTime:()=>new Date().getTime()-3600*24*1000},lang)).toBe('1 天前')
+  expect(timeAgo( {getTime:()=>new Date().getTime()-3600*24*1000*30},lang)).toBe('1 个月前')
+  expect(timeAgo( {getTime:()=>new Date().getTime()-3600*24*1000*30*11},lang)).toBe('11 个月前')
+  expect(timeAgo( {getTime:()=>new Date().getTime()-3600*24*1000*30*12},lang)).toBe('12 个月前')
+  expect(timeAgo( new Date('2001-1-1'),lang)).toBe('2001-01-01')
 })

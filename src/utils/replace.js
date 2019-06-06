@@ -8,17 +8,17 @@ export function replaceAt(content,pid="_"){
   return content.replace(/^(@[^\s\t\n\r]+)\s/,`<a class="at" href="#${pid}">@${escapeName}</a>&nbsp;`)
 }
 
-export function replaceExistEmoji(value,selectionStart,str=''){
-  let startPos=selectionStart
-  let newStr=str + value.replace(/:(.+?):/g, (placeholder, key) => {
-    if(emojiData[key]){
-      startPos-=key.length
-      startPos+=1
-    }
-    return emojiData[key] || placeholder
-  })
-  return [newStr,startPos]
-}
+// export function replaceExistEmoji(value,selectionStart,str=''){
+//   let startPos=selectionStart
+//   let newStr=str + value.replace(/:(.+?):/g, (placeholder, key) => {
+//     if(emojiData[key]){
+//       startPos-=key.length
+//       startPos+=1
+//     }
+//     return emojiData[key] || placeholder
+//   })
+//   return [newStr,startPos]
+// }
 
 // 尽可能匹配更多的表情
 // 例如 :catt:cat:  结果为:catt🐱

@@ -66,6 +66,7 @@ describe('test nest with one comment', ()=>{
     vinputs,
     vemojiBtn,
     vpreviewBtn,
+    vpreview,
     submitBtn,
     avatarBtn
 
@@ -99,6 +100,7 @@ describe('test nest with one comment', ()=>{
     vinputs=container.getElementsByClassName("vinputs")[0]
     textAreaEle=container.getElementsByClassName("veditor vinput ")[0]
     vemojiBtn=container.getElementsByClassName("vemoji-btn")[0]
+    vpreview=container.getElementsByClassName("vinput vpreview")[0]
     vpreviewBtn=container.getElementsByClassName("vpreview-btn")[0]
     submitBtn=container.getElementsByClassName("vsubmit ")[0]
     avatarBtn=container.getElementsByClassName("vavatars-select-button")[0]
@@ -132,13 +134,23 @@ describe('test nest with one comment', ()=>{
     expect(vcard.id).toBe('5cee8a1d43e78c006734fc8e')
   })
   it('show last',()=>{
-    expect(page[0].innerHTML).toBe("<span>已经到最后啦</span>")
+    expect(page[0].innerHTML).toBe(`<button class="vdiscuss vbtn">参与讨论</button><span style="margin: 0px 1rem;">已经到最后啦</span>`)
   })
 
   it('click reply',()=>{
     let replyBtn=container.getElementsByClassName("vat")[0]
     TestUtil.Simulate.click(replyBtn)
     expect(textAreaEle.value).toBe("@fsf ")
+    expect(vpreview.innerHTML).toBe(`<div><p><a class="at" href="#_">@fsf</a>&nbsp;</p>\n</div>`)
+  })
+
+  it('click discuss',()=>{
+    textAreaEle.value=''
+    TestUtil.Simulate.change(textAreaEle)
+    let discussBtn=container.getElementsByClassName("vdiscuss vbtn")[0]
+    TestUtil.Simulate.click(discussBtn)
+    expect(document.activeElement).toBe(textAreaEle)
+    expect(textAreaEle.value).toBe("")
   })
 
 })
@@ -156,6 +168,7 @@ describe('test list with one comment', ()=>{
     vinputs,
     vemojiBtn,
     vpreviewBtn,
+    vpreview,
     submitBtn,
     avatarBtn
 
@@ -191,6 +204,7 @@ describe('test list with one comment', ()=>{
     textAreaEle=container.getElementsByClassName("veditor vinput ")[0]
     vemojiBtn=container.getElementsByClassName("vemoji-btn")[0]
     vpreviewBtn=container.getElementsByClassName("vpreview-btn")[0]
+    vpreview=container.getElementsByClassName("vinput vpreview")[0]
     submitBtn=container.getElementsByClassName("vsubmit ")[0]
     avatarBtn=container.getElementsByClassName("vavatars-select-button")[0]
   })
@@ -223,13 +237,14 @@ describe('test list with one comment', ()=>{
     expect(vcard.id).toBe('5cee8a1d43e78c006734fc8e')
   })
   it('show last',()=>{
-    expect(page[0].innerHTML).toBe("<span>已经到最后啦</span>")
+    expect(page[0].innerHTML).toBe(`<button class="vdiscuss vbtn">参与讨论</button><span style="margin: 0px 1rem;">已经到最后啦</span>`)
   })
 
   it('click reply',()=>{
     let replyBtn=container.getElementsByClassName("vat")[0]
     TestUtil.Simulate.click(replyBtn)
     expect(textAreaEle.value).toBe("@fsf ")
+    expect(vpreview.innerHTML).toBe(`<div><p><a class="at" href="#_">@fsf</a>&nbsp;</p>\n</div>`)
   })
 
 

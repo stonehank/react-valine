@@ -86,6 +86,10 @@ describe('test common usage', ()=>{
       linkEle=vinputs.childNodes[2].childNodes[1]
     TestUtil.Simulate.click(submitBtn)
     expect(errlog[0].innerHTML).toBe("内容不能为空！")
+    textAreaEle.value='  \r\t\n   '
+    TestUtil.Simulate.change(textAreaEle)
+    TestUtil.Simulate.click(submitBtn)
+    expect(errlog[0].innerHTML).toBe("内容不能为空！")
     textAreaEle.value='something...'
     TestUtil.Simulate.change(
       textAreaEle

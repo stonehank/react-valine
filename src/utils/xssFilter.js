@@ -58,7 +58,8 @@ function clearAttr(el) {
     switch (attr.name.toLowerCase()) {
       case 'style':
         let style = attr.value
-        style.split(';').forEach((idx, item) => {
+        // console.log(style.split(';'))
+        style.split(';').forEach((item) => {
           if (item.includes('color')) {
             attr(el, 'style', item);
             return false

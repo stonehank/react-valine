@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import TestUtil from 'react-dom/test-utils';
 
 const nock = require('nock')
-const test_uniq_str="test-1-reply"
+const test_uniq_str="test-slow-network"
 const delayTime=500
 const waitTime=3000
 jest.setTimeout(10000);
@@ -29,33 +29,33 @@ nock('https://app-router.leancloud.cn')
 /* fetch list--start */
 nock('https://i5daxohp.api.lncld.net:443')
   .persist()
-  .get('/1.1/classes/Comment?where=%7B%22uniqStr%22%3A%22test-1-reply%22%2C%22pid%22%3A%22%22%7D&keys=nick%2Ccomment%2Clink%2Cpid%2CavatarSrc%2Crid&limit=10&order=-createdAt')
+  .get('/1.1/classes/Comment?where=%7B%22uniqStr%22%3A%22test-slow-network%22%2C%22pid%22%3A%22%22%7D&keys=nick%2Ccomment%2Clink%2Cpid%2CavatarSrc%2Crid&limit=10&order=-createdAt')
   .delay(delayTime)
   .reply(200, {"results":[{"nick":"fsf","updatedAt":"2019-05-29T13:33:18.710Z","objectId":"5cee8a1d43e78c006734fc8e","createdAt":"2019-05-29T13:33:17.983Z","pid":"","link":"","comment":"<p>sdfsadf<\/p>\n","avatarSrc":"https:\/\/gravatar.loli.net\/avatar\/?d=robohash&size=50","rid":"5cee8a1d43e78c006734fc8e"}]})
 
 nock('https://i5daxohp.api.lncld.net:443')
   .persist()
-  .get('/1.1/classes/Comment?where=%7B%22uniqStr%22%3A%22test-1-reply%22%2C%22pid%22%3A%7B%22%24ne%22%3A%22%22%7D%2C%22rid%22%3A%7B%22%24in%22%3A%5B%225cee8a1d43e78c006734fc8e%22%5D%7D%7D&keys=nick%2Ccomment%2Clink%2Cpid%2CavatarSrc%2Crid&order=createdAt')
+  .get('/1.1/classes/Comment?where=%7B%22uniqStr%22%3A%22test-slow-network%22%2C%22pid%22%3A%7B%22%24ne%22%3A%22%22%7D%2C%22rid%22%3A%7B%22%24in%22%3A%5B%225cee8a1d43e78c006734fc8e%22%5D%7D%7D&keys=nick%2Ccomment%2Clink%2Cpid%2CavatarSrc%2Crid&order=createdAt')
   .delay(delayTime)
   .reply(200, {"results":[]})
 /* fetch list--end */
 nock('https://i5daxohp.api.lncld.net')
   .persist()
-  .get('/1.1/classes/Comment?where=%7B%22uniqStr%22%3A%22test-1-reply%22%7D&limit=0&count=1')
+  .get('/1.1/classes/Comment?where=%7B%22uniqStr%22%3A%22test-slow-network%22%7D&limit=0&count=1')
   .delay(delayTime)
   .reply(200, {"results":[],"count":1})
 
 nock("https://i5daxohp.api.lncld.net")
   .persist()
-  .get("/1.1/classes/Counter?where=%7B%22uniqStr%22%3A%22test-1-reply%22%7D")
+  .get("/1.1/classes/Counter?where=%7B%22uniqStr%22%3A%22test-slow-network%22%7D")
   .delay(delayTime)
-  .reply(200, {"results":[{"uniqStr":"test-1-reply","title":"\u6d4b\u8bd5\u9875\u9762localhost","time":9999,"createdAt":"2019-05-29T14:53:57.872Z","updatedAt":"2019-05-30T08:08:47.209Z","objectId":"5cee9d0530863b006861c98c"}]})
+  .reply(200, {"results":[{"uniqStr":"test-slow-network","title":"\u6d4b\u8bd5\u9875\u9762localhost","time":9999,"createdAt":"2019-05-29T14:53:57.872Z","updatedAt":"2019-05-30T08:08:47.209Z","objectId":"5cee9d0530863b006861c98c"}]})
 
 // 处理提交评论1-1
 nock("https://i5daxohp.api.lncld.net")
   // .log(console.log)
   .persist()
-  .post("/1.1/classes/Comment", {"rid":"","pid":"","mail":"","avatarSrc":"https://gravatar.loli.net/avatar/?d=mp&size=50","link":"","comment":"<p>something...</p>\n","nick":"my-nick-name","uniqStr":"test-1-reply","ua":"Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/11.12.0","url":"/"})
+  .post("/1.1/classes/Comment", {"rid":"","pid":"","mail":"","avatarSrc":"https://gravatar.loli.net/avatar/?d=mp&size=50","link":"","comment":"<p>this is XSS tag<button>click</button><img src=\"xxx\"><span>Mark</span></p>\n","nick":"my-nick-name","uniqStr":"test-slow-network","ua":"Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/11.12.0","url":"/"})
   .delay(delayTime)
   .reply(200, {"objectId":"5cf63560d5de2b0070e51466","createdAt":"2019-06-04T09:09:52.806Z"})
 
@@ -70,7 +70,7 @@ nock("https://i5daxohp.api.lncld.net")
 nock("https://i5daxohp.api.lncld.net")
   // .log(console.log)
   .persist()
-  .post("/1.1/classes/Comment", {"rid":"","pid":"","mail":"","avatarSrc":"https://gravatar.loli.net/avatar/?d=mp&size=50","link":"","comment":"<p>This is some long text...\nThis is some long text...\nThis is some long text...\nThis is some long text...\nThis is some long text...\nThis is some long text...</p>\n","nick":"my-nick-name","uniqStr":"test-1-reply","ua":"Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/11.12.0","url":"/"})
+  .post("/1.1/classes/Comment", {"rid":"","pid":"","mail":"","avatarSrc":"https://gravatar.loli.net/avatar/?d=mp&size=50","link":"","comment":"<p>This is some long text...\nThis is some long text...\nThis is some long text...\nThis is some long text...\nThis is some long text...\nThis is some long text...</p>\n","nick":"my-nick-name","uniqStr":"test-slow-network","ua":"Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/11.12.0","url":"/"})
   .delay(delayTime)
   .reply(200, {"objectId":"5cf63560d5de2b0070e51467","createdAt":"2019-06-04T09:09:52.806Z"})
 
@@ -175,7 +175,7 @@ describe('test App with slow-network', ()=>{
     let nickEle=vinputs.childNodes[0].childNodes[0],
       avatarList=container.getElementsByClassName("vavatars-select-list")
     expect(nickEle.nodeName).toBe("INPUT")
-    textAreaEle.value='something...'
+    textAreaEle.value=`this is XSS tag<button onclick="alert(1)">click</button><img src="xxx" onerror="alert(1)" /><script>alert(1)</script><span style="position:absolute;top:0;left:0;width:99999999px;height:999999999px;background:#fff">Mark</span>`
     nickEle.value="my-nick-name"
     TestUtil.Simulate.change(textAreaEle)
     TestUtil.Simulate.change(nickEle)
@@ -193,6 +193,7 @@ describe('test App with slow-network', ()=>{
       expect(submitBtn.getAttribute("disabled")).not.toBe(null)
       expect(vloading.length).toBe(1)
       setTimeout(()=>{
+        expect(vloading.length).toBe(0)
         expect(container.querySelector("#commentCounts").innerHTML).toBe("评论数：<span>2</span>")
         expect(container.querySelector("#pageviewCounts").innerHTML).toBe("浏览量：<span>9999</span>")
         expect(submitBtn.getAttribute("disabled")).toBe(null)
@@ -200,7 +201,7 @@ describe('test App with slow-network', ()=>{
         let listChild=list[0].childNodes
         expect(listChild.length).toBe(2)
         let contentNodes=list[0].getElementsByClassName("vcontent")
-        expect(contentNodes[0].innerHTML).toBe("<div><p>something...</p>\n</div>")
+        expect(contentNodes[0].innerHTML).toBe(`<div><p>this is XSS tag<button>click</button><img src="xxx"><span>Mark</span></p>\n</div>`)
         expect(contentNodes[1].innerHTML).toBe("<div><p>sdfsadf</p>\n</div>")
         done()
       },waitTime)
@@ -234,8 +235,7 @@ describe('test App with slow-network', ()=>{
         "This is some long text...\n" +
         "This is some long text...</p>\n" +
         "</div>")
-      expect(contentNodes[1].innerHTML).toBe("<div><p>something...</p>\n</div>")
-      expect(contentNodes[2].innerHTML).toBe("<div><p>sdfsadf</p>\n</div>")
+      expect(contentNodes[1].innerHTML).toBe(`<div><p>this is XSS tag<button>click</button><img src="xxx"><span>Mark</span></p>\n</div>`)
       expect(contentNodes[2].innerHTML).toBe("<div><p>sdfsadf</p>\n</div>")
       expect(container.getElementsByClassName("vcontent expand").length).toBe(1)
       done()

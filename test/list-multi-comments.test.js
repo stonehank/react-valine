@@ -144,18 +144,18 @@ describe('test list with multi comments', ()=>{
     expect(vcard.id).toBe('5cf0ceb7c8959c00691262e6')
   })
   it('show last',()=>{
-    expect(page[0].innerHTML).toBe("<button>加载更多评论</button>")
+    expect(page[0].innerHTML).toBe(`<button class="vdiscuss vbtn">参与讨论</button><button class="vmore vbtn">加载更多评论</button>`)
   })
 
   it('fetch more',(done)=>{
-    let fetchMoreBtn=page[0].childNodes[0]
+    let fetchMoreBtn=page[0].getElementsByClassName("vmore vbtn")[0]
     TestUtil.Simulate.click(fetchMoreBtn)
     setTimeout(()=>{
       expect(list[0].childNodes.length).toBe(20)
-      expect(page[0].innerHTML).toBe("<button>加载更多评论</button>")
+      expect(page[0].childNodes[1].innerHTML).toBe(`加载更多评论`)
       TestUtil.Simulate.click(fetchMoreBtn)
       setTimeout(()=>{
-        expect(page[0].innerHTML).toBe("<span>已经到最后啦</span>")
+        expect(page[0].childNodes[1].innerHTML).toBe(`已经到最后啦`)
         expect(errlog.length).toBe(0)
         done()
       },1000)
