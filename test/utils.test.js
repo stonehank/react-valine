@@ -337,7 +337,7 @@ it("检测时间",()=>{
     "months":"个月前",
     "now": "刚刚"
   }
-  expect(timeAgo( {getTime:()=>new Date().getTime()+1},lang)).toBe('刚刚')
+  expect(timeAgo( {getTime:()=>new Date().getTime()+5000},lang)).toBe('刚刚')
   expect(timeAgo( {getTime:()=>new Date().getTime()-5000},lang)).toBe('5 秒前')
   expect(timeAgo( {getTime:()=>new Date().getTime()-1000*90},lang)).toBe('1 分钟前')
   expect(timeAgo( {getTime:()=>new Date().getTime()-1000*3800},lang)).toBe('1 小时前')
