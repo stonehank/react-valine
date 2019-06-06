@@ -1,5 +1,5 @@
 import React from 'react';
-import {Valine,ValineCount,ValinePageview,ValinePanel} from '../src/react-valine'
+import {Valine,ValineCount,ValinePageview,ValinePanel,modify_hljs} from '../src/react-valine'
 import ReactDOM from 'react-dom';
 import TestUtil from 'react-dom/test-utils';
 
@@ -66,7 +66,22 @@ nock("https://i5daxohp.api.lncld.net")
   .delay(delayTime)
   .reply(200, {"updatedAt":"2019-06-04T10:42:41.358Z","objectId":"5cf64b207b968a0076d21d8b"})
 
-// 处理提交长评论2-1
+// 处理提交代码评论2-1
+nock("https://i5daxohp.api.lncld.net")
+  // .log(console.log)
+  .persist()
+  .post("/1.1/classes/Comment", {"rid":"","pid":"","mail":"","avatarSrc":"https://gravatar.loli.net/avatar/?d=mp&size=50","link":"","comment":"<pre><code class=\"language-js\"><pre class=\"hljs\"><code><span class=\"hljs-keyword\">var</span> a=<span class=\"hljs-number\">5</span></code></pre></code></pre>\n<pre><code class=\"language-java\"><pre class=\"hljs\"><code><span class=\"hljs-keyword\">int</span> a=<span class=\"hljs-number\">5</span></code></pre></code></pre>\n<pre><code class=\"language-python\"><pre class=\"hljs\"><code><span class=\"hljs-function\"><span class=\"hljs-keyword\">def</span> <span class=\"hljs-title\">a</span><span class=\"hljs-params\">()</span>:</span>\n  x=<span class=\"hljs-number\">5</span>\n  <span class=\"hljs-keyword\">return</span></code></pre></code></pre>\n","nick":"my-nick-name","uniqStr":"test-slow-network","ua":"Mozilla/5.0 (win32) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/11.12.0","url":"/"})
+  .delay(delayTime)
+  .reply(200, {"objectId":"5cf63560d5de2b0070e51468","createdAt":"2019-06-04T09:09:52.806Z"})
+
+// 处理提交代码评论2-2
+nock("https://i5daxohp.api.lncld.net")
+  .persist()
+  .put("/1.1/classes/Comment/5cf63560d5de2b0070e51468", {"rid":"5cf63560d5de2b0070e51468","ACL":{"*":{"read":true}}})
+  .delay(delayTime)
+  .reply(200, {"updatedAt":"2019-06-04T10:42:41.358Z","objectId":"5cf64b207b968a0076d21d8c"})
+
+// 处理提交长评论3-1
 nock("https://i5daxohp.api.lncld.net")
   // .log(console.log)
   .persist()
@@ -74,12 +89,12 @@ nock("https://i5daxohp.api.lncld.net")
   .delay(delayTime)
   .reply(200, {"objectId":"5cf63560d5de2b0070e51467","createdAt":"2019-06-04T09:09:52.806Z"})
 
-// 处理提交长评论2-2
+// 处理提交长评论3-2
 nock("https://i5daxohp.api.lncld.net")
   .persist()
   .put("/1.1/classes/Comment/5cf63560d5de2b0070e51467", {"rid":"5cf63560d5de2b0070e51467","ACL":{"*":{"read":true}}})
   .delay(delayTime)
-  .reply(200, {"updatedAt":"2019-06-04T10:42:41.358Z","objectId":"5cf64b207b968a0076d21d8c"})
+  .reply(200, {"updatedAt":"2019-06-04T10:42:41.358Z","objectId":"5cf64b207b968a0076d21d8d"})
 
 
 
@@ -99,7 +114,14 @@ describe('test App with slow-network', ()=>{
     vloading
 
   beforeAll(()=>{
+
+    modify_hljs(function(hljs){
+      const python = require('highlight.js/lib/languages/python');
+      hljs.registerLanguage('python', python);
+      return hljs
+    })
     TestUtil.act(() => {
+
       ReactDOM.render(<Valine  appId={"I5DAxOhp2kPXkbj9VXPyKoEB-gzGzoHsz"}
                                appKey={"lGPcHd7GL9nYKqBbNEkgXKjX"}
       >
@@ -208,6 +230,39 @@ describe('test App with slow-network', ()=>{
     },waitTime/2)
   })
 
+  it('代码高亮并且折叠',(done)=>{
+    let nickEle=vinputs.childNodes[0].childNodes[0]
+    expect(nickEle.nodeName).toBe("INPUT")
+    // js java python
+    textAreaEle.value='```js\nvar a=5\n```\n\n```java\nint a=5\n```\n\n```python\ndef a():\n  x=5\n  return\n```'
+    nickEle.value="my-nick-name"
+    TestUtil.Simulate.change(textAreaEle)
+    TestUtil.Simulate.change(nickEle)
+    expect(list.length).toBe(1)
+    TestUtil.Simulate.click(submitBtn)
+    expect(submitBtn.getAttribute("disabled")).not.toBe(null)
+    expect(vloading.length).toBe(1)
+    setTimeout(()=>{
+      expect(vloading.length).toBe(0)
+      expect(container.querySelector("#commentCounts").innerHTML).toBe("评论数：<span>3</span>")
+      expect(container.querySelector("#pageviewCounts").innerHTML).toBe("浏览量：<span>9999</span>")
+      expect(submitBtn.getAttribute("disabled")).toBe(null)
+      let listChild=list[0].childNodes
+      expect(listChild.length).toBe(3)
+      let contentNodes=list[0].getElementsByClassName("vcontent")
+      expect(contentNodes[0].innerHTML).toBe("<div><pre><code class=\"language-js\"><pre class=\"hljs\"><code><span class=\"hljs-keyword\">var</span> a=<span class=\"hljs-number\">5</span></code></pre></code></pre>\n" +
+        "<pre><code class=\"language-java\"><pre class=\"hljs\"><code><span class=\"hljs-keyword\">int</span> a=<span class=\"hljs-number\">5</span></code></pre></code></pre>\n" +
+        "<pre><code class=\"language-python\"><pre class=\"hljs\"><code><span class=\"hljs-function\"><span class=\"hljs-keyword\">def</span> <span class=\"hljs-title\">a</span><span class=\"hljs-params\">()</span>:</span>\n" +
+        "  x=<span class=\"hljs-number\">5</span>\n" +
+        "  <span class=\"hljs-keyword\">return</span></code></pre></code></pre>\n" +
+        "</div>")
+      expect(contentNodes[1].innerHTML).toBe(`<div><p>this is XSS tag<button>click</button><img src="xxx"><span>Mark</span></p>\n</div>`)
+      expect(contentNodes[2].innerHTML).toBe("<div><p>sdfsadf</p>\n</div>")
+      expect(container.getElementsByClassName("vcontent expand").length).toBe(1)
+      done()
+    },waitTime)
+  })
+
   it('评论过长会折叠',(done)=>{
     let nickEle=vinputs.childNodes[0].childNodes[0]
     expect(nickEle.nodeName).toBe("INPUT")
@@ -221,12 +276,12 @@ describe('test App with slow-network', ()=>{
     expect(vloading.length).toBe(1)
     setTimeout(()=>{
       expect(vloading.length).toBe(0)
-      expect(container.querySelector("#commentCounts").innerHTML).toBe("评论数：<span>3</span>")
+      expect(container.querySelector("#commentCounts").innerHTML).toBe("评论数：<span>4</span>")
       expect(container.querySelector("#pageviewCounts").innerHTML).toBe("浏览量：<span>9999</span>")
       expect(submitBtn.getAttribute("disabled")).toBe(null)
       // expect(list.length).toBe(1)
       let listChild=list[0].childNodes
-      expect(listChild.length).toBe(3)
+      expect(listChild.length).toBe(4)
       let contentNodes=list[0].getElementsByClassName("vcontent")
       expect(contentNodes[0].innerHTML).toBe("<div><p>This is some long text...\n" +
         "This is some long text...\n" +
@@ -235,9 +290,15 @@ describe('test App with slow-network', ()=>{
         "This is some long text...\n" +
         "This is some long text...</p>\n" +
         "</div>")
-      expect(contentNodes[1].innerHTML).toBe(`<div><p>this is XSS tag<button>click</button><img src="xxx"><span>Mark</span></p>\n</div>`)
-      expect(contentNodes[2].innerHTML).toBe("<div><p>sdfsadf</p>\n</div>")
-      expect(container.getElementsByClassName("vcontent expand").length).toBe(1)
+      expect(contentNodes[1].innerHTML).toBe("<div><pre><code class=\"language-js\"><pre class=\"hljs\"><code><span class=\"hljs-keyword\">var</span> a=<span class=\"hljs-number\">5</span></code></pre></code></pre>\n" +
+        "<pre><code class=\"language-java\"><pre class=\"hljs\"><code><span class=\"hljs-keyword\">int</span> a=<span class=\"hljs-number\">5</span></code></pre></code></pre>\n" +
+        "<pre><code class=\"language-python\"><pre class=\"hljs\"><code><span class=\"hljs-function\"><span class=\"hljs-keyword\">def</span> <span class=\"hljs-title\">a</span><span class=\"hljs-params\">()</span>:</span>\n" +
+        "  x=<span class=\"hljs-number\">5</span>\n" +
+        "  <span class=\"hljs-keyword\">return</span></code></pre></code></pre>\n" +
+        "</div>")
+      expect(contentNodes[2].innerHTML).toBe(`<div><p>this is XSS tag<button>click</button><img src="xxx"><span>Mark</span></p>\n</div>`)
+      expect(contentNodes[3].innerHTML).toBe("<div><p>sdfsadf</p>\n</div>")
+      expect(container.getElementsByClassName("vcontent expand").length).toBe(2)
       done()
     },waitTime)
   })

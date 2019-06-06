@@ -6,6 +6,7 @@ import {
   simplyObj,
   getLinkWithoutProtocol,
   contentAtVerify,
+  getCaretCoordinates
 } from '../src/utils'
 import timeAgo from "../src/utils/timeAgo";
 import {escape} from "../src/utils/escape";
@@ -365,4 +366,26 @@ it("escape",()=>{
   expect(escape("peter say:'Hello'")).toBe("peter say:&#39;Hello&#39;")
   expect(escape("peter say:`Hello`")).toBe("peter say:&#x60;Hello&#x60;")
   expect(escape(`peter say:"Hello"`)).toBe("peter say:&quot;Hello&quot;")
+})
+
+
+
+it("getCaretCoordinates",()=>{
+  Object.defineProperties(window.HTMLElement.prototype, {
+    offsetTop: {
+      get: function() {
+        return 50
+      }
+    },
+    offsetLeft: {
+      get: function() {
+        return 30
+      }
+    },
+  });
+  let input=document.createElement("textarea")
+  input.style.lineHeight=20+"px"
+  input.value="12345\n\n67890"
+  input.selectionStart=8
+  expect(getCaretCoordinates(input,input.selectionStart)).toEqual({ top: 51, left: 31, height: 20 })
 })
