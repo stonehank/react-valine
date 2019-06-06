@@ -5,9 +5,11 @@ import {
   mergeNestComment,
   simplyObj,
   getLinkWithoutProtocol,
-  contentAtVerify
+  contentAtVerify,
 } from '../src/utils'
 import timeAgo from "../src/utils/timeAgo";
+import {escape} from "../src/utils/escape";
+import getWordList from "../src/utils/emojiTire";
 
 
 
@@ -336,9 +338,31 @@ it("检测时间",()=>{
   }
   expect(timeAgo( {getTime:()=>new Date().getTime()+1},lang)).toBe('刚刚')
   expect(timeAgo( {getTime:()=>new Date().getTime()-5000},lang)).toBe('5 秒前')
+  expect(timeAgo( {getTime:()=>new Date().getTime()-1000*90},lang)).toBe('1 分钟前')
+  expect(timeAgo( {getTime:()=>new Date().getTime()-1000*3800},lang)).toBe('1 小时前')
   expect(timeAgo( {getTime:()=>new Date().getTime()-3600*24*1000},lang)).toBe('1 天前')
   expect(timeAgo( {getTime:()=>new Date().getTime()-3600*24*1000*30},lang)).toBe('1 个月前')
   expect(timeAgo( {getTime:()=>new Date().getTime()-3600*24*1000*30*11},lang)).toBe('11 个月前')
   expect(timeAgo( {getTime:()=>new Date().getTime()-3600*24*1000*30*12},lang)).toBe('12 个月前')
   expect(timeAgo( new Date('2001-1-1'),lang)).toBe('2001-01-01')
+})
+
+
+it("搜索emojiList",()=>{
+  expect(getWordList(null,5)).toEqual([])
+  expect(getWordList('c',5)).toEqual(["heavy_check_mark", "1st_place_medal", "innocent", "stuck_out_tongue_winking_eye", "confused"])
+  expect(getWordList('cof',5)).toEqual(["coffee"])
+  expect(getWordList('',5)).toEqual(["100", "+1", "-1", "heavy_check_mark", "grin"])
+  expect(getWordList('c',10)).toEqual(["heavy_check_mark", "1st_place_medal", "innocent", "stuck_out_tongue_winking_eye", "confused", "confounded", "tired_face", "neutral_face", "dizzy_face", "scream"])
+  expect(getWordList('+',5)).toEqual(["+1"])
+  expect(getWordList('1',5)).toEqual(["100","+1","-1","1st_place_medal"])
+
+})
+it("escape",()=>{
+  expect(escape("peter")).toBe("peter")
+  expect(escape("jane&peter")).toBe("jane&amp;peter")
+  expect(escape("<tag />")).toBe("&lt;tag /&gt;")
+  expect(escape("peter say:'Hello'")).toBe("peter say:&#39;Hello&#39;")
+  expect(escape("peter say:`Hello`")).toBe("peter say:&#x60;Hello&#x60;")
+  expect(escape(`peter say:"Hello"`)).toBe("peter say:&quot;Hello&quot;")
 })
