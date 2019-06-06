@@ -41,7 +41,7 @@
 
 ### 组件说明：
 
-####  VaLine
+####  Valine
 
 创建`React.createContext`，并且传递`自定义参数`和储存当前`count`的组件(避免重复请求)。
 
