@@ -7,22 +7,39 @@ let xssFilter = (content) => {
   node.insertAdjacentHTML('afterbegin',content)
   let subNodes=node.querySelectorAll('*')
 
-  let rejectNodes = ['INPUT', 'STYLE', 'SCRIPT', 'IFRAME', 'FRAME', 'AUDIO', 'VIDEO', 'EMBED', 'META', 'TITLE', 'LINK'];
+  let rejectNodes = ['INPUT', 'STYLE', 'SCRIPT', 'IFRAME', 'FRAME', 'AUDIO', 'VIDEO', 'EMBED', 'META', 'TITLE', 'LINK','FORM','TEMPLATE'];
   let __replaceVal = (node, curAttr) => {
-    let val = attr(node, curAttr);
-    if(val)attr(node, curAttr, val.replace(/(javascript|eval)/ig, ''));
+    let val = attribute(node, curAttr);
+    if(val)attribute(node, curAttr, val.replace(/(javascript|eval)/ig, ''));
   }
-  subNodes.forEach(n=>{
-    if (n.nodeType !== 1) return;
-    if (rejectNodes.includes(n.nodeName)) {
-      if (n.nodeName === 'INPUT' && attr(n, 'type') === 'checkbox'){
-        attr(n, 'disabled', 'disabled');
+  subNodes.forEach((n,i)=>{
+    if (typeof n.nodeType=== "number" && n.nodeType !== 1) return;
+    let nodeName=n.nodeName
+    if(typeof nodeName !=="string"){
+      let match=Object.prototype.toString.call(n).match(/^\[object HTML(.*)Element]$/)
+      if(!match)return
+      nodeName=match[1].toUpperCase()
+    }
+    if (rejectNodes.includes(nodeName)) {
+      if (nodeName === 'INPUT' && attribute(n, 'type') === 'checkbox'){
+        attribute(n, {'disabled':'disabled'});
       }else{
-        n.parentNode.removeChild(n)
+        let parentNode=n.parentNode
+        if(parentNode.getAttribute('name')==="parentNode"){
+          parentNode=n.parentElement
+        }
+        if(typeof parentNode.removeChild!=="function"){
+          if(parentNode.nodeName==="FORM")return
+        }
+        parentNode.removeChild(n)
+        return
       }
     }
-    if (n.nodeName === 'A'){
+    if (nodeName === 'A'){
       __replaceVal(n, 'href')
+    }
+    if(nodeName=== 'IMG'){
+      __replaceVal(n, 'src')
     }
     clearAttr(n)
   })
@@ -30,7 +47,7 @@ let xssFilter = (content) => {
   node=null
   return res
 }
-function attr(ele,name,value){
+function attribute(ele,name,value){
   if(ele.getAttribute==null){
     return
   }
@@ -50,21 +67,22 @@ function attr(ele,name,value){
   }
 }
 
+
 function clearAttr(el) {
   let attrs = el.attributes
   let ignoreAttrs = ['align', 'alt','checked', 'disabled', 'href', 'id', 'target', 'title', 'type', 'src', 'class', 'style']
+  let removeAttrs=[]
   for(let attr of attrs){
     let name = attr.name
     switch (attr.name.toLowerCase()) {
       case 'style':
         let style = attr.value
-        // console.log(style.split(';'))
         style.split(';').forEach((item) => {
           if (item.includes('color')) {
-            attr(el, 'style', item);
+            attribute(el, 'style', item);
             return false
           } else{
-            el.removeAttribute('style')
+            removeAttrs.push('style')
           }
         })
         break;
@@ -73,10 +91,14 @@ function clearAttr(el) {
         break;
       default:
         break;
-
     }
-    if (!ignoreAttrs.includes(name)) el.removeAttribute(name)
-
+    if (!ignoreAttrs.includes(name)) {
+      removeAttrs.push(name)
+      // el.removeAttribute(name)
+    }
+  }
+  for(let name of removeAttrs){
+    el.removeAttribute(name)
   }
   return el
 }

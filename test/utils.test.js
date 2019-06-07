@@ -11,6 +11,7 @@ import {
 import timeAgo from "../src/utils/timeAgo";
 import {escape} from "../src/utils/escape";
 import getWordList from "../src/utils/emojiTire";
+import xssFilter from "../src/utils/xssFilter";
 
 
 
@@ -388,4 +389,41 @@ it("getCaretCoordinates",()=>{
   input.value="12345\n\n67890"
   input.selectionStart=8
   expect(getCaretCoordinates(input,input.selectionStart)).toEqual({ top: 51, left: 31, height: 20 })
+})
+
+describe("test xssfilter",()=>{
+  it("not allow form",()=>{
+    expect(xssFilter(`<div onclick=alert(0)><form onsubmit=alert(1)><input onfocus=alert(2) name=parentNode>123</form></div>
+
+<form onsubmit=alert(1)><input onfocus=alert(2) name=nodeName>123</form>
+
+<form onsubmit=alert(1)><input onfocus=alert(2) name=nodeType>123</form>
+
+<form onsubmit=alert(1)><input onfocus=alert(2) name=children>123</form>
+
+<form onsubmit=alert(1)><input onfocus=alert(2) name=attributes>123</form>
+
+<form onsubmit=alert(1)><input onfocus=alert(2) name=removeChild>123</form>
+
+<form onsubmit=alert(1)><input onfocus=alert(2) name=removeAttributeNode>123</form>
+
+<form onsubmit=alert(1)><input onfocus=alert(2) name=setAttribute>123</form>`).trim()).toBe("<div></div>")
+  })
+
+  it("not allow 'javascript'",()=>{
+    expect(xssFilter(`<a href="javascript:alert(1)">c</a><img src="javascript:alert(1)" />
+`).trim()).toBe(`<a href=":alert(1)">c</a><img src=":alert(1)">`)
+  })
+
+  it("multiply event will remove",()=>{
+    expect(xssFilter(`<button remove=me onmousedown="javascript:alert(1);" onclick="javascript:alert(1)" >@giutro`)).toBe(`<button>@giutro</button>`)
+  })
+
+  it('template not allow',()=>{
+    expect(xssFilter(`<body><template><s><template><s><img src=x onerror=alert(1)>@shafigullin</s></template></s></template>`)).toBe("")
+  })
+
+  it('set checkbox',()=>{
+    expect(xssFilter(`<input type="checkbox" />`).includes(`disabled="disabled"`)).toBe(true)
+  })
 })
