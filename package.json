@@ -7,7 +7,7 @@
   "scripts": {
     "test:build": "jest --runInBand && codecov",
     "test": "jest  && codecov",
-    "build": "npm run build:main",
+    "build": "npm run test && npm run build:main",
     "build:main": "webpack",
     "build:lib": "babel src --out-dir lib --copy-files",
     "build:demo": "webpack --config webpack.demo.config.js",
