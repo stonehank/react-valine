@@ -115,9 +115,10 @@ export default class InputContainer extends React.PureComponent {
       event.preventDefault()
       let ele=event ? event.target : this.textAreaRef.current
       let insertStr='  '
-      let [newV,scrollTop,startPos,endPos]=resolveTAB(ele,insertStr)
+      let [newStr,scrollTop,startPos,endPos]=resolveTAB(ele,insertStr)
+      if(newStr.length>1000)newStr=newStr.slice(0,1000)
       this.setState({
-        commentContent:newV
+        commentContent:newStr
       },()=>{
         ele.focus();
         ele.selectionStart = startPos
@@ -146,6 +147,7 @@ export default class InputContainer extends React.PureComponent {
     // 替换已经存在的表情符号
     let result=replaceExistEmoji2(value,selectionStart,str),
       newStr=result[0]
+    if(newStr.length>1000)newStr=newStr.slice(0,1000)
     selectionStart=result[1]
     selectionStart+=str.length
     this.setState({

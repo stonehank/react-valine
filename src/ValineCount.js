@@ -31,5 +31,6 @@ export default class ValineCount extends React.Component{
 
 ValineCount.propTypes = {
   count:PropTypes.oneOfType([PropTypes.string,PropTypes.number]),
-  style:PropTypes.object
+  style:PropTypes.object,
+  uniqStr:PropTypes.any
 }

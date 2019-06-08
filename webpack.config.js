@@ -64,6 +64,12 @@ module.exports= {
     rules: [
       { parser: { requireEnsure: false } },
       {
+        enforce:'pre',
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "eslint-loader"
+      },
+      {
         test: /\.js$/,
         include:path.resolve(__dirname, 'src'),
         // exclude:path.resolve(__dirname,'src/App.js'),

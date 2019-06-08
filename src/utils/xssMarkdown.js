@@ -20,6 +20,7 @@ function createMarked(hljs){
             hljs.highlight(lang, str, true).value +
             '</code></pre>';
         } catch (__) {
+          // do nothing
         }
       }
       return '<pre class="hljs"><code>' + escape(str) + '</code></pre>';

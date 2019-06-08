@@ -154,6 +154,7 @@ export default class FetchResourceContainer extends React.Component{
   }
 
   render(){
+    /* eslint-disable no-unused-vars */
     const {AV,fetchCount,...otherProps}=this.props
     return (
       <ValineContainer fetchNest={this.fetchNest}

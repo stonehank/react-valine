@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default React.forwardRef((props, ref) => {
+const TextAreaComponent=React.forwardRef((props, ref) => {
   const {
     commentContent,
     placeholder,
@@ -18,3 +18,8 @@ export default React.forwardRef((props, ref) => {
     />
   )
 })
+
+
+TextAreaComponent.displayName=TextAreaComponent
+
+export default TextAreaComponent

@@ -12,7 +12,7 @@ let xssFilter = (content) => {
     let val = attribute(node, curAttr);
     if(val)attribute(node, curAttr, val.replace(/(javascript|eval)/ig, ''));
   }
-  subNodes.forEach((n,i)=>{
+  subNodes.forEach((n)=>{
     if (typeof n.nodeType=== "number" && n.nodeType !== 1) return;
     let nodeName=n.nodeName
     if(typeof nodeName !=="string"){
@@ -76,8 +76,7 @@ function clearAttr(el) {
     let name = attr.name
     switch (attr.name.toLowerCase()) {
       case 'style':
-        let style = attr.value
-        style.split(';').forEach((item) => {
+        attr.value.split(';').forEach((item) => {
           if (item.includes('color')) {
             attribute(el, 'style', item);
             return false
