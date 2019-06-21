@@ -52,7 +52,8 @@ export default class Valine extends React.Component{
     try{
       window.AV.init({
         appId:props.appId,
-        appKey:props.appKey
+        appKey:props.appKey,
+        serverURLs: 'https://avoscloud.com'
       })
     }catch(e){
       // do nothing
