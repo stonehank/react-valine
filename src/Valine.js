@@ -53,7 +53,7 @@ export default class Valine extends React.Component{
       window.AV.init({
         appId:props.appId,
         appKey:props.appKey,
-        serverURLs: 'https://avoscloud.com'
+        serverURLs: props.serverURLs
       })
     }catch(e){
       // do nothing
@@ -163,7 +163,8 @@ Valine.defaultProps={
   previewShow:true,
   lang:'zh-cn',
   nestLayers:Infinity,
-  emojiListSize:5
+  emojiListSize:5,
+  serverURLs:'https://avoscloud.com'
 }
 
 Valine.propTypes = {

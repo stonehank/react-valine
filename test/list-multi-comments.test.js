@@ -86,6 +86,12 @@ describe('test list with multi comments', ()=>{
                                appKey={"lGPcHd7GL9nYKqBbNEkgXKjX"}
                                requireEmail={true}
                                nest={false}
+                               serverURLs={{
+                                 api: "https://i5daxohp.api.lncld.net",
+                                 engine: "https://i5daxohp.engine.lncld.net",
+                                 push: "https://i5daxohp.push.lncld.net",
+                                 stats: "https://i5daxohp.stats.lncld.net"
+                               }}
       >
         <div className="App">
           <header className="App-header">

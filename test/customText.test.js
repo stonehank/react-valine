@@ -69,6 +69,12 @@ describe('test nest with no comments', ()=>{
                                    "require_mail":"email别漏！",
                                  }
                                }}
+                               serverURLs={{
+                                 api: "https://i5daxohp.api.lncld.net",
+                                 engine: "https://i5daxohp.engine.lncld.net",
+                                 push: "https://i5daxohp.push.lncld.net",
+                                 stats: "https://i5daxohp.stats.lncld.net"
+                               }}
       >
         <div className="App">
           <header className="App-header">

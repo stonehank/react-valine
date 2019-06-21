@@ -93,6 +93,12 @@ describe('test nest with multi comments', ()=>{
       ReactDOM.render(<Valine  appId={"I5DAxOhp2kPXkbj9VXPyKoEB-gzGzoHsz"}
                                appKey={"lGPcHd7GL9nYKqBbNEkgXKjX"}
                                requireEmail={true}
+                               serverURLs={{
+                                 api: "https://i5daxohp.api.lncld.net",
+                                 engine: "https://i5daxohp.engine.lncld.net",
+                                 push: "https://i5daxohp.push.lncld.net",
+                                 stats: "https://i5daxohp.stats.lncld.net"
+                               }}
       >
         <div className="App">
           <header className="App-header">
