@@ -204,6 +204,12 @@ modify_hljs((hljs)=>{
 
 ### Changelog
 
+##### 0.3.9
+
+* 修复部分xss漏洞
+* 临时修复leanCloud[无法访问问题](https://blog.avoscloud.com/6805/)
+
+
 ##### 0.3.8
 
 * 增加网址输入中切换协议按钮
