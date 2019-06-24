@@ -41,7 +41,7 @@ export default class ValineContainer extends React.Component{
       fetchMoreLoading:false,
       errorLog:null
     }
-
+    this.hasMounted=false
     this.fillNxtCommentList=this.fillNxtCommentList.bind(this)
     this.setCommentList=this.setCommentList.bind(this)
     this.handleReply=this.handleReply.bind(this)
@@ -81,6 +81,7 @@ export default class ValineContainer extends React.Component{
   createNewObj(){
     const {nest,updateCount,uniqStr,curLang,nestLayers,uploadComment}=this.props
     return uploadComment(this.defaultComment).then((commentItem) => {
+      if(!this.hasMounted)return
       let simplyItem=simplyObj(commentItem)
       localStorage && localStorage.setItem('ValineCache', JSON.stringify({
         nick: this.defaultComment['nick'],
@@ -159,7 +160,7 @@ export default class ValineContainer extends React.Component{
           this.setState({
             errorLog:checkR.errorStr
           },()=>{
-            setTimeout(()=>{
+            this.errorTimer=setTimeout(()=>{
               this.setState({
                 errorLog:null
               })
@@ -273,6 +274,7 @@ export default class ValineContainer extends React.Component{
     const {fetchMoreNest,fetchMoreList}=this.props
     let {currentCounts,commentCounts,commentList}=this.state
     if(currentCounts===commentCounts)return
+    if(!this.hasMounted)return
     this.setState({
       fetchMoreLoading:true
     })
@@ -288,6 +290,7 @@ export default class ValineContainer extends React.Component{
   }
 
   setCommentList([items,simplyList,counts,commentCounts,errorLog],nest){
+    if(!this.hasMounted)return
     if(commentCounts===0 || errorLog!=null){
       this.setState({
         fetchInitLoading:false,
@@ -298,7 +301,7 @@ export default class ValineContainer extends React.Component{
           errorLog,
           currentCounts:this.state.commentCounts
         },()=>{
-          setTimeout(()=>{
+          this.errorTimer=setTimeout(()=>{
             this.setState({
               errorLog:null
             })
@@ -334,6 +337,7 @@ export default class ValineContainer extends React.Component{
   }
 
   componentDidMount(){
+    this.hasMounted=true
     const {fetchNest,fetchList}=this.props
     this.setState({
       fetchInitLoading:true
@@ -350,6 +354,13 @@ export default class ValineContainer extends React.Component{
         })
     }
   }
+  componentWillUnmount(){
+    clearTimeout(this.errorTimer)
+    this.errorTimer=null
+    this.hasMounted=false
+  }
+
+
   render(){
 
     const {

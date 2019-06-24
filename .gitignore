@@ -10,3 +10,4 @@ demo
 devInfo.md
 coverage
 codecov.yml
+src/CustomAV.js

@@ -3,9 +3,7 @@ import ValineContext from './ValineContext'
 import locales from './assets/locales'
 import PropTypes from 'prop-types';
 
-
 const AV=require('leancloud-storage')
-
 window.AV=AV
 
 export default class Valine extends React.Component{
@@ -13,7 +11,7 @@ export default class Valine extends React.Component{
   constructor(props){
     super(props)
     this.state={
-      AV:window.AV,
+      AV:AV,
       requireName:props.requireName,
       requireEmail:props.requireEmail,
       nest:props.nest,
@@ -46,11 +44,11 @@ export default class Valine extends React.Component{
     this.updateCounts=this.updateCounts.bind(this)
     this.getPageview=this.getPageview.bind(this)
     this.createCounter=this.createCounter.bind(this)
-    if(!window.AV){
+    if(!this.state.AV){
       throw new Error("leancloud 导入失败，请刷新重试！")
     }
     try{
-      window.AV.init({
+      this.state.AV.init({
         appId:props.appId,
         appKey:props.appKey,
         serverURLs: props.serverURLs
@@ -65,7 +63,7 @@ export default class Valine extends React.Component{
       if(this.countMap.has(uniqStr)){
         resolve(this.countMap.get(uniqStr))
       }else{
-        let AV=window.AV
+        let AV=this.state.AV
         let query= new AV.Query('Comment')
         query.equalTo('uniqStr',uniqStr)
           .count()
@@ -90,7 +88,7 @@ export default class Valine extends React.Component{
       if(this.pageviewMap.has(uniqStr)){
         resolve(this.pageviewMap.get(uniqStr))
       }else{
-        let AV=window.AV
+        let AV=this.state.AV
         let query= new AV.Query('Counter')
         query.equalTo('uniqStr',uniqStr)
           .find()
@@ -125,7 +123,7 @@ export default class Valine extends React.Component{
   }
 
   createCounter(uniqStr,title=''){
-    let AV=window.AV
+    let AV=this.state.AV
     let Ct = AV.Object.extend('Counter');
     let newCounter = new Ct();
     let acl = new AV.ACL();

@@ -1,4 +1,7 @@
 export default function timeAgo(oldDate,langTxt){
+  if(typeof oldDate!=='object'){
+    oldDate=new Date(oldDate)
+  }
   let oldTime=oldDate.getTime()
   try {
     let curTime = new Date().getTime(),
