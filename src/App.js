@@ -11,7 +11,7 @@ function App() {
         <br/>
         浏览量：<ValinePageview title={"测试页面localhost"} count={"统计中"}/>
       </header>
-          <ValinePanel />
+          <ValinePanel  />
     </div>
   );
 }

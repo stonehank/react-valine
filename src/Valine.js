@@ -162,7 +162,7 @@ Valine.defaultProps={
   lang:'zh-cn',
   nestLayers:Infinity,
   emojiListSize:5,
-  serverURLs:'https://avoscloud.com'
+  serverURLs:'https://api.leancloud.cn'
 }
 
 Valine.propTypes = {

@@ -1,14 +1,39 @@
 import React from 'react'
+import TextField from '@material-ui/core/TextField';
+// import FormControl from '@material-ui/core/FormControl';
+import { withStyles } from '@material-ui/core/styles';
+
+const StyledTextField = withStyles({
+  root: {
+    // alignItems:'flex-end',
+    // height: 90
+},
+})(TextField);
 
 
-export default class NickNameComponent extends React.PureComponent{
+class NickNameComponent extends React.PureComponent{
 
   render(){
-    const { nickName,requireName,langHead,nameOnChange} = this.props;
+    const { width,nickName,requireName,langHead,nameErr,nameErrMsg,nameVerify,nameOnChange} = this.props;
     return(
-      <span className="vinput-cell">
-        <input type="text" name="author" className="vinput" placeholder={langHead["nick"]+(requireName?langHead["require"]:"")}  onChange={nameOnChange} value={nickName}/>
-      </span>
+      <StyledTextField
+        classes={{root:"root"}}
+        margin={width==='xs' ? 'dense' : 'normal'}
+        // variant={(width==='xs' || width==='sm') ? 'standard' : 'outlined'}
+        id="author"
+        name="author"
+        label={langHead["nick"]+(requireName?langHead["require"]:"")}
+        value={nickName}
+        error={nameErr}
+        helperText={nameErrMsg}
+        onBlur={nameVerify}
+        onChange={nameOnChange}
+        fullWidth={true}
+        // InputProps={
+        // {startAdornment:inputProps}
+      // }
+      />
     )
   }
 }
+export default NickNameComponent

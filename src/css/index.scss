@@ -5,7 +5,7 @@ html{
   * {
     box-sizing: border-box; //font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", 微软雅黑, "helvetica neue", helvetica, ubuntu, roboto, noto, "segoe ui", Arial, sans-serif;
     //font-size: 16px;
-    line-height:2;
+    //line-height:2;
     color: #555;
     transition: all .3s ease;
   }
@@ -166,29 +166,12 @@ html{
       font-size: 12px;
     }
     .vedit .vctrl span {
-      padding: 10px;
-      display: inline-block;
-      vertical-align: middle;
+      //padding: 10px;
+      //display: inline-block;
+      //vertical-align: middle;
       cursor: pointer;
     }
-    .vedit .vemojis {
-      font-size: 18px;
-      text-align: justify;
-      max-height: 145px;
-      overflow: auto;
-      margin-bottom: 10px;
-      box-shadow: 0px 0 1px #f0f0f0;
-      user-select: none;
-    }
-    .vedit .vemojis .vemoji {
-      font-style: normal;
-      padding: 7px 0;
-      width: 38px;
-      cursor: pointer;
-      text-align: center;
-      display: inline-block;
-      vertical-align: middle;
-    }
+
     .vedit .vpreview {
       min-height:4rem;
       padding: 7px;
@@ -199,10 +182,15 @@ html{
       }
     }
     .vheader {
-      display:flex;
+      display: flex;
+      flex-flow: column;
       .vavatars-select-button{
         position:relative;
+        padding-right:8px;
         cursor:pointer;
+      }
+      .vavatars-select-selected{
+        border-radius:50%;
       }
       .vavatars-select-mark {
         color:#fff;
@@ -264,14 +252,11 @@ html{
           }
         }
 
-        //@media screen and (max-width:520px) {
-        //  .vinput {
-        //    width: 100%;
-        //  }
-        //  &.item2 .vinput {
-        //    width: 100%;
-        //  }
-        //}
+
+      }
+      @media screen and (min-width:768px) {
+        flex-flow: row nowrap;
+        align-items: flex-start;
       }
     }
     .vcontrol {

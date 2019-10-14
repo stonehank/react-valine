@@ -9,7 +9,7 @@ Error: Invalid GBK character "\xE5"
 5:   * {
 6:     box-sizing: border-box; //font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", 微软雅黑, "helvetica neue", helvetica, ubuntu, roboto, noto, "segoe ui", Arial, sans-serif;
 7:     //font-size: 16px;
-8:     line-height:2;
+8:     //line-height:2;
 9:     color: #555;
 10:     transition: all .3s ease;
 11:   }
@@ -43,4 +43,4 @@ E:/Ruby24-x64/bin/scss:23:in `<main>'
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE5\"\A         on line 6 of index.scss\A \A 1: html{\A 2:   scroll-behavior: smooth;\A 3: }\A 4: .v {\A 5:   * {\A 6:     box-sizing: border-box; //font-family: -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", 微软雅黑, \"helvetica neue\", helvetica, ubuntu, roboto, noto, \"segoe ui\", Arial, sans-serif;\A 7:     //font-size: 16px;\A 8:     line-height:2;\A 9:     color: #555;\A 10:     transition: all .3s ease;\A 11:   }"; }
+  content: "Error: Invalid GBK character \"\xE5\"\A         on line 6 of index.scss\A \A 1: html{\A 2:   scroll-behavior: smooth;\A 3: }\A 4: .v {\A 5:   * {\A 6:     box-sizing: border-box; //font-family: -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", 微软雅黑, \"helvetica neue\", helvetica, ubuntu, roboto, noto, \"segoe ui\", Arial, sans-serif;\A 7:     //font-size: 16px;\A 8:     //line-height:2;\A 9:     color: #555;\A 10:     transition: all .3s ease;\A 11:   }"; }

@@ -2,9 +2,10 @@
   "zh-cn": {
     "head": {
       "nick": "昵称",
-      "mail": "邮箱",
+      "mail": "邮箱(不会被显示)",
       "link": "👈切换协议",
       "require":"(*)",
+      "website":"个人主页",
       "change_avatar":"更改"
     },
     "tips": {
@@ -50,8 +51,9 @@
   "en": {
     "head": {
       "nick": "NickName",
-      "mail": "E-Mail",
+      "mail": "E-Mail(will not show on comment)",
       "link": "👈toggle protocol",
+      "website":"Personal link",
       "require":"(require)",
       "change_avatar":"Change"
     },

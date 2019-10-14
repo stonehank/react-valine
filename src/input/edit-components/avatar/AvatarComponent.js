@@ -23,7 +23,7 @@ export default class AvatarComponent extends React.PureComponent{
     // console.log(1)
     return (
       <React.Fragment>
-        <div className={"vavatars-select-button"} style={styles.cell} onClick={toggleShowList} onMouseEnter={turnOnMark} onMouseLeave={turnOffMark}>
+        <div className={"vavatars-select-button"} style={{height:size+2,width:size}} onClick={toggleShowList} onMouseEnter={turnOnMark} onMouseLeave={turnOffMark}>
           {showMark
           ? <div className={"vavatars-select-mark"}>{langHead["change_avatar"]}</div>
           :  null

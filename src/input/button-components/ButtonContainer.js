@@ -1,5 +1,5 @@
 import React from 'react';
-import EmojiComponentShow from "./emoji/EmojiComponentShow";
+// import EmojiComponentShow from "./emoji/EmojiComponentShow";
 import PreviewComponentShow from "./preview/PreviewComponentShow";
 import {xssMarkdown,replaceAt} from '../../utils/index'
 import ButtonComponent from "./ButtonComponent";
@@ -16,6 +16,8 @@ export default class ButtonContainer extends React.PureComponent {
     this.parseContent=this.parseContent.bind(this)
     this.shutdownEmojiPanel=this.shutdownEmojiPanel.bind(this)
     this.toggleEmojiShow=this.toggleEmojiShow.bind(this)
+    this.openEmojiDrawer=this.openEmojiDrawer.bind(this)
+    this.closeEmojiDrawer=this.closeEmojiDrawer.bind(this)
   }
 
   toggleEmojiShow(){
@@ -24,6 +26,16 @@ export default class ButtonContainer extends React.PureComponent {
     }))
   }
 
+  openEmojiDrawer(){
+    this.setState({
+      show:true
+    })
+  }
+  closeEmojiDrawer(){
+    this.setState({
+      show:false
+    })
+  }
   parseContent(){
     const {commentContent}=this.props
     let previewContent=replaceAt(commentContent)
@@ -46,10 +58,10 @@ export default class ButtonContainer extends React.PureComponent {
 
 
   componentDidMount(){
-    document.addEventListener('click',this.shutdownEmojiPanel)
+    // document.addEventListener('click',this.shutdownEmojiPanel)
   }
   componentWillUnmount(){
-    document.removeEventListener('click',this.shutdownEmojiPanel)
+    // document.removeEventListener('click',this.shutdownEmojiPanel)
   }
   componentDidUpdate(){
     if(this.props.previewShow){
@@ -66,11 +78,18 @@ export default class ButtonContainer extends React.PureComponent {
       handleOnSubmit,
       insertEmoji
     }=this.props
-
     return (
       <React.Fragment>
-        <ButtonComponent langCtrl={langCtrl} previewShow={previewShow} togglePreviewShow={togglePreviewShow} toggleEmojiShow={this.toggleEmojiShow}/>
-        <EmojiComponentShow show={show} insertEmoji={insertEmoji} />
+        <ButtonComponent langCtrl={langCtrl}
+                         show={show}
+                         insertEmoji={insertEmoji}
+                         previewShow={previewShow}
+                         togglePreviewShow={togglePreviewShow}
+                         toggleEmojiShow={this.toggleEmojiShow}
+                         closeEmojiDrawer={this.closeEmojiDrawer}
+                         openEmojiDrawer={this.openEmojiDrawer}
+        />
+        {/*<EmojiComponentShow show={show} insertEmoji={insertEmoji} />*/}
         <PreviewComponentShow previewShow={previewShow} previewContent={previewContent} />
         <ControlButton langCtrl={langCtrl} submitBtnDisable={submitBtnDisable} handleOnSubmit={handleOnSubmit}/>
       </React.Fragment>

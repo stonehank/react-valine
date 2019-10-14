@@ -6,8 +6,6 @@ import {
   xssMarkdown,
   replaceAt,
   contentAtVerify,
-  linkVerify,
-  emailVerify,
   mergeNestComment,
   convert2SimplyList,
   simplyObj, getLinkWithoutProtocol
@@ -156,7 +154,7 @@ export default class ValineContainer extends React.Component{
     let checkR=this.submitVerify()
     return new Promise((resolve,reject)=>{
       if(!checkR.state){
-        if(this.state.errorLog!==checkR.errorStr){
+        if(checkR.errorStr!=null && this.state.errorLog!==checkR.errorStr){
           this.setState({
             errorLog:checkR.errorStr
           },()=>{
@@ -183,25 +181,20 @@ export default class ValineContainer extends React.Component{
 
   }
 
+
+
+
   submitVerify(){
-    const {requireName,requireEmail,curLang}=this.props
-    const {nick,mail,comment,link,at,pid}=this.defaultComment
-    let errorStr='',state=false,errObj=curLang.verify
-    if(comment.trim()==='')errorStr=errObj['empty_content']
-    else if(requireName && nick.trim()==='')errorStr=errObj['require_nick']
-    else if(requireEmail && mail.trim()==='')errorStr=errObj['require_mail']
-    else if(mail.trim()!=='' && !emailVerify(mail))errorStr=errObj['email_format_failed']
-    else if(link.trim()!=='' && !linkVerify(link))errorStr=errObj['link_format_failed']
-    else if(at!=='' && pid!==''){
+    const {comment,at,pid}=this.defaultComment
+    if(at!=='' && pid!==''){
       if(!contentAtVerify(comment,at)){
         this.defaultComment.pid=''
         this.defaultComment.at=''
       }else{
         this.defaultComment.comment=replaceAt(comment,pid)
       }
-      state=true
-    } else state=true
-    return {state,errorStr}
+    }
+    return {state:true,errorStr:null}
   }
 
   getParentElement(el) {
@@ -381,7 +374,7 @@ export default class ValineContainer extends React.Component{
       toggleTextAreaFocus,
       previewShow,
       submitLoading,
-      submitBtnDisable
+      submitBtnDisable,
     }=this.state
     return (
       <div ref={this.wrapRef} className="v">

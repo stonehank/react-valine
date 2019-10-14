@@ -1,15 +1,28 @@
 import React from 'react'
-
-
+import TextField from '@material-ui/core/TextField';
+// import Button from '@material-ui/core/Button';
 export default class LinkComponent extends React.PureComponent{
 
   render(){
-    const { link,langHead,protocol,linkOnChange,toggleProtocol} = this.props;
+    const {width,linkErr,linkErrMsg, link,langHead,protocol,linkOnChange,toggleProtocol,linkVerify} = this.props;
     return (
-      <span className="vinput-cell">
-        <span className={"vinput-label"} onClick={toggleProtocol}>{protocol}://</span>
-        <input type="text" name="website" className="vinput" placeholder={langHead["link"]} value={link} onChange={linkOnChange} />
-      </span>
+        <TextField
+          margin={width==='xs' ? 'dense' : 'normal'}
+          // variant={width==='xs' ? 'standard' : 'outlined'}
+          id="website"
+          name="website"
+          label={langHead['website']}
+          placeholder={langHead["link"]}
+          value={link}
+          error={linkErr}
+          helperText={linkErrMsg}
+          onBlur={linkVerify}
+          onChange={linkOnChange}
+          fullWidth={true}
+          InputProps={{
+            startAdornment:<span style={{textTransform:'none'}}  onClick={toggleProtocol}>{protocol}://</span>
+          }}
+        />
     )
   }
 }

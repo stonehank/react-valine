@@ -1,14 +1,25 @@
 import React from 'react'
-
+import TextField from '@material-ui/core/TextField';
 
 export default class MailComponent extends React.PureComponent{
 
+
   render(){
-    const { email,requireEmail,langHead,emailOnChange} = this.props;
+    const {width,emailErr,emailErrMsg,mailVerify, email,requireEmail,langHead,emailOnChange} = this.props;
     return(
-      <span className="vinput-cell">
-        <input type="text" name="email" className="vinput" placeholder={langHead["mail"]+(requireEmail?langHead["require"]:"")} value={email} onChange={emailOnChange} />
-      </span>
+      <TextField
+        margin={width==='xs' ? 'dense' : 'normal'}
+        // variant={(width==='xs' || width==='sm') ? 'standard' : 'outlined'}
+        id="email"
+        name="email"
+        error={emailErr}
+        helperText={emailErrMsg}
+        onBlur={mailVerify}
+        label={langHead["mail"]+(requireEmail?langHead["require"]:"")}
+        value={email}
+        onChange={emailOnChange}
+        fullWidth={true}
+      />
     )
   }
 }

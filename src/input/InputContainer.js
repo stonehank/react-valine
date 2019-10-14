@@ -3,7 +3,15 @@ import emojiData from '../assets/emoji.json'
 import EditAreaComponent from "./edit-components/EditAreaComponent";
 import ButtonContainer from "./button-components/ButtonContainer";
 import TextAreaComponent from "./edit-components/TextAreaComponent";
-import {calcValueAndPos, getEmojiPrefix,resolveTAB,replaceExistEmoji2,getCaretCoordinates,getWordList} from "../utils";
+import {
+  calcValueAndPos,
+  getEmojiPrefix,
+  resolveTAB,
+  replaceExistEmoji2,
+  getCaretCoordinates,
+  getWordList,
+  linkVerify, emailVerify
+} from "../utils";
 import EmojiPreviewComponent from "./EmojiPreviewComponent";
 const avatarsList=["mp","identicon", "monsterid",  "retro", "robohash", "wavatar","blank",]
 
@@ -22,6 +30,14 @@ export default class InputContainer extends React.PureComponent {
       emojiChooseId:0,
       emojiListPos:[0,0],
       avatarSrc:`${props.GRAVATAR_URL}/?d=${avatarsList[Math.floor(Math.random()*avatarsList.length)]}&size=50`,
+      nameErr:false,
+      nameErrMsg:null,
+      emailErr:false,
+      emailErrMsg:null,
+      linkErr:false,
+      linkErrMsg:null,
+      commentErr:false,
+      commentErrMsg:null,
     }
     this.emailOnChange=this.emailOnChange.bind(this)
     this.chooseEmoji=this.chooseEmoji.bind(this)
@@ -32,6 +48,10 @@ export default class InputContainer extends React.PureComponent {
     this.toggleProtocol=this.toggleProtocol.bind(this)
     this.handleOnSubmit=this.handleOnSubmit.bind(this)
     this.contentOnKeyDown=this.contentOnKeyDown.bind(this)
+    this.commentVerify=this.commentVerify.bind(this)
+    this.linkVerify=this.linkVerify.bind(this)
+    this.nameVerify=this.nameVerify.bind(this)
+    this.mailVerify=this.mailVerify.bind(this)
     this.commentContentOnChange=this.commentContentOnChange.bind(this)
     this.turnOffEmojiPreviewList=this.turnOffEmojiPreviewList.bind(this)
 
@@ -195,7 +215,92 @@ export default class InputContainer extends React.PureComponent {
       email:newStr
     })
   }
+  commentVerify(){
+    const {commentContent}=this.state
+    const {curLang}=this.props
+    let errObj=curLang.verify
+    if(commentContent.trim()===''){
+      this.setState({
+        commentErr:true,
+        commentErrMsg:errObj['empty_content']
+      })
+      return false
+    }
+    this.setState({
+      commentErr:false,
+      commentErrMsg:null
+    })
+    return true
+  }
+  linkVerify(){
+    const {link}=this.state
+    const {curLang}=this.props
+    let errObj=curLang.verify
+    if(link.trim()!=='' && !linkVerify(link)){
+      this.setState({
+        linkErr:true,
+        linkErrMsg:errObj['link_format_failed']
+      })
+      return false
+    }
+    this.setState({
+      linkErr:false,
+      linkErrMsg:null
+    })
+    return true
+  }
+  nameVerify(){
+    const {nickName}=this.state
+    const {requireName,curLang}=this.props
+    let errObj=curLang.verify
+    console.log(nickName)
+    if(requireName && nickName.trim()===''){
+      this.setState({
+        nameErr:true,
+        nameErrMsg:errObj['require_nick']
+      })
+      return false
+    }
+    this.setState({
+      nameErr:false,
+      nameErrMsg:null
+    })
+    return true
+  }
+  mailVerify(){
+    const {email}=this.state
+    const {requireEmail,curLang}=this.props
+    let errObj=curLang.verify
+    if(requireEmail && email.trim()===''){
+      this.setState({
+        emailErr:true,
+        emailErrMsg:errObj['require_mail']
+      })
+      return false
+    }else if(email.trim()!=='' && !emailVerify(email)){
+      this.setState({
+        emailErr:true,
+        emailErrMsg:errObj['email_format_failed']
+      })
+      return false
+    }
+    this.setState({
+      emailErr:false,
+      emailErrMsg:null
+    })
+    return true
+  }
+  submitVerify(){
+    let nameV=this.nameVerify()
+    let mailV=this.mailVerify()
+    let linkV=this.linkVerify()
+    let commentV=this.commentVerify()
 
+    if(!nameV || !mailV || !linkV || !commentV){
+      return false
+    }
+    return true
+  }
   linkOnChange(event){
     let newStr=event.target.value
     this.setState({
@@ -205,6 +310,7 @@ export default class InputContainer extends React.PureComponent {
   handleOnSubmit(){
     const {nickName,email,link,protocol,avatarSrc,commentContent}=this.state
     const {submitComment}=this.props
+    if(!this.submitVerify())return
     submitComment({
       mail:email,
       link:link==="" ? link : protocol+"://" + link,
@@ -262,11 +368,18 @@ export default class InputContainer extends React.PureComponent {
       emojiList,
       emojiChooseId,
       emojiPrefix,
-      emojiListPos
+      emojiListPos,
+      nameErr,
+      nameErrMsg,
+      emailErr,
+      emailErrMsg,
+      linkErr,
+      linkErrMsg,
+      commentErr,
+      commentErrMsg,
     } = this.state;
 
     const {
-      // placeholder,
       requireName,
       requireEmail,
       curLang,
@@ -274,7 +387,7 @@ export default class InputContainer extends React.PureComponent {
       submitBtnDisable,
       toggleTextAreaFocus,
       previewShow,
-      togglePreviewShow
+      togglePreviewShow,
     }=this.props
 
     return (
@@ -284,6 +397,12 @@ export default class InputContainer extends React.PureComponent {
                            nickName={nickName}
                            avatarSrc={avatarSrc}
                            protocol={protocol}
+                           nameErr={nameErr}
+                           nameErrMsg={nameErrMsg}
+                           emailErr={emailErr}
+                           emailErrMsg={emailErrMsg}
+                           linkErr={linkErr}
+                           linkErrMsg={linkErrMsg}
                            curLang={curLang}
                            requireName={requireName}
                            requireEmail={requireEmail}
@@ -293,14 +412,20 @@ export default class InputContainer extends React.PureComponent {
                            nameOnChange={this.nameOnChange}
                            avatarOnChange={this.avatarOnChange}
                            toggleProtocol={this.toggleProtocol}
+                           linkVerify={this.linkVerify}
+                           nameVerify={this.nameVerify}
+                           mailVerify={this.mailVerify}
         />
         <div className="vedit">
           <TextAreaComponent ref={this.textAreaRef}
+                             commentErr={commentErr}
+                             commentErrMsg={commentErrMsg}
                              toggleTextAreaFocus={toggleTextAreaFocus}
                              commentContent={commentContent}
                              placeholder={curLang["tips"]["placeholder"]}
                              contentOnKeyDown={this.contentOnKeyDown}
                              contentOnChange={this.commentContentOnChange}
+                             commentVerify={this.commentVerify}
           />
           <EmojiPreviewComponent emojiList={emojiList}
                                  emojiListPos={emojiListPos}
