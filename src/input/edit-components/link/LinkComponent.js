@@ -7,6 +7,7 @@ export default class LinkComponent extends React.PureComponent{
     const {width,linkErr,linkErrMsg, link,langHead,protocol,linkOnChange,toggleProtocol,linkVerify} = this.props;
     return (
         <TextField
+          className={"vinputs-ident"}
           margin={width==='xs' ? 'dense' : 'normal'}
           // variant={width==='xs' ? 'standard' : 'outlined'}
           id="website"

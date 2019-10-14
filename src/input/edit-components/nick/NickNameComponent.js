@@ -1,14 +1,8 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField';
-// import FormControl from '@material-ui/core/FormControl';
-import { withStyles } from '@material-ui/core/styles';
 
-const StyledTextField = withStyles({
-  root: {
-    // alignItems:'flex-end',
-    // height: 90
-},
-})(TextField);
+
+
 
 
 class NickNameComponent extends React.PureComponent{
@@ -16,8 +10,8 @@ class NickNameComponent extends React.PureComponent{
   render(){
     const { width,nickName,requireName,langHead,nameErr,nameErrMsg,nameVerify,nameOnChange} = this.props;
     return(
-      <StyledTextField
-        classes={{root:"root"}}
+      <TextField
+        className={"vinputs-ident"}
         margin={width==='xs' ? 'dense' : 'normal'}
         // variant={(width==='xs' || width==='sm') ? 'standard' : 'outlined'}
         id="author"

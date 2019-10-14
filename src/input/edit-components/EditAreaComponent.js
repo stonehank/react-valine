@@ -48,8 +48,6 @@ class EditAreaComponent extends React.PureComponent {
                                nameOnChange={nameOnChange}
                                nameVerify={nameVerify}
                                width={width}
-                               // inputProps={<AvatarContainer langHead={langHead} avatarSrc={avatarSrc} email={email} GRAVATAR_URL={GRAVATAR_URL} avatarOnChange={avatarOnChange}/>}
-
             />
           </div>
           <MailComponent email={email}

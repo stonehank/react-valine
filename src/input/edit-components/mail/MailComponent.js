@@ -8,6 +8,7 @@ export default class MailComponent extends React.PureComponent{
     const {width,emailErr,emailErrMsg,mailVerify, email,requireEmail,langHead,emailOnChange} = this.props;
     return(
       <TextField
+        className={"vinputs-ident"}
         margin={width==='xs' ? 'dense' : 'normal'}
         // variant={(width==='xs' || width==='sm') ? 'standard' : 'outlined'}
         id="email"

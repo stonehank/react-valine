@@ -14,6 +14,7 @@ const TextAreaComponent=React.forwardRef((props, ref) => {
   return (
     <TextField
       inputRef={ref}
+      className={"vtextarea-ident"}
       // margin="dense"
       variant="outlined"
       id="veditor"
