@@ -27,6 +27,7 @@ class NickNameComponent extends React.PureComponent{
         error={nameErr}
         helperText={nameErrMsg}
         onBlur={nameVerify}
+        onFocus={()=>nameVerify(true)}
         onChange={nameOnChange}
         fullWidth={true}
         // InputProps={

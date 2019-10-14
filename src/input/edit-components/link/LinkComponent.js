@@ -17,6 +17,7 @@ export default class LinkComponent extends React.PureComponent{
           error={linkErr}
           helperText={linkErrMsg}
           onBlur={linkVerify}
+          onFocus={()=>linkVerify(true)}
           onChange={linkOnChange}
           fullWidth={true}
           InputProps={{

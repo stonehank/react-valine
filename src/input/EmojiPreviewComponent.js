@@ -13,7 +13,9 @@ export default class EmojiPreviewComponent extends React.PureComponent {
       : <ul className={"vemoji-preview-list"} style={{top:top,left}}>
           {
             emojiList.map((word,i)=>(
-              <li key={word} style={emojiChooseId===i ? {background:"#3e46fc",color:"#fff"} : null} onClick={chooseEmoji.bind(null,emojiData[word],emojiPrefix)}>
+              <li key={word}
+                  style={emojiChooseId===i ? {background:"#3e46fc",color:"#fff"} : null}
+                  onClick={chooseEmoji.bind(null,emojiData[word],emojiPrefix)}>
                 {emojiData[word]+' '+word}
               </li>
             ))

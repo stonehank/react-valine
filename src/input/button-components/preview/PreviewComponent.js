@@ -25,12 +25,12 @@ export default class PreviewComponent extends React.PureComponent {
     return (
       <React.Fragment>
         <span style={{paddingLeft:8}}>{txt}： </span>
-        <span>On</span>
+        <span>Off</span>
         <StyleSwitch
           checked={previewShow}
           onChange={togglePreviewShow}
         />
-        <span>Off</span>
+        <span>On</span>
       </React.Fragment>
 
       // <span className="vpreview-btn" title={txt} onClick={togglePreviewShow}>

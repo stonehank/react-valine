@@ -38,7 +38,7 @@ class EditAreaComponent extends React.PureComponent {
     const langHead=curLang['head']
     return (
       <div className="vheader">
-          <div style={{display:'flex',flexFlow:'row',alignItems:'center',width:'100%',position:'relative'}}>
+          <div style={{display:'flex',flexFlow:'row',alignItems:'flex-start',width:'100%',position:'relative'}}>
             <AvatarContainer langHead={langHead} avatarSrc={avatarSrc} email={email} GRAVATAR_URL={GRAVATAR_URL} avatarOnChange={avatarOnChange}/>
             <NickNameComponent nickName={nickName}
                                langHead={langHead}

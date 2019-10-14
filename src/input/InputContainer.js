@@ -184,9 +184,9 @@ export default class InputContainer extends React.PureComponent {
 
   avatarOnChange(event){
     event.stopPropagation()
-    let ele=event.target,parent=event.currentTarget
+    let ele=event.target
     return new Promise((resolve,reject)=>{
-      if(parent.className==="vavatars-select-list" && ele.nodeName==="IMG"){
+      if(ele.nodeName==="IMG"){
         let src=''
         if(ele.getAttribute)src=ele.getAttribute("src")
         else src=ele.src
@@ -215,11 +215,14 @@ export default class InputContainer extends React.PureComponent {
       email:newStr
     })
   }
-  commentVerify(){
+  commentVerify(force){
+    if(typeof force!=='boolean'){
+      force=false
+    }
     const {commentContent}=this.state
     const {curLang}=this.props
     let errObj=curLang.verify
-    if(commentContent.trim()===''){
+    if(!force && commentContent.trim()===''){
       this.setState({
         commentErr:true,
         commentErrMsg:errObj['empty_content']
@@ -232,11 +235,14 @@ export default class InputContainer extends React.PureComponent {
     })
     return true
   }
-  linkVerify(){
+  linkVerify(force){
+    if(typeof force!=='boolean'){
+      force=false
+    }
     const {link}=this.state
     const {curLang}=this.props
     let errObj=curLang.verify
-    if(link.trim()!=='' && !linkVerify(link)){
+    if(!force && link.trim()!=='' && !linkVerify(link)){
       this.setState({
         linkErr:true,
         linkErrMsg:errObj['link_format_failed']
@@ -249,12 +255,14 @@ export default class InputContainer extends React.PureComponent {
     })
     return true
   }
-  nameVerify(){
+  nameVerify(force){
+    if(typeof force!=='boolean'){
+      force=false
+    }
     const {nickName}=this.state
     const {requireName,curLang}=this.props
     let errObj=curLang.verify
-    console.log(nickName)
-    if(requireName && nickName.trim()===''){
+    if(!force && requireName && nickName.trim()===''){
       this.setState({
         nameErr:true,
         nameErrMsg:errObj['require_nick']
@@ -267,17 +275,20 @@ export default class InputContainer extends React.PureComponent {
     })
     return true
   }
-  mailVerify(){
+  mailVerify(force){
+    if(typeof force!=='boolean'){
+      force=false
+    }
     const {email}=this.state
     const {requireEmail,curLang}=this.props
     let errObj=curLang.verify
-    if(requireEmail && email.trim()===''){
+    if(!force && requireEmail && email.trim()===''){
       this.setState({
         emailErr:true,
         emailErrMsg:errObj['require_mail']
       })
       return false
-    }else if(email.trim()!=='' && !emailVerify(email)){
+    }else if(!force && email.trim()!=='' && !emailVerify(email)){
       this.setState({
         emailErr:true,
         emailErrMsg:errObj['email_format_failed']

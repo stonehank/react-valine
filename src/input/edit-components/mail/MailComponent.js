@@ -15,6 +15,7 @@ export default class MailComponent extends React.PureComponent{
         error={emailErr}
         helperText={emailErrMsg}
         onBlur={mailVerify}
+        onFocus={()=>mailVerify(true)}
         label={langHead["mail"]+(requireEmail?langHead["require"]:"")}
         value={email}
         onChange={emailOnChange}

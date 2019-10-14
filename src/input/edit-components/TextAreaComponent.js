@@ -21,6 +21,7 @@ const TextAreaComponent=React.forwardRef((props, ref) => {
       error={commentErr}
       helperText={commentErrMsg}
       onBlur={commentVerify}
+      onFocus={()=>commentVerify(true)}
       label={placeholder}
       value={commentContent}
       onChange={contentOnChange}
