@@ -188,8 +188,15 @@ html{
         position: relative;
          margin-right: 8px;
         cursor: pointer;
-        transform: translateY(15px);
+
       }
+
+      @media screen and (min-width:600px){
+        .vavatars-select-button{
+          transform: translateY(15px);
+        }
+      }
+
       .vavatars-select-selected{
         border-radius:50%;
         width:100%;

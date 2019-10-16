@@ -10,7 +10,7 @@ export default class MailComponent extends React.PureComponent{
       <TextField
         className={"vinputs-ident"}
         margin={width==='xs' ? 'dense' : 'normal'}
-        // variant={(width==='xs' || width==='sm') ? 'standard' : 'outlined'}
+        variant={width==='xs' ? 'outlined' : 'standard'}
         id="email"
         name="email"
         error={emailErr}

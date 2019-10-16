@@ -13,7 +13,7 @@ class NickNameComponent extends React.PureComponent{
       <TextField
         className={"vinputs-ident"}
         margin={width==='xs' ? 'dense' : 'normal'}
-        // variant={(width==='xs' || width==='sm') ? 'standard' : 'outlined'}
+        variant={width==='xs' ? 'outlined' : 'standard'}
         id="author"
         name="author"
         label={langHead["nick"]+(requireName?langHead["require"]:"")}

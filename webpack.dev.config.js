@@ -1,5 +1,6 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const path = require('path');
+const WebpackBar = require('webpackbar')
 const src = path.join(__dirname, 'src')
 
 module.exports = {
@@ -56,16 +57,25 @@ module.exports = {
     ]
   },
   plugins: [
+    new WebpackBar(),
     new HtmlWebPackPlugin({
       template: "./index.html",
       filename: "./index.html"
     })
   ],
-  devServer:{
-    clientLogLevel: 'none',
-    overlay:true,
-    // useLocalIp:true,
-    // host:"0.0.0.0"
-    // port:5050
-  }
+  stats: {
+    all: false,
+    modules: true,
+    maxModules: 0,
+    errors: true,
+    warnings: true,
+    timings: true,
+  },
+  devServer: {
+    overlay: true,
+    noInfo: false,
+    clientLogLevel: 'silent',
+    stats: 'errors-only',
+    hot: true
+  } ,
 };

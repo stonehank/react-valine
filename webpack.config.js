@@ -6,6 +6,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const safePostCssParser = require('postcss-safe-parser');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const WebpackBar = require('webpackbar')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 
@@ -104,8 +105,17 @@ module.exports= {
   },
   plugins: [
     new CleanWebpackPlugin(),
+    new WebpackBar(),
     new BundleAnalyzerPlugin(),
   ],
+  stats: {
+    all: false,
+    modules: true,
+    maxModules: 0,
+    errors: true,
+    warnings: true,
+    timings: true,
+  },
   node:{
     child_process: 'empty'
   }

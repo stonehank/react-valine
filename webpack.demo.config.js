@@ -2,6 +2,7 @@
 
 const isWsl = require('is-wsl');
 const path = require('path');
+const WebpackBar = require('webpackbar')
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const safePostCssParser = require('postcss-safe-parser');
@@ -106,9 +107,7 @@ module.exports= {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    // new BundleAnalyzerPlugin({
-    //   openAnalyzer:false
-    // }),
+    new WebpackBar(),
     new HtmlWebPackPlugin({
       template: "./index.html",
       filename: "./index.html"
