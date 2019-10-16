@@ -86,10 +86,10 @@ export default class InputContainer extends React.PureComponent {
     this.setState({
       commentContent:newV
     },()=>{
-      ele.focus();
       ele.selectionStart = startPos + emoji.length;
       ele.selectionEnd = startPos + emoji.length;
       ele.scrollTop = scrollTop;
+      ele.focus();
     })
   }
 

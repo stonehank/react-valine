@@ -204,6 +204,10 @@ modify_hljs((hljs)=>{
 
 ### Changelog
 
+##### 0.4.1
+
+* 修复用表情框连续输入，光标断层的bug
+
 ##### 0.4.0
 
 * 修复`ValineContainer`内部`unmounted`后还存在`setState`的警告
