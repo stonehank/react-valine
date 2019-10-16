@@ -204,6 +204,13 @@ modify_hljs((hljs)=>{
 
 ### Changelog
 
+##### 0.4.0
+
+* 修复`ValineContainer`内部`unmounted`后还存在`setState`的警告
+* 添加修复测试
+* 恢复默认leancloud服务器
+* 调整UI，完善对移动端适配
+
 ##### 0.3.9
 
 * 修复部分xss漏洞
