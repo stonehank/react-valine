@@ -10,7 +10,7 @@ const styles = {
     display:'flex',
     padding:0,
     flexFlow: 'row wrap',
-    justifyContent:'space-between',
+    justifyContent:'flex-start',
     maxWidth: 680,
   },
 cell:{
