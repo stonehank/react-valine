@@ -15,7 +15,7 @@ ReactDOM.render(
            appKey={"lGPcHd7GL9nYKqBbNEkgXKjX"}
            // requireEmail={true}
            lang={"en"}
-           placeholder={"尝试使用“:”开启表情输入(:joy )"}
+           placeholder={"Try“:” to input emoji"}
            // nest={false}
   >
     <App />
