@@ -15,7 +15,6 @@ const TextAreaComponent=React.forwardRef((props, ref) => {
     <TextField
       inputRef={ref}
       className={"vtextarea-ident"}
-      // margin="dense"
       variant="outlined"
       id="veditor"
       name="veditor"
@@ -32,14 +31,6 @@ const TextAreaComponent=React.forwardRef((props, ref) => {
       rowsMax={Infinity}
       rows={5}
     />
-    // <textarea ref={ref}
-    //           id="veditor"
-    //           className={"veditor vinput"}
-    //           placeholder={placeholder}
-    //           onChange={contentOnChange}
-    //           onKeyDown={contentOnKeyDown}
-    //           value={commentContent}
-    // />
   )
 })
 

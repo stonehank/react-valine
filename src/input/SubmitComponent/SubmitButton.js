@@ -1,7 +1,7 @@
 import React from 'react'
 import Button from '@material-ui/core/Button';
 
-export default class SubmitComponent extends React.PureComponent{
+export default class SubmitButton extends React.PureComponent{
 
   render(){
     const { submitBtnDisable,handleOnSubmit,langCtrl} = this.props;

@@ -18,6 +18,9 @@
     "ctrl": {
       "reply": "回复",
       "submit": "提交",
+      "edit":"编辑",
+      "save":"保存",
+      "cancel":"取消",
       "discuss":"参与讨论",
       "expand_reply":"查看回复",
       "collapse_reply":"收起回复",
@@ -66,6 +69,10 @@
     },
     "ctrl": {
       "reply": "Reply",
+      "submit":"Submit",
+      "edit":"Edit",
+      "save":"Save",
+      "cancel":"Cancel",
       "expand_reply":"Check reply",
       "collapse_reply":"Collapse reply",
       "discuss":"Discuss",

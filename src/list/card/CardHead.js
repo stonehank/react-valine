@@ -9,12 +9,14 @@ export default class CardHead extends React.PureComponent{
     const {
       link,
       nickName,
+      at,
+      pid
     }=this.props
     return (
       <div className={"vhead"}>
                           <span className={"vnick"}>
                             {link
-                              ? <a  href={ link } target="_blank" rel="noopener noreferrer nofollow" > {nickName}</a>
+                              ? <a href={ link } target="_blank" rel="noopener noreferrer nofollow" > {nickName}</a>
                               : <span>{nickName}</span>
                             }
                           </span>

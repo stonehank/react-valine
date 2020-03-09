@@ -1,9 +1,9 @@
 import React from 'react';
-import EmojiComponent from "./emoji/EmojiComponent";
-import PreviewComponent from "./preview/PreviewComponent";
+import EmojiComponent from "./EmojiComponent";
+import PreviewComponent from "./PreviewComponent";
 
 
-export default class ButtonComponent extends React.PureComponent {
+export default class ControlComponent extends React.PureComponent {
 
   render() {
     const {previewShow,togglePreviewShow,toggleEmojiShow,openEmojiDrawer,closeEmojiDrawer,langCtrl, show,insertEmoji}=this.props

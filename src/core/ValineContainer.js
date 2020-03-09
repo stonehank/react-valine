@@ -8,7 +8,12 @@ import {
   contentAtVerify,
   mergeNestComment,
   convert2SimplyList,
-  simplyObj, getLinkWithoutProtocol
+  updateFromList,
+  simplyObj,
+  getLinkWithoutProtocol,
+  convertList2Hash,
+  escape,
+  globalState
 } from '../utils'
 import ErrorLog from "../info/ErrorLog";
 const GRAVATAR_URL='https://gravatar.loli.net/avatar'
@@ -39,10 +44,13 @@ export default class ValineContainer extends React.Component{
       fetchMoreLoading:false,
       errorLog:null
     }
+
     this.hasMounted=false
     this.fillNxtCommentList=this.fillNxtCommentList.bind(this)
     this.setCommentList=this.setCommentList.bind(this)
     this.handleReply=this.handleReply.bind(this)
+    this.handleEdit=this.handleEdit.bind(this)
+    this.checkCanEdit=this.checkCanEdit.bind(this)
     this.submitVerify=this.submitVerify.bind(this)
     this.createNewObj=this.createNewObj.bind(this)
     this.submitComment=this.submitComment.bind(this)
@@ -51,7 +59,9 @@ export default class ValineContainer extends React.Component{
     this.getScrollTop=this.getScrollTop.bind(this)
     this.getParentElement=this.getParentElement.bind(this)
     this.calculateTopPosition=this.calculateTopPosition.bind(this)
-
+    this.updateUserInfo=this.updateUserInfo.bind(this)
+    this.addCommentToList=this.addCommentToList.bind(this)
+    this.updateCommentFromList=this.updateCommentFromList.bind(this)
 
     this.resetDefaultComment()
     this.wrapRef=React.createRef()
@@ -62,6 +72,7 @@ export default class ValineContainer extends React.Component{
   }
 
   resetDefaultComment(){
+    this.rScrollID=null
     this.defaultComment={
       rid:'',
       pid:'',
@@ -69,52 +80,75 @@ export default class ValineContainer extends React.Component{
       avatarSrc:'',
       link:'',
       comment:'',
+      commentRaw:'',
       at:'',
       nick:'',
       uniqStr:this.props.uniqStr,
       ua:navigator.userAgent,
     }
   }
+  updateUserInfo(){
+    localStorage && localStorage.setItem('ValineCache', JSON.stringify({
+      nick: this.defaultComment['nick'],
+      link: getLinkWithoutProtocol(this.defaultComment['link']),
+      mail: this.defaultComment['mail'],
+      avatarSrc:this.defaultComment['avatarSrc']
+    }));
+  }
+
+  addCommentToList(simplyItem){
+    const {nest,updateCount,uniqStr,nestLayers}=this.props
+    this.setState((prevState,)=>{
+      let newCommentList=[]
+      if(nest && this.defaultComment.pid!==''){
+        newCommentList=mergeNestComment(prevState.commentList,[simplyItem],nestLayers,true)
+      }else{
+        newCommentList=[simplyItem].concat(prevState.commentList)
+      }
+      // 在初始获取的时候进行添加，有可能会重复，当检测到id相同，删除开头(避免重复)
+      if(newCommentList.length>1 && newCommentList[0].id===newCommentList[1].id){
+        newCommentList.shift()
+      }
+      return {
+        commentList:newCommentList,
+        commentCounts:prevState.commentCounts+1,
+        currentCounts:prevState.currentCounts+1,
+        submitBtnDisable:false,
+        submitLoading:false
+      }
+    },()=>{
+      updateCount(uniqStr,this.state.commentCounts)
+    })
+  }
+
+  updateCommentFromList(id,modifyObj){
+    this.setState((prevState,)=>{
+      let newList=updateFromList(prevState.commentList,id,modifyObj)
+      return {
+        commentList:newList,
+        submitLoading:false
+      }
+    })
+  }
 
   createNewObj(){
-    const {nest,updateCount,uniqStr,curLang,nestLayers,uploadComment}=this.props
+    const {curLang,uploadComment}=this.props
     return uploadComment(this.defaultComment).then((commentItem) => {
       if(!this.hasMounted)return
+      if(globalState.ownerHash==null){
+        globalState.ownerHash={}
+      }
+      globalState.ownerHash[commentItem.getObjectId()]=true
       let simplyItem=simplyObj(commentItem)
-      localStorage && localStorage.setItem('ValineCache', JSON.stringify({
-        nick: this.defaultComment['nick'],
-        link: getLinkWithoutProtocol(this.defaultComment['link']),
-        mail: this.defaultComment['mail'],
-        avatarSrc:this.defaultComment['avatarSrc']
-      }));
+      this.updateUserInfo()
 
-      this.setState((prevState,)=>{
-        let newCommentList=[]
-        if(nest && this.defaultComment.pid!==''){
-          newCommentList=mergeNestComment(prevState.commentList,[simplyItem],nestLayers,true)
-        }else{
-          newCommentList=[simplyItem].concat(prevState.commentList)
-        }
-        // 在初始获取的时候进行添加，有可能会重复，当检测到id相同，删除开头(避免重复)
-        if(newCommentList.length>1 && newCommentList[0].id===newCommentList[1].id){
-          newCommentList.shift()
-        }
-
-        return {
-          commentList:newCommentList,
-          commentCounts:prevState.commentCounts+1,
-          currentCounts:prevState.currentCounts+1,
-          submitBtnDisable:false,
-          submitLoading:false
-        }
-      },()=>{
-        updateCount(uniqStr,this.state.commentCounts)
-      })
+      this.addCommentToList(simplyItem)
+      // console.log(this.rScrollID)
       if(this.rScrollID!=null){
         let ele=document.getElementById(this.rScrollID),
-          eleH=ele.offsetHeight
+            eleH=ele.offsetHeight
         let childEles=ele.getElementsByClassName("vquote")[0].childNodes,
-          lastChildH=childEles[childEles.length-1].offsetHeight
+            lastChildH=childEles[childEles.length-1].offsetHeight
         let [innerScrTop,outerScrTop]=this.getScrollTop(ele,this.panelParentEle)
         if(this.props.useWindow){
           scrollTo([window],[eleH+outerScrTop-lastChildH])
@@ -144,6 +178,7 @@ export default class ValineContainer extends React.Component{
       previewShow:!prevState.previewShow
     }))
   }
+
 
   submitComment(defaultComment){
     for(let k in defaultComment){
@@ -190,6 +225,7 @@ export default class ValineContainer extends React.Component{
       if(!contentAtVerify(comment,at)){
         this.defaultComment.pid=''
         this.defaultComment.at=''
+        this.rScrollID=null
       }else{
         this.defaultComment.comment=replaceAt(comment,pid)
       }
@@ -226,6 +262,57 @@ export default class ValineContainer extends React.Component{
       outerScrollTop=this.calculateTopPosition(parentEle)
     }
     return [innerScrollTop,outerScrollTop]
+  }
+  checkCanEdit(cid){
+    const {checkIsOwner}=this.props
+    return checkIsOwner(cid)
+  }
+
+  handleEdit({comment,id}){
+    // console.log('handleEdit',comment)
+    let checkR=this.submitVerify()
+    return this.checkCanEdit(id).then((isOwner)=>{
+      // console.log(isOwner)
+      if(!isOwner){
+        console.error('Is Not owner')
+        return Promise.reject()
+      }
+      return new Promise((resolve,reject)=>{
+        if(!checkR.state){
+          if(checkR.errorStr!=null && this.state.errorLog!==checkR.errorStr){
+            this.setState({
+              errorLog:checkR.errorStr
+            },()=>{
+              this.errorTimer=setTimeout(()=>{
+                this.setState({
+                  errorLog:null
+                })
+              },2000)
+            })
+          }
+          reject()
+        }else{
+          let newComment=xssMarkdown(comment)
+          this.setState({
+            submitLoading:true
+          },()=>{
+            return this.props.updateComment({id,comment:newComment,commentRaw:comment})
+              .then((data)=>{
+                if(Object.prototype.toString.call(data)==="[object Error]"){
+                  throw new Error(data)
+                }
+                this.updateCommentFromList(id,{comment:newComment,commentRaw:comment})
+                resolve()
+              }).catch(()=>{
+                this.setState({
+                  submitLoading:false
+                })
+                throw new Error('Can not Save')
+              })
+          })
+        }
+      })
+    })
   }
 
   handleReply(replyId,replyName,rid){
@@ -282,7 +369,8 @@ export default class ValineContainer extends React.Component{
     }
   }
 
-  setCommentList([items,simplyList,counts,commentCounts,errorLog],nest){
+
+  setCommentList([items,parentItems,counts,commentCounts,errorLog],nest){
     if(!this.hasMounted)return
     if(commentCounts===0 || errorLog!=null){
       this.setState({
@@ -306,9 +394,9 @@ export default class ValineContainer extends React.Component{
     let addCounts=counts+items.length
     let commentList=[]
     if(nest){
-      let simplyItems=[]
-      for(let obj of items)simplyItems.push(simplyObj(obj))
-      commentList=mergeNestComment(simplyList,simplyItems,this.props.nestLayers,false)
+      let nestList=convert2SimplyList(items)
+      let parentList=convert2SimplyList(parentItems)
+      commentList=mergeNestComment(parentList,nestList,this.props.nestLayers,false)
     }else{
       commentList=convert2SimplyList(items)
     }
@@ -331,31 +419,34 @@ export default class ValineContainer extends React.Component{
 
   componentDidMount(){
     this.hasMounted=true
-    const {fetchNest,fetchList}=this.props
+    const {fetchNest,fetchList,fetchOwnerTask}=this.props
     this.setState({
       fetchInitLoading:true
     })
+    let fetchArr=[]
+    fetchArr.push(fetchOwnerTask())
     if(this.props.nest){
-      fetchNest()
-        .then(list=>{
-          this.setCommentList(list,true)
-        })
+      fetchArr.push(fetchNest())
     }else{
-      fetchList()
-        .then(list=>{
-          this.setCommentList(list,false)
-        })
-    }
+      fetchArr.push(fetchList())
   }
+    Promise.all(fetchArr).then(([ownerList,commentList])=>{
+      console.log(ownerList)
+      globalState.ownerHash=convertList2Hash(convert2SimplyList(ownerList),'id')
+      this.setCommentList(commentList,this.props.nest)
+    })
+  }
+
+
   componentWillUnmount(){
     clearTimeout(this.errorTimer)
+    globalState.ownerHash=null
     this.errorTimer=null
     this.hasMounted=false
   }
 
 
   render(){
-
     const {
       requireName,
       requireEmail,
@@ -391,7 +482,7 @@ export default class ValineContainer extends React.Component{
                           curLang={curLang}
                           GRAVATAR_URL={GRAVATAR_URL}
                           emojiListSize={emojiListSize}
-                          toggleTextAreaFocus={toggleTextAreaFocus}
+                          // toggleTextAreaFocus={toggleTextAreaFocus}
                           previewShow={previewShow}
                           submitComment={this.submitComment}
                           togglePreviewShow={this.togglePreviewShow}
@@ -408,7 +499,11 @@ export default class ValineContainer extends React.Component{
                               fetchMoreLoading={fetchMoreLoading}
                               fetchInitLoading={fetchInitLoading}
                               handleReply={this.handleReply}
+                              handleEdit={this.handleEdit}
                               fillNxtCommentList={this.fillNxtCommentList}
+                              // for edit
+                              previewShow={previewShow}
+                              togglePreviewShow={this.togglePreviewShow}
         />
       </div>
     )

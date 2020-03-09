@@ -7,9 +7,9 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        Comments：<ValineCount />
+        评论：<ValineCount />
         <br/>
-        Pageviews：<ValinePageview title={"测试页面localhost"} count={"统计中"}/>
+        页面浏览量：<ValinePageview title={"测试页面localhost"} count={"统计中"}/>
       </header>
           <ValinePanel  />
     </div>

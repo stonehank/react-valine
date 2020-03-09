@@ -161,26 +161,7 @@ html{
         }
       }
     }
-    .vedit .vctrl {
-      text-align: right;
-      font-size: 12px;
-    }
-    .vedit .vctrl span {
-      //padding: 10px;
-      //display: inline-block;
-      //vertical-align: middle;
-      cursor: pointer;
-    }
 
-    .vedit .vpreview {
-      min-height:4rem;
-      padding: 7px;
-      box-shadow: 0px 0 1px #f0f0f0;
-      img,frame,iframe{
-        max-width: 100%;
-        border:none;
-      }
-    }
     .vheader {
       display: flex;
       flex-flow: column;
@@ -290,6 +271,23 @@ html{
         }
       }
     }
+  }
+  .vpreview {
+    min-height:4rem;
+    padding: 7px;
+    box-shadow: 0px 0 1px #f0f0f0;
+    img,frame,iframe{
+      max-width: 100%;
+      border:none;
+    }
+  }
+  .vctrl {
+    text-align: right;
+    font-size: 12px;
+  }
+
+  .vctrl span {
+    cursor: pointer;
   }
   .power {
     color: #999;
@@ -475,6 +473,19 @@ html{
         padding-bottom: .5rem;
         border-bottom: 1px dashed #f5f5f5;
 
+        .vtime {
+          color: #b3b3b3;
+          font-size: .75rem;
+          margin-right: .875rem;
+        }
+        .vmeta {
+          line-height:1;
+          position: relative;
+        }
+
+      }
+      .v-content{
+        margin-left: 3rem;
         .showchild-button-on{
           font-size:0.6rem;
           cursor: pointer;
@@ -495,19 +506,67 @@ html{
           border-radius: 4px;
           padding: 2px;
         }
-        .vtime {
-          color: #b3b3b3;
-          font-size: .75rem;
-          margin-right: .875rem;
-        }
-        .vmeta {
-          line-height:1;
-          position: relative;
-          .vat {
+        .vaction{
+          display: inline-block;
+          padding-bottom:4px;
+          .v-reply {
             font-size: .8125rem;
             color: #ef2f11;
             cursor: pointer;
-            float:right;
+            padding:0 4px;
+            margin-right:8px;
+          }
+        }
+        .v-edit{
+          font-size: .8125rem;
+          color: #2a2a2a;
+          cursor: pointer;
+          padding:0 4px;
+          margin-right:8px;
+        }
+        .vcontent {
+          word-wrap: break-word;
+          word-break: break-all;
+          text-align: justify;
+          color: #4A4A4A;
+          font-size: .875rem;
+          line-height: 2;
+          position: relative;
+          margin-bottom: .75rem;
+          padding-top: .625rem;
+          img,iframe,frame {
+            max-width: 100%;
+            border:none;
+          }
+          &.expand {
+            cursor: pointer;
+            max-height: 220px;
+            overflow: hidden;
+            &:before {
+              display: block;
+              content: "";
+              position: absolute;
+              width: 100%;
+              left: 0;
+              top: 0;
+              bottom: 3.15rem;
+              pointer-events: none;
+              background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, .9));
+            }
+            &:after {
+              display: block;
+              content: "Click on expand";
+              text-align: center;
+              color: #828586;
+              position: absolute;
+              width: 100%;
+              height: 3.15rem;
+              line-height: 3.15rem;
+              left: 0;
+              bottom: 0;
+              pointer-events: none;
+              background: rgba(255, 255, 255, .9);
+            }
           }
         }
       }
@@ -516,51 +575,7 @@ html{
           border-bottom:none;
         }
       }
-      .vcontent {
-        word-wrap: break-word;
-        word-break: break-all;
-        text-align: justify;
-        color: #4A4A4A;
-        font-size: .875rem;
-        line-height: 2;
-        position: relative;
-        margin-bottom: .75rem;
-        padding-top: .625rem;
-        img,iframe,frame {
-          max-width: 100%;
-          border:none;
-        }
-        &.expand {
-          cursor: pointer;
-          max-height: 220px;
-          overflow: hidden;
-          &:before {
-            display: block;
-            content: "";
-            position: absolute;
-            width: 100%;
-            left: 0;
-            top: 0;
-            bottom: 3.15rem;
-            pointer-events: none;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, .9));
-          }
-          &:after {
-            display: block;
-            content: "Click on expand";
-            text-align: center;
-            color: #828586;
-            position: absolute;
-            width: 100%;
-            height: 3.15rem;
-            line-height: 3.15rem;
-            left: 0;
-            bottom: 0;
-            pointer-events: none;
-            background: rgba(255, 255, 255, .9);
-          }
-        }
-      }
+
 
       .vquote {
         color: #666;

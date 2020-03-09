@@ -1,11 +1,26 @@
 import {escape} from './escape'
 import emojiData from '../assets/emoji'
+let removedSave=null
+
+export function restoreReply(content){
+  if(removedSave==null)return content
+  let newContent=removedSave+content
+  removedSave=null
+  return newContent
+}
+export function removeReply(content){
+  let m=content.match(/^@([^\s\t\n\r]+)\s/)
+  if(!m)return content
+  removedSave=m[0]
+  return content.replace(/^(@[^\s\t\n\r]+)\s/,'')
+}
 
 export function replaceAt(content,pid="_"){
   let m=content.match(/^@([^\s\t\n\r]+)\s/)
   if(!m)return content
   let escapeName=escape(m[1])
   return content.replace(/^(@[^\s\t\n\r]+)\s/,`<a class="at" href="#${pid}">@${escapeName}</a>&nbsp;`)
+  // return content.replace(/^(@[^\s\t\n\r]+)\s/,``)
 }
 
 // export function replaceExistEmoji(value,selectionStart,str=''){

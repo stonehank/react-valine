@@ -1,7 +1,7 @@
 import React from 'react';
 import emojiData from '../assets/emoji.json'
 import EditAreaComponent from "./edit-components/EditAreaComponent";
-import ButtonContainer from "./button-components/ButtonContainer";
+import ControlContainer from "./control-container/ControlContainer";
 import TextAreaComponent from "./edit-components/TextAreaComponent";
 import {
   calcValueAndPos,
@@ -13,10 +13,12 @@ import {
   linkVerify, emailVerify
 } from "../utils";
 import EmojiPreviewComponent from "./EmojiPreviewComponent";
+import SubmitComponent from "./SubmitComponent";
+
 const avatarsList=["mp","identicon", "monsterid",  "retro", "robohash", "wavatar","blank",]
 
 
-export default class InputContainer extends React.PureComponent {
+export default class InputContainer extends React.Component {
   constructor(props){
     super(props)
     this.state={
@@ -327,11 +329,12 @@ export default class InputContainer extends React.PureComponent {
       link:link==="" ? link : protocol+"://" + link,
       nick:nickName,
       avatarSrc,
-      comment:commentContent
+      comment:commentContent,
+      commentRaw:commentContent
     })
       .then(()=>{
         this.setState({
-          commentContent:''
+          commentContent:'',
         })
       }).catch(()=>{})
   }
@@ -396,7 +399,6 @@ export default class InputContainer extends React.PureComponent {
       curLang,
       GRAVATAR_URL,
       submitBtnDisable,
-      toggleTextAreaFocus,
       previewShow,
       togglePreviewShow,
     }=this.props
@@ -431,7 +433,7 @@ export default class InputContainer extends React.PureComponent {
           <TextAreaComponent ref={this.textAreaRef}
                              commentErr={commentErr}
                              commentErrMsg={commentErrMsg}
-                             toggleTextAreaFocus={toggleTextAreaFocus}
+                             // toggleTextAreaFocus={toggleTextAreaFocus}
                              commentContent={commentContent}
                              placeholder={curLang["tips"]["placeholder"]}
                              contentOnKeyDown={this.contentOnKeyDown}
@@ -444,14 +446,13 @@ export default class InputContainer extends React.PureComponent {
                                  emojiChooseId={emojiChooseId}
                                  chooseEmoji={this.chooseEmoji}
           />
-          <ButtonContainer previewShow={previewShow}
+          <ControlContainer previewShow={previewShow}
                            langCtrl={curLang["ctrl"]}
                            insertEmoji={this.insertEmoji}
                            commentContent={commentContent}
                            togglePreviewShow={togglePreviewShow}
-                           submitBtnDisable={submitBtnDisable}
-                           handleOnSubmit={this.handleOnSubmit}
           />
+          <SubmitComponent langCtrl={curLang["ctrl"]} submitBtnDisable={submitBtnDisable} handleOnSubmit={this.handleOnSubmit}/>
         </div>
       </React.Fragment>
     );

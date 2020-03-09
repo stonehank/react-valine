@@ -1,12 +1,11 @@
 import React from 'react';
-// import EmojiComponentShow from "./emoji/EmojiComponentShow";
-import PreviewComponentShow from "./preview/PreviewComponentShow";
+import PreviewComponentShow from "./ControlComponent/PreviewComponentShow";
 import {xssMarkdown,replaceAt} from '../../utils/index'
-import ButtonComponent from "./ButtonComponent";
-import ControlButton from "./ControlButton";
+import ControlComponent from "./ControlComponent";
 
 
-export default class ButtonContainer extends React.PureComponent {
+
+export default class ControlContainer extends React.PureComponent {
   constructor(props){
     super(props)
     this.state={
@@ -74,24 +73,21 @@ export default class ButtonContainer extends React.PureComponent {
       previewShow,
       togglePreviewShow,
       langCtrl,
-      submitBtnDisable,
-      handleOnSubmit,
       insertEmoji
     }=this.props
     return (
       <React.Fragment>
-        <ButtonComponent langCtrl={langCtrl}
-                         show={show}
-                         insertEmoji={insertEmoji}
-                         previewShow={previewShow}
-                         togglePreviewShow={togglePreviewShow}
-                         toggleEmojiShow={this.toggleEmojiShow}
-                         closeEmojiDrawer={this.closeEmojiDrawer}
-                         openEmojiDrawer={this.openEmojiDrawer}
+        <ControlComponent langCtrl={langCtrl}
+                          show={show}
+                          insertEmoji={insertEmoji}
+                          previewShow={previewShow}
+                          togglePreviewShow={togglePreviewShow}
+                          toggleEmojiShow={this.toggleEmojiShow}
+                          closeEmojiDrawer={this.closeEmojiDrawer}
+                          openEmojiDrawer={this.openEmojiDrawer}
         />
         {/*<EmojiComponentShow show={show} insertEmoji={insertEmoji} />*/}
         <PreviewComponentShow previewShow={previewShow} previewContent={previewContent} />
-        <ControlButton langCtrl={langCtrl} submitBtnDisable={submitBtnDisable} handleOnSubmit={handleOnSubmit}/>
       </React.Fragment>
     );
   }
