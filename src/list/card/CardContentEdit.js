@@ -13,11 +13,11 @@ export default class CardContentEdit extends InputContainer{
   }
 
   saveEdit(){
-    const {curId,handleEdit,pid,hideEditMode}=this.props
+    const {curId,applyEdit,pid,hideEditMode}=this.props
     const {commentContent}=this.state
     let comment=restoreReply(commentContent)
     console.log(comment)
-    handleEdit({id:curId,pid,comment}).then(()=>{
+    applyEdit({id:curId,pid,comment}).then(()=>{
       hideEditMode()
     })
   }

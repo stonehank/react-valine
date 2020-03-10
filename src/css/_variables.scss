@@ -1,0 +1,80 @@
+// light
+$foreground-color-light:#fafafa;
+$background-color-light: #fff;
+$background-color-opa90-light:rgba(255,255,255,0.9);
+
+$border-color-light:#ccc;
+$shadow-color-light:#333;
+
+$theme-primary-light:#2196F3;
+$theme-secondary-light: #AB47BC;
+
+$text-primary-light:rgba(0,0,0,.87);
+$text-secondary-light:rgba(0, 0, 0, 0.6);
+$text-muted-light:rgba(0, 0, 0, 0.38);
+$text-blur-light:rgba(0, 0, 0, 0.1);
+
+$success-color-light:#4caf50;
+$error-color-light: #b71c1c;
+$info-color-light:#2196f3;
+$warning-color-light:#FFC107;
+
+// dark
+
+$foreground-color-dark:#303030;
+$background-color-dark: #121012;
+$background-color-opa90-dark:rgba(18,16,18,0.9);
+
+$border-color-dark: #444444;
+$shadow-color-dark: #000000;
+
+$theme-primary-dark: #155e9b;
+$theme-secondary-dark: #89439b;
+
+$text-primary-dark:rgba(255,255,255,.87);
+$text-secondary-dark:rgba(255,255,255, 0.6);
+$text-muted-dark:rgba(255,255,255, 0.38);
+$text-blur-dark:rgba(255,255,255, 0.1);
+
+
+$success-color-dark: #54cd58;
+$error-color-dark: #cf1d1d;
+$info-color-dark:#2196f3;
+$warning-color-dark:#FFC107;
+
+
+.theme-light {
+  --background-color: #{$background-color-light};
+  --background-color-opa90: #{$background-color-opa90-light};
+  --foreground-color: #{$foreground-color-light};
+  --border-color:#{$border-color-light};
+  --shadow-color:#{$shadow-color-light};
+  --theme-primary: #{$theme-primary-light};
+  --theme-secondary: #{$theme-secondary-light};
+  --text-primary: #{$text-primary-light};
+  --text-secondary: #{$text-secondary-light};
+  --text-muted: #{$text-muted-light};
+  --text-blur: #{$text-blur-light};
+  --success-color: #{$success-color-light};
+  --error-color: #{$error-color-light};
+  --info-color: #{$info-color-light};
+  --warning-color: #{$warning-color-light};
+}
+
+.theme-dark {
+  --background-color: #{$background-color-dark};
+  --foreground-color: #{$foreground-color-dark};
+  --background-color-opa90: #{$background-color-opa90-dark};
+  --border-color:#{$border-color-dark};
+  --shadow-color:#{$shadow-color-dark};
+  --theme-primary: #{$theme-primary-dark};
+  --theme-secondary: #{$theme-secondary-dark};
+  --text-primary: #{$text-primary-dark};
+  --text-secondary: #{$text-secondary-dark};
+  --text-muted: #{$text-muted-dark};
+  --text-blur: #{$text-blur-dark};
+  --success-color: #{$success-color-dark};
+  --error-color: #{$error-color-dark};
+  --info-color: #{$info-color-dark};
+  --warning-color: #{$warning-color-dark};
+}

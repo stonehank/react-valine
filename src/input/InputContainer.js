@@ -10,7 +10,7 @@ import {
   replaceExistEmoji2,
   getCaretCoordinates,
   getWordList,
-  linkVerify, emailVerify
+  linkVerify, emailVerify, getFromCache
 } from "../utils";
 import EmojiPreviewComponent from "./EmojiPreviewComponent";
 import SubmitComponent from "./SubmitComponent";
@@ -322,9 +322,9 @@ export default class InputContainer extends React.Component {
   }
   handleOnSubmit(){
     const {nickName,email,link,protocol,avatarSrc,commentContent}=this.state
-    const {submitComment}=this.props
+    const {applySubmit}=this.props
     if(!this.submitVerify())return
-    submitComment({
+    applySubmit({
       mail:email,
       link:link==="" ? link : protocol+"://" + link,
       nick:nickName,
@@ -355,15 +355,13 @@ export default class InputContainer extends React.Component {
   }
   componentDidMount(){
     document.addEventListener("click",this.turnOffEmojiPreviewList)
-    if(localStorage){
-      let item=localStorage.getItem("ValineCache")
-      if(!item)return
-      let obj=JSON.parse(item)
+    let storage=getFromCache('ValineCache')
+    if(storage){
       this.setState({
-        link:obj.link,
-        nickName:obj.nick,
-        email:obj.mail,
-        avatarSrc:obj.avatarSrc || this.state.avatarSrc
+        link:storage.link,
+        nickName:storage.nick,
+        email:storage.mail,
+        avatarSrc:storage.avatarSrc || this.state.avatarSrc
       })
     }
   }
@@ -400,6 +398,7 @@ export default class InputContainer extends React.Component {
       GRAVATAR_URL,
       submitBtnDisable,
       previewShow,
+      submitLoading,
       togglePreviewShow,
     }=this.props
 
@@ -435,6 +434,7 @@ export default class InputContainer extends React.Component {
                              commentErrMsg={commentErrMsg}
                              // toggleTextAreaFocus={toggleTextAreaFocus}
                              commentContent={commentContent}
+                             submitBtnDisable={submitBtnDisable}
                              placeholder={curLang["tips"]["placeholder"]}
                              contentOnKeyDown={this.contentOnKeyDown}
                              contentOnChange={this.commentContentOnChange}
@@ -452,7 +452,10 @@ export default class InputContainer extends React.Component {
                            commentContent={commentContent}
                            togglePreviewShow={togglePreviewShow}
           />
-          <SubmitComponent langCtrl={curLang["ctrl"]} submitBtnDisable={submitBtnDisable} handleOnSubmit={this.handleOnSubmit}/>
+          <SubmitComponent langCtrl={curLang["ctrl"]}
+                           submitLoading={submitLoading}
+                           submitBtnDisable={submitBtnDisable}
+                           handleOnSubmit={this.handleOnSubmit}/>
         </div>
       </React.Fragment>
     );

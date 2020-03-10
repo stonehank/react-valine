@@ -1,4 +1,4 @@
-import globalState from './globalState'
+import {globalState} from './globalState'
 import {deepClone} from "./index";
 
 function dfsClone(list,item,nestLayer,initShowChild){
@@ -17,6 +17,7 @@ function dfsClone(list,item,nestLayer,initShowChild){
         obj.child=child
         hasInserted=hasInserted||state
       }
+      obj.replyLen++
       res[i]=obj
     }else{
       res[i]=list[i]
@@ -27,10 +28,10 @@ function dfsClone(list,item,nestLayer,initShowChild){
 }
 
 function createNestComments(){
-  return function(list,arr,nestLayer=Infinity,initShowChild=false){
-    let res=list.slice()
+  return function(parentList,nestList,nestLayer=Infinity,initShowChild=false){
+    let res=parentList.slice()
     // DFS遍历arr
-    for(let item of arr){
+    for(let item of nestList){
       res=dfsClone(res,item,nestLayer-1,initShowChild)[0]
     }
     return res
@@ -47,7 +48,7 @@ function createNestComments(){
 
 function simplyObj(obj){
   let id=obj.id,curAttrs=obj.attributes,createdAt=obj.get('createdAt')
-  let simObj={id,createdAt,child:[],initShowChild:false,owner:false}
+  let simObj={id,createdAt,child:[],initShowChild:false,owner:false,replyLen:0}
   let ownerHash=globalState.ownerHash
   if(ownerHash && ownerHash[id]!=null){
     simObj.owner=true
@@ -55,49 +56,27 @@ function simplyObj(obj){
   return Object.assign(simObj,curAttrs)
 }
 
-function searchExist(list,key,val){
+
+
+function deepReplace(list,key,val,replaceItem){
   for(let i=0;i<list.length;i++){
     if(list[i][key]===val){
+      list[i]=replaceItem
       return true
     }
-    let nxt=deepSearch(list[i].child,key,val)
-    if(nxt)return true
+    let res=deepReplace(list[i].child,key,val,replaceItem)
+    if(res)return true
   }
   return false
 }
 
-function deepSearch(list,key,val){
-  let result=[]
-  for(let i=0;i<list.length;i++){
-    if(list[i][key]===val){
-      result.push(list[i])
-    }
-    result=result.concat(deepSearch(list[i].child,key,val))
-  }
-  return result
-}
-
-function updateFromList(list,targetId,modifyObj){
-  let result=[]
-  let cloneList=[]
-  let found=searchExist(list,'id',targetId)
-  if(found){
-    cloneList=deepClone(list)
-    result=deepSearch(cloneList,'id',targetId)
-  }else{
-    console.log('--------2',result)``
+function updateFromList(list,targetId,simplyItem){
+  let cloneList=deepClone(list)
+  let res=deepReplace(cloneList,'id',targetId,simplyItem)
+  if(!res){
+    console.warn('There is no such id: '+targetId)
     return list
   }
-  if(result.length>1){
-    console.error('ID is duplicate ('+targetId+')')
-    return list
-  }
-  result=result[0]
-  for(let k in modifyObj){
-    // console.log(k,result[k],modifyObj[k])
-    result[k]=modifyObj[k]
-  }
-  console.log('--------3',result,cloneList)
   return cloneList
 }
 

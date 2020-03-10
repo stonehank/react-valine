@@ -1,46 +1,411 @@
-/*
-Error: Invalid GBK character "\xE5"
-        on line 6 of index.scss
+@charset "UTF-8";
+html {
+  scroll-behavior: smooth; }
 
-1: html{
-2:   scroll-behavior: smooth;
-3: }
-4: .v {
-5:   * {
-6:     box-sizing: border-box; //font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", 微软雅黑, "helvetica neue", helvetica, ubuntu, roboto, noto, "segoe ui", Arial, sans-serif;
-7:     //font-size: 16px;
-8:     //line-height:2;
-9:     color: #555;
-10:     transition: all .3s ease;
-11:   }
+.react-valine {
+  background: var(--background-color);
+  /************ Loading ************/ }
+  .react-valine * {
+    box-sizing: border-box;
+    transition: .3s; }
+  .react-valine a {
+    position: relative;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block; }
+    .react-valine a::before {
+      content: '';
+      position: absolute;
+      width: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: var(--theme-primary);
+      transition: width .3s ease; }
+    .react-valine a:hover {
+      color: var(--theme-primary); }
+      .react-valine a:hover::before {
+        width: 100%;
+        left: 0;
+        right: auto; }
+  .react-valine .highlight-ele {
+    background-color: var(--warning-color) !important; }
+    .react-valine .highlight-ele * {
+      background-color: var(--warning-color) !important; }
+  .react-valine .success-btn, .react-valine .success-btn {
+    background-color: var(--success-color) !important;
+    color: #fff !important; }
+  .react-valine .at {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 500; }
+    .react-valine .at:hover {
+      color: var(--text-primary); }
+  .react-valine pre, .react-valine code {
+    background-color: var(--foreground-color);
+    color: var(--text-secondary);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    margin: 0;
+    font-family: "Source Code Pro", "courier new", "Input Mono", "PT Mono","SFMono-Regular",Consolas,Monaco,Menlo,"PingFang SC","Liberation Mono","Microsoft YaHei",Courier锛宮onospace; }
+  .react-valine code {
+    color: var(--theme-primary); }
+  .react-valine pre {
+    padding: 8px;
+    overflow: auto;
+    line-height: 1.45; }
+    .react-valine pre code {
+      padding: 0;
+      color: var(--text-secondary);
+      background: transparent;
+      white-space: pre-wrap;
+      word-break: keep-all; }
+  .react-valine blockquote {
+    color: var(--text-muted);
+    margin: 8px 0;
+    padding: 0 0 0 12px;
+    border-left: 8px solid var(--text-blur); }
+  .react-valine ul, .react-valine ol {
+    padding: 0;
+    margin-left: 16px; }
+  .react-valine .vinput {
+    border: none;
+    resize: none;
+    outline: none;
+    padding: 8px 4px;
+    max-width: 100%;
+    font-size: 14px; }
+  .react-valine .vscreen-errorlog {
+    background: var(--error-color);
+    opacity: 0.7;
+    color: #fff;
+    font-size: 14px;
+    letter-spacing: 2px;
+    position: fixed;
+    height: 72px;
+    width: 220px;
+    margin: auto;
+    bottom: 0;
+    right: 0;
+    border-radius: 4px 0 0 4px;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999; }
+  .react-valine .vwrap {
+    margin-bottom: 8px;
+    position: relative;
+    padding: 8px; }
+    .react-valine .vwrap input {
+      background: transparent; }
+    .react-valine .vwrap .vedit {
+      position: relative;
+      padding-top: 8px; }
+      .react-valine .vwrap .vedit .vemoji-preview-list {
+        position: absolute;
+        list-style: none;
+        margin-top: 1.5rem;
+        margin-left: 2px;
+        min-width: 10rem;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        border-top: none;
+        background: var(--background-color);
+        z-index: 2; }
+        .react-valine .vwrap .vedit .vemoji-preview-list li:first-child {
+          border-radius: 4px 4px 0 0; }
+        .react-valine .vwrap .vedit .vemoji-preview-list li:last-child {
+          border-radius: 0 0 4px 4px; }
+        .react-valine .vwrap .vedit .vemoji-preview-list li {
+          cursor: pointer;
+          border-top: 1px solid var(--border-color);
+          padding: 4px 8px; }
+        .react-valine .vwrap .vedit .vemoji-preview-list li:hover {
+          background: var(--theme-primary);
+          color: #fff; }
+    .react-valine .vwrap .vheader {
+      display: flex;
+      flex-flow: column; }
+      .react-valine .vwrap .vheader .vavatars-select-button {
+        position: relative;
+        margin-right: 8px;
+        cursor: pointer; }
+      @media screen and (min-width: 600px) {
+        .react-valine .vwrap .vheader .vavatars-select-button {
+          transform: translateY(15px); } }
+      .react-valine .vwrap .vheader .vavatars-select-selected {
+        border-radius: 50%;
+        width: 100%;
+        min-width: 100%;
+        height: 100%; }
+      .react-valine .vwrap .vheader .vavatars-select-mark {
+        font-size: 1rem;
+        text-align: center;
+        line-height: 3;
+        vertical-align: middle;
+        border-radius: 50%;
+        position: absolute;
+        background: rgba(255, 255, 255, 0.7);
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0; }
+      @media screen and (min-width: 768px) {
+        .react-valine .vwrap .vheader {
+          flex-flow: row nowrap;
+          align-items: flex-start; } }
+    .react-valine .vwrap .vcontrol {
+      padding-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center; }
+  .react-valine .vpreview {
+    min-height: 64px;
+    padding: 8px;
+    background: var(--foreground-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px; }
+    .react-valine .vpreview img, .react-valine .vpreview frame, .react-valine .vpreview iframe {
+      max-width: 100%;
+      border: none; }
+  .react-valine .vctrl {
+    text-align: right;
+    font-size: 12px; }
+  .react-valine .vctrl span {
+    cursor: pointer; }
+  .react-valine .power {
+    color: var(--text-secondary);
+    font-size: 14px;
+    padding: 8px 0; }
+  .react-valine .vinfo {
+    font-size: 0;
+    padding: 5px; }
+    .react-valine .vinfo .vcount {
+      font-size: 14px;
+      display: inline-block;
+      vertical-align: middle; }
+      .react-valine .vinfo .vcount .vnum {
+        font-weight: 600;
+        font-size: 18px;
+        padding: 0 4px; }
+  .react-valine .txt-center {
+    text-align: center; }
+  .react-valine .txt-right {
+    text-align: right; }
+  .react-valine .vbtn {
+    text-align: center;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    display: inline-block;
+    background: #ccc;
+    margin-bottom: 0;
+    font-weight: 400;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 8px 12px;
+    font-size: 16px;
+    user-select: none;
+    outline: none; }
+    .react-valine .vbtn + .vbtn {
+      margin-left: 12px; }
+  .react-valine .vbtn:disabled, .react-valine .vbtn:disabled:hover {
+    cursor: not-allowed;
+    border: none;
+    color: var(--text-muted); }
+  .react-valine .vbtn:active,
+  .react-valine .vbtn:hover {
+    color: var(--theme-primary);
+    border-color: var(--theme-primary);
+    background-color: var(--background-color); }
+  .react-valine .vempty {
+    padding: 8px;
+    text-align: center;
+    color: var(--text-secondary); }
+  .react-valine .vlist {
+    width: 100%; }
+    .react-valine .vlist .vcard {
+      position: relative;
+      display: block;
+      transition: .3s;
+      margin: 12px 0; }
+      .react-valine .vlist .vcard:after {
+        content: '';
+        clear: both;
+        display: block; }
+      .react-valine .vlist .vcard .vimg {
+        width: 32px;
+        height: 32px;
+        float: left;
+        border-radius: 50%;
+        margin-right: 8px; }
+      .react-valine .vlist .vcard .vhead {
+        line-height: 1.5;
+        margin-top: 0; }
+        .react-valine .vlist .vcard .vhead .vnick a {
+          position: relative;
+          font-size: 14px;
+          font-weight: 700;
+          margin-right: 8px;
+          cursor: pointer;
+          text-decoration: none;
+          display: inline-block; }
+          .react-valine .vlist .vcard .vhead .vnick a::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            right: 0;
+            bottom: 0;
+            height: 1px;
+            transition: width .3s ease; }
+          .react-valine .vlist .vcard .vhead .vnick a:hover::before {
+            width: 100%;
+            left: 0;
+            right: auto; }
+        .react-valine .vlist .vcard .vhead a {
+          text-decoration: none;
+          color: var(--text-primary); }
+        .react-valine .vlist .vcard .vhead .vsys {
+          display: inline-block;
+          padding: 4px 8px;
+          background: var(--foreground-color);
+          color: var(--text-secondary);
+          font-size: 14px;
+          border-radius: 4px;
+          margin-right: 4px; }
+        @media screen and (max-width: 520px) {
+          .react-valine .vlist .vcard .vhead .vsys {
+            display: none; } }
+      .react-valine .vlist .vcard .vh {
+        overflow: hidden;
+        padding-bottom: 8px; }
+        .react-valine .vlist .vcard .vh .vtime {
+          color: var(--text-muted);
+          font-size: 12px; }
+        .react-valine .vlist .vcard .vh .vmeta {
+          line-height: 1;
+          position: relative; }
+      .react-valine .vlist .vcard .v-content {
+        margin-left: 24px; }
+        .react-valine .vlist .vcard .v-content .showchild-button-on {
+          font-size: 14px;
+          cursor: pointer;
+          width: 100%;
+          padding: 2px 4px; }
+          .react-valine .vlist .vcard .v-content .showchild-button-on b {
+            padding-right: 4px; }
+        .react-valine .vlist .vcard .v-content .showchild-button-off {
+          font-size: 0.6rem;
+          cursor: pointer;
+          width: 100%;
+          border: 2px solid #ccc;
+          background: #d7d7d7;
+          color: #898989;
+          border-radius: 4px;
+          padding: 2px; }
+        .react-valine .vlist .vcard .v-content .vaction {
+          display: inline-block; }
+          .react-valine .vlist .vcard .v-content .vaction .v-reply {
+            font-size: 14px;
+            cursor: pointer;
+            padding: 2px 4px;
+            margin-right: 8px; }
+        .react-valine .vlist .vcard .v-content .v-edit {
+          font-size: 14px;
+          cursor: pointer;
+          padding: 2px 4px;
+          margin-right: 8px; }
+        .react-valine .vlist .vcard .v-content .vcontent {
+          word-wrap: break-word;
+          word-break: break-all;
+          text-align: justify;
+          color: var(--text-primary);
+          font-size: 14px;
+          line-height: 1.5;
+          position: relative;
+          margin-bottom: 8px;
+          padding-top: 6px; }
+          .react-valine .vlist .vcard .v-content .vcontent img, .react-valine .vlist .vcard .v-content .vcontent iframe, .react-valine .vlist .vcard .v-content .vcontent frame {
+            max-width: 100%;
+            border: none; }
+          .react-valine .vlist .vcard .v-content .vcontent.expand {
+            cursor: pointer;
+            max-height: 220px;
+            overflow: hidden; }
+            .react-valine .vlist .vcard .v-content .vcontent.expand:before {
+              display: block;
+              content: "";
+              position: absolute;
+              width: 100%;
+              left: 0;
+              top: 0;
+              bottom: 3.15rem;
+              pointer-events: none;
+              background: linear-gradient(180deg, rgba(255, 255, 255, 0), var(--background-color-opa90)); }
+            .react-valine .vlist .vcard .v-content .vcontent.expand:after {
+              display: block;
+              content: "--- Expand ---";
+              text-align: center;
+              color: var(--text-secondary);
+              position: absolute;
+              width: 100%;
+              height: 52px;
+              line-height: 52px;
+              left: 0;
+              bottom: 0;
+              pointer-events: none;
+              background: var(--background-color-opa90); }
+      .react-valine .vlist .vcard:last-child .vh {
+        border-bottom: none; }
+      .react-valine .vlist .vcard .vquote {
+        color: var(--text-primary);
+        font-size: 0.6rem;
+        font-weight: 500;
+        border-left: 1px dashed var(--border-color); }
+        .react-valine .vlist .vcard .vquote .vimg {
+          width: 24px;
+          height: 24px; }
+        .react-valine .vlist .vcard .vquote .vquote .vimg {
+          width: 18px;
+          height: 18px; }
+  .react-valine .vpage .vdiscuss {
+    background: lightgreen;
+    font-weight: 700; }
+  .react-valine .clear {
+    content: '';
+    display: block;
+    clear: both; }
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); }
+  100% {
+    transform: rotate(360deg); } }
+@keyframes pulse {
+  50% {
+    background: gainsboro; } }
+  .react-valine .vloading {
+    position: relative;
+    padding: 20px;
+    display: block;
+    height: 80px; }
+  .react-valine .vloading::before {
+    box-sizing: border-box;
+    content: '';
+    position: absolute;
+    display: inline-block;
+    top: 20px;
+    left: 50%;
+    margin-left: -20px;
+    width: 40px;
+    height: 40px;
+    border: 6px double #a0a0a0;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s infinite linear; }
 
-Backtrace:
-index.scss:6
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/util.rb:1043:in `rescue in block in find_encoding_error'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/util.rb:1040:in `block in find_encoding_error'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/util.rb:1039:in `each'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/util.rb:1039:in `each_with_index'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/util.rb:1039:in `find_encoding_error'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/util.rb:773:in `rescue in check_sass_encoding'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/util.rb:769:in `check_sass_encoding'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/engine.rb:444:in `check_encoding!'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/engine.rb:400:in `_to_tree'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/engine.rb:389:in `_render_with_sourcemap'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/engine.rb:307:in `render_with_sourcemap'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/plugin/compiler.rb:209:in `each'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/plugin.rb:82:in `update_stylesheets'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/exec/sass_scss.rb:340:in `watch_or_update'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/exec/sass_scss.rb:51:in `process_result'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/exec/base.rb:52:in `parse'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/lib/sass/exec/base.rb:19:in `parse!'
-E:/Ruby24-x64/lib/ruby/gems/2.4.0/gems/sass-3.5.6/bin/scss:13:in `<top (required)>'
-E:/Ruby24-x64/bin/scss:23:in `load'
-E:/Ruby24-x64/bin/scss:23:in `<main>'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Error: Invalid GBK character \"\xE5\"\A         on line 6 of index.scss\A \A 1: html{\A 2:   scroll-behavior: smooth;\A 3: }\A 4: .v {\A 5:   * {\A 6:     box-sizing: border-box; //font-family: -apple-system, BlinkMacSystemFont, \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", 微软雅黑, \"helvetica neue\", helvetica, ubuntu, roboto, noto, \"segoe ui\", Arial, sans-serif;\A 7:     //font-size: 16px;\A 8:     //line-height:2;\A 9:     color: #555;\A 10:     transition: all .3s ease;\A 11:   }"; }
+/*# sourceMappingURL=index.css.map */

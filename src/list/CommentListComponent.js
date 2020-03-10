@@ -20,8 +20,8 @@ export default class CommentListComponent extends React.Component{
       curLang,
       nest,
       handleReply,
-      handleEdit,
-      submitLoading,
+      applyEdit,
+      // submitLoading,
       fetchInitLoading,
       fetchMoreLoading,
       GRAVATAR_URL,
@@ -29,15 +29,10 @@ export default class CommentListComponent extends React.Component{
       // for edit
       previewShow,
       togglePreviewShow,
+      highLightEle,
     }=this.props
-// console.log(fetchInitLoading,commentList)
     return (
       <React.Fragment>
-        {
-          submitLoading
-          ? <Loading />
-          : null
-        }
         {
           fetchInitLoading
           ? <Loading />
@@ -56,6 +51,7 @@ export default class CommentListComponent extends React.Component{
                         rid=commentObj['rid'],
                         pid=commentObj['pid'],
                         owner=commentObj['owner'],
+                        replyLen=commentObj['replyLen'],
                         at=commentObj['at'],
                         commentRawContent=commentObj['commentRaw'],
                         child=nest ? commentObj['child'] : null,
@@ -69,6 +65,7 @@ export default class CommentListComponent extends React.Component{
                                                    pid={pid}
                                                    at={at}
                                                    owner={owner}
+                                                   replyLen={replyLen}
                                                    langTime={curLang["timeago"]}
                                                    langCtrl={curLang["ctrl"]}
                                                    curLang={curLang}
@@ -77,13 +74,14 @@ export default class CommentListComponent extends React.Component{
                                                    link={link}
                                                    initShowChild={initShowChild}
                                                    handleReply={handleReply }
-                                                   handleEdit={handleEdit}
+                                                   applyEdit={applyEdit}
                                                    nickName={nickName}
                                                    commentContent={commentContent}
                                                    commentRawContent={commentRawContent}
                                                    createdAt={createdAt}
                                                    previewShow={previewShow}
                                                    togglePreviewShow={togglePreviewShow}
+                                                   highLightEle={highLightEle}
                       />
                     })
                 }

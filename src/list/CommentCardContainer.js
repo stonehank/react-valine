@@ -20,6 +20,7 @@ export default class CommentCardContainer extends React.Component{
     this.toggleShowChild=this.toggleShowChild.bind(this)
     this.showEditMode=this.showEditMode.bind(this)
     this.hideEditMode=this.hideEditMode.bind(this)
+    this.bindATagSmoothScroll=this.bindATagSmoothScroll.bind(this)
     this.cardRef=React.createRef()
   }
 
@@ -44,6 +45,17 @@ export default class CommentCardContainer extends React.Component{
       editMode:true
     })
   }
+  bindATagSmoothScroll(ev){
+    ev.preventDefault();
+    let target=ev.target
+    let ele=document.getElementById(target.getAttribute('href').slice(1))
+    console.log(ele)
+    ele.scrollIntoView({
+      behavior: 'smooth'
+    });
+    this.props.highLightEle(ele)
+  }
+
   shouldComponentUpdate(nextProps,nextState){
     console.log('cardContainer',!deepEqual(this.props,nextProps) || !deepEqual(this.state,nextState))
     return !deepEqual(this.props,nextProps) || !deepEqual(this.state,nextState)
@@ -57,12 +69,29 @@ export default class CommentCardContainer extends React.Component{
   }
 
   componentDidMount(){
+    const {curId}=this.props
+    let atTagList=document.getElementById(curId).getElementsByClassName('at')
+    // console.log(atTagList,document.getElementById(curId))
+    if(atTagList.length>0){
+      atTagList[0].addEventListener('click', this.bindATagSmoothScroll)
+    }
+
     let cardEle=this.cardRef.current
     if(cardEle.offsetHeight>220){
       this.setState({
         needExpand:true
       })
     }
+  }
+
+  componentWillUnmount(){
+    const {curId}=this.props
+    let atTagList=document.getElementById(curId).getElementsByClassName('at')
+    // console.log(atTagList,document.getElementById(curId))
+    if(atTagList.length>0){
+      atTagList[0].removeEventListener('click', this.bindATagSmoothScroll)
+    }
+
   }
 
   render(){
@@ -80,15 +109,17 @@ export default class CommentCardContainer extends React.Component{
       pid,
       owner,
       at,
+      replyLen,
       link,
       handleReply,
-      handleEdit,
+      applyEdit,
       nickName,
       commentContent,
       commentRawContent,
       createdAt,
       previewShow,
       togglePreviewShow,
+      highLightEle,
     }=this.props
 
     return (
@@ -108,7 +139,7 @@ export default class CommentCardContainer extends React.Component{
                                previewShow={previewShow}
                                togglePreviewShow={togglePreviewShow}
                                hideEditMode={this.hideEditMode}
-                               handleEdit={handleEdit}
+                               applyEdit={applyEdit}
                                curId={curId}
                                pid={pid}
                                rid={rid}
@@ -144,7 +175,7 @@ export default class CommentCardContainer extends React.Component{
                         pid=commentObj['pid'],
                         owner=commentObj['owner'],
                         at=commentObj['at'],
-                        // pid=commentObj['pid'],
+                        replyLen=commentObj['replyLen'],
                         child=nest ? commentObj['child'] : null,
                         initShowChild=commentObj['initShowChild']
 
@@ -159,25 +190,27 @@ export default class CommentCardContainer extends React.Component{
                                                    child={child}
                                                    owner={owner}
                                                    at={at}
+                                                   replyLen={replyLen}
                                                    initShowChild={initShowChild}
                                                    GRAVATAR_URL={GRAVATAR_URL}
                                                    avatarSrc={avatarSrc}
                                                    link={link}
                                                    handleReply={handleReply }
-                                                   handleEdit={handleEdit }
+                                                   applyEdit={applyEdit }
                                                    nickName={nickName}
                                                    commentContent={commentContent}
                                                    commentRawContent={commentRawContent}
                                                    createdAt={createdAt}
                                                    previewShow={previewShow}
                                                    togglePreviewShow={togglePreviewShow}
+                                                   highLightEle={highLightEle}
                       />
                       })
                     }
                     </div>
-                  <span className={"showchild-button-off"} onClick={this.toggleShowChild}>{langCtrl["collapse_reply"]}</span>
+                  <span className={"showchild-button-off"} onClick={this.toggleShowChild}>{langCtrl["collapse_comment"]}</span>
                 </React.Fragment>
-              : <span className={"showchild-button-on"} onClick={this.toggleShowChild}>{langCtrl["expand_reply"]}({child.length}条)</span>
+              : <span className={"showchild-button-on"} onClick={this.toggleShowChild}><b>{replyLen}</b>{langCtrl["comment_list"]}</span>
             : null
           }
         </div>

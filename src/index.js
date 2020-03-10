@@ -16,7 +16,8 @@ ReactDOM.render(
            // requireEmail={true}
            // lang={"en"}
            placeholder={"Try“:” to input emoji"}
-           // nest={false}
+           nest={true}
+           nestLayers={1}
   >
     <App />
   </Valine>, document.getElementById('root'));

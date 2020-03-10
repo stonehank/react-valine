@@ -1,4 +1,5 @@
 import React from 'react'
+import '../css/_variables.scss'
 import '../css/index.scss'
 import '../css/github.min.scss'
 import {getFromCache,setCache,randUniqueString} from '../utils'
@@ -32,8 +33,8 @@ export default class FetchResourceContainer extends React.Component{
       .equalTo('ownerCode',this.oldRandUniqStr)
       .find()
       .then(ownerItems=>{
-        console.log('check owner',ownerItems)
-        console.log(id,this.oldRandUniqStr)
+        // console.log('check owner',ownerItems)
+        // console.log(id,this.oldRandUniqStr)
         return ownerItems.length>0
       })
   }
@@ -88,15 +89,15 @@ export default class FetchResourceContainer extends React.Component{
     const {AV}=this.props
     return this.getUser()
       .then((user)=>{
-        console.log(user)
+        // console.log(user)
         return  new AV.Query('Comment').get(id)
-          .then((obj)=>{
+          .then((item)=>{
             // console.log({id,comment,commentRaw})
-            obj.set('ownerCode',this.newRandUniqStr)
-            obj.set('comment',comment)
-            obj.set('commentRaw',commentRaw)
+            item.set('ownerCode',this.newRandUniqStr)
+            item.set('comment',comment)
+            item.set('commentRaw',commentRaw)
             // 这里当用户被删除后，无法修改ownerCode
-            return obj.save()
+            return item.save()
           })
           .catch((err)=>{
             return new Error('Can not found comment, '+err)
@@ -114,7 +115,6 @@ export default class FetchResourceContainer extends React.Component{
     let comment = new Ct();
     for (let k in uploadField) {
       if (uploadField.hasOwnProperty(k)) {
-        // if (k === 'at')continue;
         let val = uploadField[k];
         comment.set(k,val);
       }
@@ -123,10 +123,11 @@ export default class FetchResourceContainer extends React.Component{
     comment.set('url',location.pathname)
     return new Promise((resolve)=>{
       if(uploadField.pid===''){
-        comment.save().then(item=>{
-          comment.set('rid',item.id)
-          resolve()
-        })
+        comment.save()
+          .then(item=>{
+            comment.set('rid',item.id)
+            resolve()
+          })
       }else{
         resolve()
       }
@@ -145,6 +146,8 @@ export default class FetchResourceContainer extends React.Component{
         comment.setACL(acl);
         return comment.save()
       })
+    }).catch(()=>{
+      console.error('Some error found in Submit,try again')
     })
   }
 

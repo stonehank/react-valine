@@ -7,11 +7,14 @@ import MarkDownSupportInfo from "./MarkDownSupportInfo";
 export default class SubmitComponent extends React.PureComponent {
 
   render() {
-    const {submitBtnDisable,handleOnSubmit,langCtrl}=this.props
+    const {submitBtnDisable,handleOnSubmit,langCtrl,submitLoading}=this.props
     return (
       <div className="vcontrol">
         <MarkDownSupportInfo />
-        <SubmitButton langCtrl={langCtrl} submitBtnDisable={submitBtnDisable} handleOnSubmit={handleOnSubmit}/>
+        <SubmitButton langCtrl={langCtrl}
+                      submitLoading={submitLoading}
+                      submitBtnDisable={submitBtnDisable}
+                      handleOnSubmit={handleOnSubmit}/>
       </div>
     );
   }

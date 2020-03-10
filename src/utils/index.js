@@ -7,11 +7,11 @@ import {mergeNestComment,convert2SimplyList,simplyObj,updateFromList} from './ne
 import {escape} from './escape'
 import getWordList from './emojiTire'
 import getCaretCoordinates from './textarea-creat'
-import convertList2Hash from './convertList2Hash'
-import globalState from './globalState'
+import {globalState,list2Hash} from './globalState'
 import randUniqueString from './randUniqueString'
 import {getLinkWithoutProtocol} from './getLinkWithoutProtocol'
 import {getFromCache,setCache} from './cacheControl'
+import scrollElementsTo from './scrollElementsTo'
 
 
 export function deepClone(item) {
@@ -68,8 +68,9 @@ export {
   xssMarkdown,
   getEmojiPrefix,
   modify_hljs,
+  scrollElementsTo,
   mergeNestComment,
-  convertList2Hash,
+  list2Hash,
   getFromCache,
   setCache,
   escape,

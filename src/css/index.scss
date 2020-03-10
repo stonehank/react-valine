@@ -1,24 +1,16 @@
 html{
   scroll-behavior: smooth;
 }
-.v {
+.react-valine {
+  background:var(--background-color);
   * {
-    box-sizing: border-box; //font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", 微软雅黑, "helvetica neue", helvetica, ubuntu, roboto, noto, "segoe ui", Arial, sans-serif;
-    //font-size: 16px;
-    //line-height:2;
-    color: #555;
-    transition: all .3s ease;
-  }
-
-  hr{
-    margin: .825rem 0;
-    border-color:#f6f6f6;
-    border-style: dashed;
+    box-sizing: border-box;
+    transition:.3s;
+    //color:var(--text-primary);
   }
   a{
     position:relative;
     cursor: pointer;
-    color: #0f6cff;
     text-decoration:none;
     display:inline-block;
     &::before{
@@ -28,11 +20,11 @@ html{
       right:0;
       bottom:0;
       height:1px;
-      background:#1abc9c;
+      background:var(--theme-primary);
       transition: width .3s ease;
     }
     &:hover {
-      color: #D7191A;
+      color: var(--theme-primary);
       &::before{
         width:100%;
         left:0;
@@ -40,110 +32,108 @@ html{
       }
     }
   }
-  .at{
-    text-decoration: none;
-    color: #555;
-    font-weight: 500;
-    // outline: none;
-    &:hover {
-      color: #222;
+  .highlight-ele{
+    background-color: var(--warning-color) !important;
+    *{
+      background-color: var(--warning-color) !important;
     }
   }
+  .success-btn, .success-btn{
+    background-color: var(--success-color) !important;
+    color:#fff !important;
+  }
+  .at{
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    &:hover {
+      color: var(--text-primary);
+    }
+  }
+
   pre,code{
-    background-color: #f6f6f6;
-    color: #555;
-    padding: 0.2em 0.4em;
-    border-radius: 3px;
-    font-size: 85%;
+    background-color: var(--foreground-color);
+    color: var(--text-secondary);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
     margin: 0;
     font-family: "Source Code Pro", "courier new", "Input Mono", "PT Mono","SFMono-Regular",Consolas,Monaco,Menlo,"PingFang SC","Liberation Mono","Microsoft YaHei",Courier，monospace;
   }
+  code{
+    color: var(--theme-primary);
+  }
   pre{
-    padding: 10px;
+    padding: 8px;
     overflow: auto;
     line-height: 1.45;
     code{
       padding:0;
+      color: var(--text-secondary);
       background:transparent;
       white-space: pre-wrap;
       word-break: keep-all;
     }
   }
   blockquote{
-    color: #666;
-    margin: .5rem 0;
-    padding: 0 0 0 1rem ;
-    border-left: 8px solid rgba(238, 238, 238, 0.5);
+    color: var(--text-muted);
+    margin: 8px 0;
+    padding: 0 0 0 12px ;
+    border-left: 8px solid var(--text-blur);
+  }
+  ul,ol {
+    padding: 0;
+    margin-left: 16px;
   }
   .vinput {
     border: none;
     resize: none;
     outline: none;
-    padding: 10px 5px;
+    padding: 8px 4px;
     max-width: 100%;
-    font-size: .775rem;
+    font-size: 14px;
   }
-  input[type='checkbox'],input[type='radio']{
-    display:inline-block;
-    vertical-align: middle;
-    margin-top:-2px;
-  }
+
   .vscreen-errorlog{
-    background: #ffcdcd;
-    color: #ef5858;
-    position: absolute;
-    height: 2rem;
-    width: 40%;
+    background: var(--error-color);
+    opacity:0.7;
+    color: #fff;
+    font-size:14px;
+    letter-spacing: 2px;
+    position: fixed;
+    height: 72px;
+    width: 220px;
     margin: auto;
-    top: 0;
     bottom: 0;
     right: 0;
-    left: 0;
-    border-radius: 10px;
-    border: 1px solid #ef5858;
-    text-align: center;
-  }
-  .verrorlog{
-    background: #ffcdcd;
-    color: #ef5858;
-    position: absolute;
-    margin: auto;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    width: 40%;
-    height: 2rem;
-    border-radius: 10px;
-    border: 1px solid #ef5858;
-    text-align: center;
+    border-radius: 4px 0 0 4px;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
   }
   .vwrap {
-    //border: 1px solid #f0f0f0;
-    //border-radius: 4px;
-    margin-bottom: 10px;
-    //overflow: hidden;
+    margin-bottom: 8px;
     position: relative;
-    padding: 10px;
+    padding: 8px;
     input {
       background: transparent;
     }
-
-
     .vedit {
       position: relative;
-      padding-top:10px;
+      padding-top:8px;
       .vemoji-preview-list{
         position:absolute;
         list-style: none;
         margin-top: 1.5rem;
         margin-left:2px;
         min-width:10rem;
-        border: 1px solid #ccc;
+        border: 1px solid var(--border-color);
         border-radius:4px;
         border-top: none;
-        background:#fff;
-
+        background:var(--background-color);
+        z-index: 2;
         li:first-child{
           border-radius:4px 4px 0 0;
         }
@@ -151,12 +141,12 @@ html{
           border-radius:0 0 4px 4px;
         }
         li{
-          cursor:pointer;
-          border-top:1px solid #ccc;
-          padding-right:2px;
+          cursor: pointer;
+          border-top: 1px solid var(--border-color);
+          padding: 4px 8px;
         }
         li:hover{
-          background: #5c7bfc;
+          background: var(--theme-primary);
           color:#fff
         }
       }
@@ -167,9 +157,8 @@ html{
       flex-flow: column;
       .vavatars-select-button{
         position: relative;
-         margin-right: 8px;
+        margin-right: 8px;
         cursor: pointer;
-
       }
 
       @media screen and (min-width:600px){
@@ -191,45 +180,11 @@ html{
         vertical-align: middle;
         border-radius:50%;
         position: absolute;
-        background: rgba(255, 255, 255, 0.73);
+        background: rgba(255, 255, 255, 0.7);
         width: 100%;
         height: 100%;
         left: 0;
         top: 0;
-      }
-
-      .vinputs{
-        flex:4;
-        display:flex;
-        .vinput-cell{
-          width:33.33%;
-          display:flex;
-          .vinput {
-            width: 100%;
-            border-bottom: 1px #dedede dashed;
-            flex:5
-          }
-          .vinput:focus {
-            border-bottom-color: #eb5055;
-          }
-          .vinput-label{
-            flex-basis:4rem;
-            font-size: 0.775rem;
-            font-weight: 700;
-            border: none;
-            background: #ccc;
-            padding: 0.775rem 0.3rem 0.775rem 0.3rem;
-            text-align: center;
-            border-radius: 4px;
-            cursor:pointer;
-            user-select: none;
-            &:active{
-              background: #e4e4e4
-            }
-          }
-        }
-
-
       }
       @media screen and (min-width:768px) {
         flex-flow: row nowrap;
@@ -237,45 +192,18 @@ html{
       }
     }
     .vcontrol {
-      //background: #fdfdfd;
-      font-size: 0;
-      padding-top: 15px;
-      .col {
-        display: inline-block;
-        font-size: .725rem;
-        vertical-align: middle;
-        color: #ccc;
-        &.text-right {
-          text-align: right;
-        }
-        svg {
-          margin-right: 2px;
-          overflow: hidden;
-          fill: currentColor;
-          vertical-align: middle;
-        }
-        &.col-20 {
-          width: 20%;
-        }
-        &.col-40 {
-          width: 40%;
-        }
-        &.col-60 {
-          width: 60%;
-        }
-        &.col-80 {
-          width: 80%;
-        }
-        &.split {
-          width: 50%;
-        }
-      }
+      padding-top: 8px;
+      display:flex;
+      justify-content: space-between;
+      align-items: center;
     }
   }
   .vpreview {
-    min-height:4rem;
-    padding: 7px;
-    box-shadow: 0px 0 1px #f0f0f0;
+    min-height: 64px;
+    padding: 8px;
+    background: var(--foreground-color);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
     img,frame,iframe{
       max-width: 100%;
       border:none;
@@ -290,139 +218,116 @@ html{
     cursor: pointer;
   }
   .power {
-    color: #999;
-    font-size: .75rem;
-    padding:.5rem 0;
-    a {
-      font-size: .75rem;
-    }
+    color: var(--text-secondary);
+    font-size: 14px;
+    padding:8px 0;
   }
   .vinfo {
     font-size: 0;
     padding: 5px;
-    .col {
-      font-size: .875rem;
-      display: inline-block;
-      width: 50%;
-      vertical-align: middle;
-    }
     .vcount {
+      font-size: 14px;
+      display: inline-block;
+      vertical-align: middle;
       .vnum {
         font-weight: 600;
-        font-size: 1.25rem;
+        font-size: 18px;
+        padding:0 4px;
       }
     }
   }
-  //a {
-  //  text-decoration: none;
-  //  color: #555;
-  //  // outline: none;
-  //  &:hover {
-  //    color: #222;
-  //  }
-  //}
-  ul,ol {
-    padding: 0;
-    margin-left: 1.25rem;
-  }
+
+
   .txt-center {
     text-align: center;
   }
   .txt-right {
     text-align: right;
   }
-  .pd5 {
-    padding: 5px;
-  }
-  .pd10 {
-    padding: 10px;
-  }
-  .veditor {
-    width: 100%;
-    min-height: 8.75rem;
-    font-size: 1rem;
-    background: transparent;
-    resize: vertical;
-    transition:all .25s ease;
-  }
+
+  //.veditor {
+  //  width: 100%;
+  //  min-height: 8.75rem;
+  //  font-size: 1rem;
+  //  background: transparent;
+  //  resize: vertical;
+  //  transition:all .25s ease;
+  //}
   .vbtn {
-    transition-duration: .4s;
     text-align: center;
-    color: #313131;
-    border: 1px solid #ededed;
-    border-radius: .3rem;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
     display: inline-block;
-    background: #ededed;
+    background: #ccc;
     margin-bottom: 0;
     font-weight: 400;
     vertical-align: middle;
     touch-action: manipulation;
     cursor: pointer;
     white-space: nowrap;
-    padding: .5rem 1.25rem;
-    font-size: .875rem;
-    line-height: 1.42857143;
+    padding: 8px 12px;
+    font-size: 16px;
     user-select: none;
     outline: none;
     &+.vbtn {
-      margin-left: 1.25rem;
+      margin-left: 12px;
     }
   }
   .vbtn:disabled,.vbtn:disabled:hover{
     cursor:not-allowed;
     border:none;
-    background:#ededed;
-    color: #c7c7c7;
+    color: var(--text-muted);
   }
 
   .vbtn:active,
   .vbtn:hover {
-    color: #3090e4;
-    border-color: #3090e4;
-    background-color: #fff;
+    color: var(--theme-primary);
+    border-color: var(--theme-primary);
+    background-color: var(--background-color);
   }
   .vempty {
-    padding: 1.25rem;
+    padding: 8px;
     text-align: center;
-    color: #999;
+    color: var(--text-secondary);
   }
   .vlist {
     width: 100%;
     .vcard {
-      padding-top: 1.5rem;
       position: relative;
       display: block;
+      transition:.3s;
+      margin: 12px 0;
       &:after {
         content: '';
         clear: both;
         display: block;
       }
       .vimg {
-        width: 3.125rem;
-        height: 3.125rem;
+        width: 32px;
+        height: 32px;
         float: left;
         border-radius: 50%;
-        margin-right: .7525rem;
-        border:1px solid #f5f5f5;
-        padding:.125rem;
+        margin-right: 8px;
+        //border:1px solid var(--border-color);
+        //padding:4px;
       }
 
-      @media screen and (max-width:720px) {
-        .vimg {
-          width: 2.5rem;
-          height: 2.5rem;
-        }
-      }
+      //@media screen and (min-width:768px) {
+      //  .vimg {
+      //    width: 48px;
+      //    height: 48px;
+      //  }
+      //}
       .vhead {
         line-height: 1.5;
         margin-top: 0;
         .vnick a{
           position:relative;
-          font-size: .875rem;
+          font-size: 14px;
           font-weight: 700;
-          margin-right: .875rem;
+          margin-right: 8px;
           cursor: pointer;
-          //color: #1abc9c;
           text-decoration:none;
           display:inline-block;
           &::before{
@@ -432,11 +337,9 @@ html{
             right:0;
             bottom:0;
             height:1px;
-            //background:#1abc9c;
             transition: width .3s ease;
           }
           &:hover {
-            //color: #D7191A;
             &::before{
               width:100%;
               left:0;
@@ -446,20 +349,20 @@ html{
         }
         a {
           text-decoration: none;
-          color: #555;
+          color: var(--text-primary);
           // outline: none;
-          &:hover {
-            color: #222;
-          }
+          //&:hover {
+          //  color: #222;
+          //}
         }
         .vsys {
           display: inline-block;
-          padding: .2rem .5rem;
-          background: #ededed;
-          color: #b3b1b1;
-          font-size: .75rem;
-          border-radius: .2rem;
-          margin-right: .3rem;
+          padding: 4px 8px;
+          background: var(--foreground-color);
+          color: var(--text-secondary);
+          font-size: 14px;
+          border-radius: 4px;
+          margin-right: 4px;
         }
         @media screen and (max-width:520px) {
           .vsys {
@@ -470,13 +373,13 @@ html{
 
       .vh {
         overflow: hidden;
-        padding-bottom: .5rem;
-        border-bottom: 1px dashed #f5f5f5;
+        padding-bottom: 8px;
+        //border-bottom: 1px dashed var(--border-color);
 
         .vtime {
-          color: #b3b3b3;
-          font-size: .75rem;
-          margin-right: .875rem;
+          color: var(--text-muted);
+          font-size: 12px;
+          //margin-right: .875rem;
         }
         .vmeta {
           line-height:1;
@@ -485,16 +388,15 @@ html{
 
       }
       .v-content{
-        margin-left: 3rem;
+        margin-left: 24px;
         .showchild-button-on{
-          font-size:0.6rem;
+          font-size: 14px;
           cursor: pointer;
           width: 100%;
-          border: 2px solid #ccc;
-          background: #8de0ff;
-          color: #000;
-          border-radius: 4px;
-          padding: 2px;
+          padding: 2px 4px;
+          b{
+            padding-right:4px;
+          }
         }
         .showchild-button-off{
           font-size:0.6rem;
@@ -508,32 +410,30 @@ html{
         }
         .vaction{
           display: inline-block;
-          padding-bottom:4px;
+
           .v-reply {
-            font-size: .8125rem;
-            color: #ef2f11;
+            font-size: 14px;
             cursor: pointer;
-            padding:0 4px;
+            padding:2px 4px;
             margin-right:8px;
           }
         }
         .v-edit{
-          font-size: .8125rem;
-          color: #2a2a2a;
+          font-size: 14px;
           cursor: pointer;
-          padding:0 4px;
+          padding:2px 4px;
           margin-right:8px;
         }
         .vcontent {
           word-wrap: break-word;
           word-break: break-all;
           text-align: justify;
-          color: #4A4A4A;
-          font-size: .875rem;
-          line-height: 2;
+          color: var(--text-primary);
+          font-size: 14px;
+          line-height: 1.5;
           position: relative;
-          margin-bottom: .75rem;
-          padding-top: .625rem;
+          margin-bottom: 8px;
+          padding-top: 6px;
           img,iframe,frame {
             max-width: 100%;
             border:none;
@@ -551,21 +451,21 @@ html{
               top: 0;
               bottom: 3.15rem;
               pointer-events: none;
-              background: linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, .9));
+              background: linear-gradient(180deg, rgba(255, 255, 255, 0), var(--background-color-opa90));
             }
             &:after {
               display: block;
-              content: "Click on expand";
+              content: "--- Expand ---";
               text-align: center;
-              color: #828586;
+              color: var(--text-secondary);
               position: absolute;
               width: 100%;
-              height: 3.15rem;
-              line-height: 3.15rem;
+              height: 52px;
+              line-height: 52px;
               left: 0;
               bottom: 0;
               pointer-events: none;
-              background: rgba(255, 255, 255, .9);
+              background: var(--background-color-opa90);
             }
           }
         }
@@ -578,15 +478,19 @@ html{
 
 
       .vquote {
-        color: #666;
-        margin-top: 1rem;
-        //padding-left: 1rem;
+        color: var(--text-primary);
         font-size: 0.6rem;
         font-weight: 500;
-        border-left: 1px dashed rgba(215, 215, 215, 0.5);
+        border-left: 1px dashed var(--border-color);
         .vimg{
-          width: 2.225rem;
-          height: 2.225rem;
+          width: 24px;
+          height: 24px;
+        }
+        .vquote{
+          .vimg{
+            width:18px;
+            height:18px;
+          }
         }
       }
 

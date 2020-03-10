@@ -7,6 +7,7 @@ const TextAreaComponent=React.forwardRef((props, ref) => {
     placeholder,
     contentOnChange,
     contentOnKeyDown,
+    submitBtnDisable,
     commentErr,
     commentErrMsg,
     commentVerify
@@ -18,6 +19,7 @@ const TextAreaComponent=React.forwardRef((props, ref) => {
       variant="outlined"
       id="veditor"
       name="veditor"
+      disabled={submitBtnDisable}
       error={commentErr}
       helperText={commentErrMsg}
       onBlur={commentVerify}
