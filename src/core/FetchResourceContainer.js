@@ -1,7 +1,7 @@
 import React from 'react'
-import '../css/_variables.scss'
-import '../css/index.scss'
-import '../css/github.min.scss'
+import '../assets/css/_variables.scss'
+// import '../assets/css/index.scss'
+// import '../assets/css/editor/a11y.scss'
 import {getFromCache,setCache,randUniqueString} from '../utils'
 import ValineContainer from "./ValineContainer";
 

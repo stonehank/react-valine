@@ -45,6 +45,7 @@
     },
     "verify":{
       "empty_content":"内容不能为空！",
+      "exceed_content":"超出了限制长度2000个字符",
       "require_nick":"昵称为必填项！",
       "require_mail":"email为必填项！",
       "email_format_failed":"email格式错误！",
@@ -97,6 +98,7 @@
     },
     "verify":{
       "empty_content":"Content must not be empty!",
+      "exceed_content":"Exceed limit length 2000.",
       "require_nick":"NickName is required!",
       "require_mail":"E-Mail is required!",
       "email_format_failed":"Incorrect email format!",

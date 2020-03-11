@@ -1,5 +1,5 @@
 import React from 'react'
-import Loading from "../utils/Loading";
+import Loading from "../info/Loading";
 import PageComponent from "./PageComponent";
 import CommentCardContainer from "./CommentCardContainer";
 import {xssMarkdown,deepEqual} from '../utils'
@@ -8,7 +8,7 @@ import {xssMarkdown,deepEqual} from '../utils'
 export default class CommentListComponent extends React.Component{
 
   shouldComponentUpdate(nextProps){
-    console.log('list',!deepEqual(this.props,nextProps))
+    // console.log('list',!deepEqual(this.props,nextProps))
     return !deepEqual(this.props,nextProps)
   }
   render(){
@@ -29,7 +29,6 @@ export default class CommentListComponent extends React.Component{
       // for edit
       previewShow,
       togglePreviewShow,
-      highLightEle,
     }=this.props
     return (
       <React.Fragment>
@@ -81,7 +80,6 @@ export default class CommentListComponent extends React.Component{
                                                    createdAt={createdAt}
                                                    previewShow={previewShow}
                                                    togglePreviewShow={togglePreviewShow}
-                                                   highLightEle={highLightEle}
                       />
                     })
                 }

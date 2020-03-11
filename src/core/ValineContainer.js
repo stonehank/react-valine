@@ -4,8 +4,7 @@ import CommentListComponent from "../list/CommentListComponent";
 import InputContainer from "../input/InputContainer";
 import {
   xssMarkdown,
-  replaceAt,
-  contentAtVerify,
+  parseToValidCommentAt,
   mergeNestComment,
   convert2SimplyList,
   updateFromList,
@@ -16,6 +15,9 @@ import {
   globalState,
   scrollElementsTo
 } from '../utils'
+import {
+  highLightEle
+} from '../utils/DOM'
 import ErrorLog from "../info/ErrorLog";
 
 const GRAVATAR_URL = 'https://gravatar.loli.net/avatar'
@@ -44,7 +46,6 @@ export default class ValineContainer extends React.Component {
     this.handleReply = this.handleReply.bind(this)
     this.applyEdit = this.applyEdit.bind(this)
     this.checkCanEdit = this.checkCanEdit.bind(this)
-    this.replaceReplyAt = this.replaceReplyAt.bind(this)
     this.applySubmit = this.applySubmit.bind(this)
     this.togglePreviewShow = this.togglePreviewShow.bind(this)
     this.resetDefaultComment = this.resetDefaultComment.bind(this)
@@ -55,7 +56,6 @@ export default class ValineContainer extends React.Component {
     this.addCommentToList = this.addCommentToList.bind(this)
     this.updateCommentFromList = this.updateCommentFromList.bind(this)
     this.scrollToEle = this.scrollToEle.bind(this)
-    this.highLightEle = this.highLightEle.bind(this)
 
     this.resetDefaultComment()
     this.wrapRef = React.createRef()
@@ -138,12 +138,12 @@ export default class ValineContainer extends React.Component {
       console.log(ele, this.panelParentEle,innerScrTop,outerScrTop)
       scrollElementsTo([window], [outerScrTop ])
         .then(()=>{
-          if(highlight)this.highLightEle(ele)
+          if(highlight)highLightEle(ele)
         })
     } else {
       scrollElementsTo([window, this.panelParentEle], [this.outerScrTop,innerScrTop])
         .then(()=>{
-          if(highlight)this.highLightEle(ele)
+          if(highlight)highLightEle(ele)
         })
     }
   }
@@ -156,6 +156,86 @@ export default class ValineContainer extends React.Component {
   }
 
 
+
+  getParentElement(el) {
+    const scrollParent = this.props.getPanelParent && this.props.getPanelParent();
+    if (scrollParent != null) {
+      return scrollParent;
+    }
+    return el && el.parentNode;
+  }
+
+  calculateTopPosition(el,target=null) {
+    if (el===target) return 0
+    return el.offsetTop + this.calculateTopPosition(el.offsetParent);
+  }
+
+  getScrollTop(ele, parentEle) {
+    let innerScrollTop = 0, outerScrollTop = 0
+    if (this.props.useWindow) {
+      // let doc = document.documentElement || document.body.parentNode || document.body
+      // let scrollTop = window.pageYOffset != null ? window.pageYOffset : doc.scrollTop
+      // let screenTop = ele.getBoundingClientRect().top
+      // outerScrollTop = scrollTop + screenTop
+      outerScrollTop = this.calculateTopPosition(ele)
+      // console.log('outer',outerScrollTop)
+    } else {
+      if (ele.offsetParent === parentEle) {
+        innerScrollTop = ele.offsetTop
+      } else {
+        innerScrollTop = this.calculateTopPosition(ele,parentEle)
+        // ele.offsetTop - parentEle.offsetTop
+      }
+      outerScrollTop = this.calculateTopPosition(parentEle)
+    }
+    return [innerScrollTop, outerScrollTop]
+  }
+
+  checkCanEdit(cid) {
+    const {checkIsOwner} = this.props
+    return checkIsOwner(cid)
+  }
+
+  applyEdit({comment, id,pid,at}) {
+    return this.checkCanEdit(id).then((isOwner) => {
+      if (!isOwner) {
+        console.error('Is Not owner')
+        return Promise.reject()
+      }
+      let obj=parseToValidCommentAt({comment,pid,at})
+      let newComment=obj.comment
+      // console.log(obj,'~~~')
+      return new Promise((resolve) => {
+        newComment = xssMarkdown(newComment)
+        // console.log(newComment,'~~~')
+        this.setState({
+          submitLoading: true
+        }, () => {
+          return this.props.updateComment({id, comment: newComment, commentRaw: comment})
+            .then((commentItem) => {
+              if (Object.prototype.toString.call(commentItem) === "[object Error]") {
+                throw new Error(commentItem)
+              }
+              let simplyItem = simplyObj(commentItem)
+              resolve()
+              this.updateCommentFromList(id, simplyItem)
+                .then(()=>{
+                  setTimeout(()=>{
+                    highLightEle(document.getElementById(id))
+                  },200)
+                })
+
+            }).catch(() => {
+              this.setState({
+                submitLoading: false
+              })
+              throw new Error('Something wrong, can not save comment')
+            })
+        })
+      })
+    })
+  }
+
   applySubmit(defaultComment) {
     const {curLang, uploadComment} = this.props
     for (let k in defaultComment) {
@@ -163,7 +243,8 @@ export default class ValineContainer extends React.Component {
         this.defaultComment[k] = defaultComment[k]
       }
     }
-    this.replaceReplyAt()
+    this.defaultComment=Object.assign(this.defaultComment,parseToValidCommentAt(this.defaultComment))
+
     return new Promise((resolve) => {
       this.defaultComment.comment = xssMarkdown(this.defaultComment.comment)
       this.setState({
@@ -187,7 +268,7 @@ export default class ValineContainer extends React.Component {
               // scroll
               setTimeout(()=>{
                 this.scrollToEle(document.getElementById(eleID))
-              },0)
+              },300)
             })
             // reset
             this.resetDefaultComment()
@@ -210,97 +291,6 @@ export default class ValineContainer extends React.Component {
     })
   }
 
-
-  replaceReplyAt() {
-    const {comment, at, pid} = this.defaultComment
-    if (at !== '' && pid !== '') {
-      if (!contentAtVerify(comment, at)) {
-        this.defaultComment.pid = ''
-        this.defaultComment.at = ''
-      } else {
-        this.defaultComment.comment = replaceAt(comment, pid)
-      }
-    }
-  }
-
-  getParentElement(el) {
-    const scrollParent = this.props.getPanelParent && this.props.getPanelParent();
-    if (scrollParent != null) {
-      return scrollParent;
-    }
-    return el && el.parentNode;
-  }
-
-  calculateTopPosition(el,target=null) {
-    if (el===target) return 0
-    return el.offsetTop + this.calculateTopPosition(el.offsetParent);
-  }
-
-  getScrollTop(ele, parentEle) {
-    let innerScrollTop = 0, outerScrollTop = 0
-    if (this.props.useWindow) {
-      // let doc = document.documentElement || document.body.parentNode || document.body
-      // let scrollTop = window.pageYOffset != null ? window.pageYOffset : doc.scrollTop
-      // let screenTop = ele.getBoundingClientRect().top
-      // outerScrollTop = scrollTop + screenTop
-      outerScrollTop = this.calculateTopPosition(ele)
-      console.log('outer',outerScrollTop)
-    } else {
-      if (ele.offsetParent === parentEle) {
-        innerScrollTop = ele.offsetTop
-      } else {
-        innerScrollTop = this.calculateTopPosition(ele,parentEle)
-        // ele.offsetTop - parentEle.offsetTop
-      }
-      outerScrollTop = this.calculateTopPosition(parentEle)
-    }
-    return [innerScrollTop, outerScrollTop]
-  }
-
-  checkCanEdit(cid) {
-    const {checkIsOwner} = this.props
-    return checkIsOwner(cid)
-  }
-
-  applyEdit({comment, id}) {
-    return this.checkCanEdit(id).then((isOwner) => {
-      if (!isOwner) {
-        console.error('Is Not owner')
-        return Promise.reject()
-      }
-      return new Promise((resolve) => {
-        let newComment = xssMarkdown(comment)
-        this.setState({
-          submitLoading: true
-        }, () => {
-          return this.props.updateComment({id, comment: newComment, commentRaw: comment})
-            .then((commentItem) => {
-              if (Object.prototype.toString.call(commentItem) === "[object Error]") {
-                throw new Error(commentItem)
-              }
-              let simplyItem = simplyObj(commentItem)
-              this.updateCommentFromList(id, simplyItem)
-              resolve()
-            }).catch(() => {
-              this.setState({
-                submitLoading: false
-              })
-              throw new Error('Something wrong, can not save comment')
-            })
-        })
-      })
-    })
-  }
-
-
-  highLightEle(ele){
-    console.log(ele)
-    ele.classList.add('highlight-ele')
-    setTimeout(()=>{
-      ele.classList.remove('highlight-ele')
-    },500)
-  }
-
   handleReply(replyId, replyName, rid) {
     this.defaultComment.pid = replyId
     this.defaultComment.at = replyName
@@ -320,7 +310,7 @@ export default class ValineContainer extends React.Component {
     this.setState((prevState) => ({
       toggleTextAreaFocus: !prevState.toggleTextAreaFocus
     }), () => {
-      this.scrollToEle(this.wrapRef.current)
+      this.scrollToEle(this.wrapRef.current,false)
       location.hash = "reply"
     })
   }
@@ -480,7 +470,6 @@ export default class ValineContainer extends React.Component {
                               // for edit
                               previewShow={previewShow}
                               togglePreviewShow={this.togglePreviewShow}
-                              highLightEle={this.highLightEle}
         />
       </div>
     )

@@ -1,17 +1,18 @@
 import React from 'react';
 import Switch from '@material-ui/core/Switch';
+import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
 const StyleSwitch = withStyles({
   root:{
-    padding:16
+    padding:'10px 6px'
   },
   switchBase: {
-    color: "skyblue",
+    color: "var(--border-color)",
     '&$checked': {
-      color: "blue",
+      color: "var(--theme-primary)",
     },
     '&$checked + $track': {
-      backgroundColor: "skyblue",
+      backgroundColor: "var(--theme-secondary)",
     },
   },
   checked: {},
@@ -23,21 +24,14 @@ export default class PreviewComponent extends React.PureComponent {
   render() {
     const {previewShow,txt,togglePreviewShow}=this.props
     return (
-      <React.Fragment>
+      <Button size={"small"}  variant="text" color="default" onClick={togglePreviewShow}>
         <span style={{paddingLeft:8}}>{txt}： </span>
-        <span>Off</span>
         <StyleSwitch
+          size={'small'}
           checked={previewShow}
-          onChange={togglePreviewShow}
         />
-        <span>On</span>
-      </React.Fragment>
-
-      // <span className="vpreview-btn" title={txt} onClick={togglePreviewShow}>
-      //   {
-      //     previewShow ? txt_on : txt
-      //   }
-      // </span>
+        <span style={{minWidth:28,textTransform:'capitalize'}}>{ previewShow ? 'On' : 'Off' }</span>
+      </Button>
     );
   }
 }

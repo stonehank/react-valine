@@ -7,7 +7,7 @@ import {
   calcValueAndPos,
   getEmojiPrefix,
   resolveTAB,
-  replaceExistEmoji2,
+  replaceExistEmoji,
   getCaretCoordinates,
   getWordList,
   linkVerify, emailVerify, getFromCache
@@ -66,7 +66,8 @@ export default class InputContainer extends React.Component {
     }))
   }
 
-  chooseEmoji(emoji,prefix){
+  chooseEmoji(emoji,prefix,ev){
+    // if(ev)ev.stopPropagation()
     let ele=this.textAreaRef.current
     // 此处prefix前面还有`:`，因此需要+1
     let [newV,scrollTop,startPos]=calcValueAndPos(ele,emoji,prefix.length+1)
@@ -167,9 +168,9 @@ export default class InputContainer extends React.Component {
       newEmojiListPos=[top,left]
     }
     // 替换已经存在的表情符号
-    let result=replaceExistEmoji2(value,selectionStart,str),
+    let result=replaceExistEmoji(value,selectionStart,str),
       newStr=result[0]
-    if(newStr.length>1000)newStr=newStr.slice(0,1000)
+    // if(newStr.length>1000)newStr=newStr.slice(0,1000)
     selectionStart=result[1]
     selectionStart+=str.length
     this.setState({
@@ -224,6 +225,13 @@ export default class InputContainer extends React.Component {
     const {commentContent}=this.state
     const {curLang}=this.props
     let errObj=curLang.verify
+    if(commentContent.length>2000){
+      this.setState({
+        commentErr:true,
+        commentErrMsg:errObj['exceed_content']
+      })
+      return false
+    }
     if(!force && commentContent.trim()===''){
       this.setState({
         commentErr:true,
@@ -339,13 +347,12 @@ export default class InputContainer extends React.Component {
       }).catch(()=>{})
   }
 
-  turnOffEmojiPreviewList(event){
-    if(event.target && (event.target.id!=="veditor" && (!event.target.parentNode || event.target.parentNode.className!=='vemoji-preview-list'))){
-      this.setState({
-        emojiList:[],
-        emojiChooseId:0
-      })
-    }
+  turnOffEmojiPreviewList(){
+    // console.log('popagation')
+    this.setState({
+      emojiList:[],
+      emojiChooseId:0
+    })
   }
 
   componentDidUpdate(prevProps){
@@ -354,7 +361,7 @@ export default class InputContainer extends React.Component {
     }
   }
   componentDidMount(){
-    document.addEventListener("click",this.turnOffEmojiPreviewList)
+    window.addEventListener("click",this.turnOffEmojiPreviewList)
     let storage=getFromCache('ValineCache')
     if(storage){
       this.setState({
@@ -366,7 +373,7 @@ export default class InputContainer extends React.Component {
     }
   }
   componentWillUnmount(){
-    document.removeEventListener("click",this.turnOffEmojiPreviewList)
+    window.removeEventListener("click",this.turnOffEmojiPreviewList)
   }
 
   render() {
@@ -428,7 +435,7 @@ export default class InputContainer extends React.Component {
                            nameVerify={this.nameVerify}
                            mailVerify={this.mailVerify}
         />
-        <div className="vedit">
+        <div className="v-edit-area">
           <TextAreaComponent ref={this.textAreaRef}
                              commentErr={commentErr}
                              commentErrMsg={commentErrMsg}

@@ -35,7 +35,7 @@
   "dependencies": {
     "@material-ui/core": "^4.5.1",
     "blueimp-md5": "^2.10.0",
-    "highlight.js": "^9.15.6",
+    "highlight.js": "^9.18.1",
     "js-cookie": "^2.2.1",
     "leancloud-storage": "^3.13.2",
     "marked": "^0.6.2",

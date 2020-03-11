@@ -1,8 +1,8 @@
 import React from 'react'
 import {deepEqual, xssMarkdown} from "../utils";
+import {bindATagSmoothScroll} from "../utils/DOM";
 import CardAvatar from "./card/CardAvatar";
-import CardHead from "./card/CardHead";
-import CardMeta from "./card/CardMeta";
+import CardHeadInfo from "./card/CardHeadInfo";
 import CardContent from "./card/CardContent";
 import CardAction from "./card/CardAction";
 import CardContentEdit from "./card/CardContentEdit";
@@ -20,7 +20,6 @@ export default class CommentCardContainer extends React.Component{
     this.toggleShowChild=this.toggleShowChild.bind(this)
     this.showEditMode=this.showEditMode.bind(this)
     this.hideEditMode=this.hideEditMode.bind(this)
-    this.bindATagSmoothScroll=this.bindATagSmoothScroll.bind(this)
     this.cardRef=React.createRef()
   }
 
@@ -45,24 +44,22 @@ export default class CommentCardContainer extends React.Component{
       editMode:true
     })
   }
-  bindATagSmoothScroll(ev){
-    ev.preventDefault();
-    let target=ev.target
-    let ele=document.getElementById(target.getAttribute('href').slice(1))
-    console.log(ele)
-    ele.scrollIntoView({
-      behavior: 'smooth'
-    });
-    this.props.highLightEle(ele)
-  }
 
   shouldComponentUpdate(nextProps,nextState){
-    console.log('cardContainer',!deepEqual(this.props,nextProps) || !deepEqual(this.state,nextState))
+    // console.log('cardContainer',!deepEqual(this.props,nextProps) || !deepEqual(this.state,nextState))
     return !deepEqual(this.props,nextProps) || !deepEqual(this.state,nextState)
   }
+
   componentDidUpdate(prevProps,prevState){
     const {child:prevChild}=prevProps
-    const {child:curChild,nest,initShowChild}=this.props
+    const {child:curChild,nest,initShowChild,curId}=this.props
+
+    let atTagList=document.getElementById(curId).getElementsByClassName('at')
+    if(atTagList.length>0){
+      atTagList[0].removeEventListener('click', bindATagSmoothScroll)
+      atTagList[0].addEventListener('click', bindATagSmoothScroll)
+    }
+
     if(nest && curChild.length!==prevChild.length && prevState.showChild!==initShowChild){
       this.toggleShowChild()
     }
@@ -71,9 +68,8 @@ export default class CommentCardContainer extends React.Component{
   componentDidMount(){
     const {curId}=this.props
     let atTagList=document.getElementById(curId).getElementsByClassName('at')
-    // console.log(atTagList,document.getElementById(curId))
     if(atTagList.length>0){
-      atTagList[0].addEventListener('click', this.bindATagSmoothScroll)
+      atTagList[0].addEventListener('click', bindATagSmoothScroll)
     }
 
     let cardEle=this.cardRef.current
@@ -87,11 +83,9 @@ export default class CommentCardContainer extends React.Component{
   componentWillUnmount(){
     const {curId}=this.props
     let atTagList=document.getElementById(curId).getElementsByClassName('at')
-    // console.log(atTagList,document.getElementById(curId))
     if(atTagList.length>0){
-      atTagList[0].removeEventListener('click', this.bindATagSmoothScroll)
+      atTagList[0].removeEventListener('click', bindATagSmoothScroll)
     }
-
   }
 
   render(){
@@ -119,19 +113,15 @@ export default class CommentCardContainer extends React.Component{
       createdAt,
       previewShow,
       togglePreviewShow,
-      highLightEle,
     }=this.props
 
     return (
       <div  id={curId} className={'vcard'} ref={this.cardRef}>
-        <CardAvatar avatarSrc={avatarSrc} GRAVATAR_URL={GRAVATAR_URL}/>
-        <div className={'vh'}>
-          <CardHead link={link} nickName={nickName} />
-          <CardMeta langTime={langTime}
-                    createdAt={createdAt}
-          />
+        <div className={'v-head-wrapper'}>
+          <CardAvatar avatarSrc={avatarSrc} GRAVATAR_URL={GRAVATAR_URL}/>
+          <CardHeadInfo link={link} nickName={nickName} langTime={langTime} createdAt={createdAt} />
         </div>
-        <div className={'v-content'}>
+        <div className={'v-content-wrapper'}>
           {
             editMode ?
               <CardContentEdit commentRawContent={commentRawContent}
@@ -143,6 +133,7 @@ export default class CommentCardContainer extends React.Component{
                                curId={curId}
                                pid={pid}
                                rid={rid}
+                               at={at}
               /> :
               <CardContent commentContent={commentContent}
                            needExpand={needExpand}
@@ -203,7 +194,6 @@ export default class CommentCardContainer extends React.Component{
                                                    createdAt={createdAt}
                                                    previewShow={previewShow}
                                                    togglePreviewShow={togglePreviewShow}
-                                                   highLightEle={highLightEle}
                       />
                       })
                     }

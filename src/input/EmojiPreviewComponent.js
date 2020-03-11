@@ -10,7 +10,7 @@ export default class EmojiPreviewComponent extends React.PureComponent {
     return (
       emojiList.length===0
       ? null
-      : <ul className={"vemoji-preview-list"} style={{top:top,left}}>
+      : <ul className={"vemoji-preview-list"} onClick={ev=>ev.stopPropagation()} style={{top:top,left}}>
           {
             emojiList.map((word,i)=>(
               <li key={word}

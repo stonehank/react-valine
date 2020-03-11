@@ -11,7 +11,7 @@ jest.setTimeout(10000);
 Object.defineProperties(window.HTMLElement.prototype, {
   offsetHeight: {
     get: function() {
-      let match=this.getElementsByClassName("vcontent")[0].innerHTML.match(/\n/g)
+      let match=this.getElementsByClassName("v-content-body")[0].innerHTML.match(/\n/g)
       let countLineBreak=match?match.length:0
       return countLineBreak*50
     }
@@ -194,7 +194,7 @@ describe('test App with slow-network', ()=>{
       expect(list.length).toBe(1)
       let listChild=list[0].childNodes
       expect(listChild.length).toBe(1)
-      let contentNodes=list[0].getElementsByClassName("vcontent")
+      let contentNodes=list[0].getElementsByClassName("v-content-body")
       expect(contentNodes[0].innerHTML).toBe("<div><p>sdfsadf</p>\n</div>")
       done()
     },waitTime)
@@ -230,7 +230,7 @@ describe('test App with slow-network', ()=>{
   //       expect(list.length).toBe(1)
   //       let listChild=list[0].childNodes
   //       expect(listChild.length).toBe(2)
-  //       let contentNodes=list[0].getElementsByClassName("vcontent")
+  //       let contentNodes=list[0].getElementsByClassName("v-content-body")
   //       expect(contentNodes[0].innerHTML).toBe(`<div><p>this is XSS tag<button>click</button><img src="xxx"><span>Mark</span></p>\n</div>`)
   //       expect(contentNodes[1].innerHTML).toBe("<div><p>sdfsadf</p>\n</div>")
   //       done()
@@ -256,7 +256,7 @@ describe('test App with slow-network', ()=>{
   //     expect(submitBtn.getAttribute("disabled")).toBe(null)
   //     let listChild=list[0].childNodes
   //     expect(listChild.length).toBe(3)
-  //     let contentNodes=list[0].getElementsByClassName("vcontent")
+  //     let contentNodes=list[0].getElementsByClassName("v-content-body")
   //     expect(contentNodes[0].innerHTML).toBe("<div><pre><code class=\"language-js\"><pre class=\"hljs\"><code><span class=\"hljs-keyword\">var</span> a=<span class=\"hljs-number\">5</span></code></pre></code></pre>\n" +
   //       "<pre><code class=\"language-java\"><pre class=\"hljs\"><code><span class=\"hljs-keyword\">int</span> a=<span class=\"hljs-number\">5</span></code></pre></code></pre>\n" +
   //       "<pre><code class=\"language-python\"><pre class=\"hljs\"><code><span class=\"hljs-function\"><span class=\"hljs-keyword\">def</span> <span class=\"hljs-title\">a</span><span class=\"hljs-params\">()</span>:</span>\n" +
@@ -265,7 +265,7 @@ describe('test App with slow-network', ()=>{
   //       "</div>")
   //     expect(contentNodes[1].innerHTML).toBe(`<div><p>this is XSS tag<button>click</button><img src="xxx"><span>Mark</span></p>\n</div>`)
   //     expect(contentNodes[2].innerHTML).toBe("<div><p>sdfsadf</p>\n</div>")
-  //     expect(container.getElementsByClassName("vcontent expand").length).toBe(1)
+  //     expect(container.getElementsByClassName("v-content-body expand").length).toBe(1)
   //     done()
   //   },waitTime)
   // })
@@ -289,7 +289,7 @@ describe('test App with slow-network', ()=>{
   //     // expect(list.length).toBe(1)
   //     let listChild=list[0].childNodes
   //     expect(listChild.length).toBe(4)
-  //     let contentNodes=list[0].getElementsByClassName("vcontent")
+  //     let contentNodes=list[0].getElementsByClassName("v-content-body")
   //     expect(contentNodes[0].innerHTML).toBe("<div><p>This is some long text...\n" +
   //       "This is some long text...\n" +
   //       "This is some long text...\n" +
@@ -305,7 +305,7 @@ describe('test App with slow-network', ()=>{
   //       "</div>")
   //     expect(contentNodes[2].innerHTML).toBe(`<div><p>this is XSS tag<button>click</button><img src="xxx"><span>Mark</span></p>\n</div>`)
   //     expect(contentNodes[3].innerHTML).toBe("<div><p>sdfsadf</p>\n</div>")
-  //     expect(container.getElementsByClassName("vcontent expand").length).toBe(2)
+  //     expect(container.getElementsByClassName("v-content-body expand").length).toBe(2)
   //     done()
   //   },waitTime)
   // })

@@ -66,7 +66,7 @@ describe('test nest with one comment', ()=>{
     vinputs,
     vemojiBtn,
     vpreviewBtn,
-    vpreview,
+    v-content-preview,
     submitBtn,
     avatarBtn
 

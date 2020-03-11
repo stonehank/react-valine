@@ -1,6 +1,6 @@
 import {
   resolveTAB,
-  replaceExistEmoji2,
+  replaceExistEmoji,
   getEmojiPrefix,
   mergeNestComment,
   simplyObj,
@@ -9,7 +9,7 @@ import {
   getCaretCoordinates
 } from '../src/utils'
 import timeAgo from "../src/utils/timeAgo";
-import {escape} from "../src/utils/escape";
+import {escape} from "../src/utils/String/escape";
 import getWordList from "../src/utils/emojiTire";
 import xssFilter from "../src/utils/xssFilter";
 
@@ -88,26 +88,26 @@ sfasfsfsfhhgf`)
 describe("检测已经存在的表情输入",()=>{
   it("单个表情输入",()=>{
     let content=":dog:"
-    let [newStr,startPos]=replaceExistEmoji2(content,5)
+    let [newStr,startPos]=replaceExistEmoji(content,5)
     expect(newStr).toBe("🐶 ")
     expect(startPos).toBe(3)
   })
   it("多个表情输入",()=>{
     let content=":dog::cat::cow:"
-    let [newStr,startPos]=replaceExistEmoji2(content,15)
+    let [newStr,startPos]=replaceExistEmoji(content,15)
     expect(newStr).toBe("🐶 🐱 🐮 ")
     expect(startPos).toBe(9)
   })
   it("多个复杂表情输入1",()=>{
     let content="fasdf=-.:cow:/;':dog:afwegh=-.:cow:/;'faslj=-.:cat:/;'fj:coffee:oweoa=-./;'wf:dog:hoawfhw=-./;'[:joy:]"
-    let [newStr,startPos]=replaceExistEmoji2(content,102)
+    let [newStr,startPos]=replaceExistEmoji(content,102)
     expect(newStr).toBe("fasdf=-.🐮 /;'🐶 afwegh=-.🐮 /;'faslj=-.🐱 /;'fj☕️ oweoa=-./;'wf🐶 hoawfhw=-./;'[😂 ]")
     expect(startPos).toBe(85)
   })
 
   it("多个复杂表情输入2",()=>{
     let content=":cow::dogg::dog:: dog:::airplane :100: : :: : :::cat:"
-    let [newStr,startPos]=replaceExistEmoji2(content,53)
+    let [newStr,startPos]=replaceExistEmoji(content,53)
     expect(newStr).toBe("🐮 :dogg:🐶 : dog:::airplane 💯  : :: : ::🐱 ")
     expect(startPos).toBe(45)
   })

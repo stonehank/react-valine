@@ -1,6 +1,6 @@
 import React from 'react';
 import PreviewComponentShow from "./ControlComponent/PreviewComponentShow";
-import {xssMarkdown,replaceAt} from '../../utils/index'
+import {xssMarkdown,replaceAtToTag} from '../../utils/index'
 import ControlComponent from "./ControlComponent";
 
 
@@ -13,7 +13,7 @@ export default class ControlContainer extends React.PureComponent {
       previewContent:''
     }
     this.parseContent=this.parseContent.bind(this)
-    this.shutdownEmojiPanel=this.shutdownEmojiPanel.bind(this)
+    // this.shutdownEmojiPanel=this.shutdownEmojiPanel.bind(this)
     this.toggleEmojiShow=this.toggleEmojiShow.bind(this)
     this.openEmojiDrawer=this.openEmojiDrawer.bind(this)
     this.closeEmojiDrawer=this.closeEmojiDrawer.bind(this)
@@ -37,7 +37,7 @@ export default class ControlContainer extends React.PureComponent {
   }
   parseContent(){
     const {commentContent}=this.props
-    let previewContent=replaceAt(commentContent)
+    let previewContent=replaceAtToTag(commentContent)
     previewContent=xssMarkdown(previewContent)
     if(previewContent===this.state.previewContent)return
     this.setState({
@@ -45,23 +45,26 @@ export default class ControlContainer extends React.PureComponent {
     })
   }
 
-  shutdownEmojiPanel(event){
-    if(!event)return
-    event.stopPropagation()
-    if(event && typeof event.target.className==="string"  && !event.target.className.includes("vemoji")){
-      this.setState(()=>({
-        show:false
-      }))
-    }
-  }
+  // shutdownEmojiPanel(event){
+    // if(!event)return
+    // event.stopPropagation()
+    // if(event && typeof event.target.className==="string"  && !event.target.className.includes("vemoji")){
+    //   this.setState(()=>({
+    //     show:false
+    //   }))
+    // }
+  //   this.setState({
+  //     show:false
+  //   })
+  // }
 
 
-  componentDidMount(){
+  // componentDidMount(){
     // document.addEventListener('click',this.shutdownEmojiPanel)
-  }
-  componentWillUnmount(){
+  // }
+  // componentWillUnmount(){
     // document.removeEventListener('click',this.shutdownEmojiPanel)
-  }
+  // }
   componentDidUpdate(){
     if(this.props.previewShow){
       this.parseContent()

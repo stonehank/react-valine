@@ -2,11 +2,11 @@ html{
   scroll-behavior: smooth;
 }
 .react-valine {
+  color:var(--text-primary);
   background:var(--background-color);
   * {
     box-sizing: border-box;
     transition:.3s;
-    //color:var(--text-primary);
   }
   a{
     position:relative;
@@ -52,8 +52,8 @@ html{
   }
 
   pre,code{
-    background-color: var(--foreground-color);
-    color: var(--text-secondary);
+    //background-color: var(--foreground-color);
+    //color: var(--text-secondary);
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 14px;
@@ -62,6 +62,7 @@ html{
   }
   code{
     color: var(--theme-primary);
+    background: var(--foreground-color);
   }
   pre{
     padding: 8px;
@@ -69,7 +70,8 @@ html{
     line-height: 1.45;
     code{
       padding:0;
-      color: var(--text-secondary);
+      color:inherit;
+      //color: var(--text-secondary);
       background:transparent;
       white-space: pre-wrap;
       word-break: keep-all;
@@ -85,6 +87,9 @@ html{
     padding: 0;
     margin-left: 16px;
   }
+  svg{
+    fill:var(--text-primary)
+  }
   .vinput {
     border: none;
     resize: none;
@@ -97,21 +102,29 @@ html{
   .vscreen-errorlog{
     background: var(--error-color);
     opacity:0.7;
-    color: #fff;
-    font-size:14px;
-    letter-spacing: 2px;
     position: fixed;
     height: 72px;
-    width: 220px;
-    margin: auto;
-    bottom: 0;
-    right: 0;
-    border-radius: 4px 0 0 4px;
+    width: 240px;
+    bottom: 8px;
+    right: 8px;
+    border-radius: 4px;
     padding: 8px;
     display: flex;
+    flex-flow:column;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     z-index: 999;
+    h6,p{
+      margin:0;
+      padding:0;
+      color: #fff;
+      font-size:12px;
+      letter-spacing: 1px
+    }
+    h6{
+      font-size:14px;
+      font-weight:bold;
+    }
   }
   .vwrap {
     margin-bottom: 8px;
@@ -120,7 +133,7 @@ html{
     input {
       background: transparent;
     }
-    .vedit {
+    .v-edit-area {
       position: relative;
       padding-top:8px;
       .vemoji-preview-list{
@@ -192,15 +205,17 @@ html{
       }
     }
     .vcontrol {
-      padding-top: 8px;
+      padding-top: 4px;
       display:flex;
       justify-content: space-between;
       align-items: center;
     }
   }
-  .vpreview {
+  .v-content-preview {
     min-height: 64px;
     padding: 8px;
+    font-size:14px;
+
     background: var(--foreground-color);
     border: 1px solid var(--border-color);
     border-radius: 4px;
@@ -245,14 +260,6 @@ html{
     text-align: right;
   }
 
-  //.veditor {
-  //  width: 100%;
-  //  min-height: 8.75rem;
-  //  font-size: 1rem;
-  //  background: transparent;
-  //  resize: vertical;
-  //  transition:all .25s ease;
-  //}
   .vbtn {
     text-align: center;
     color: var(--text-primary);
@@ -297,97 +304,76 @@ html{
       position: relative;
       display: block;
       transition:.3s;
-      margin: 12px 0;
+      padding: 12px 0;
+      border-bottom: 1px dashed var(--border-color);
       &:after {
         content: '';
         clear: both;
         display: block;
       }
-      .vimg {
+      .v-avatar {
         width: 32px;
         height: 32px;
         float: left;
         border-radius: 50%;
         margin-right: 8px;
-        //border:1px solid var(--border-color);
-        //padding:4px;
       }
-
-      //@media screen and (min-width:768px) {
-      //  .vimg {
-      //    width: 48px;
-      //    height: 48px;
-      //  }
-      //}
-      .vhead {
+      .v-head-info {
         line-height: 1.5;
         margin-top: 0;
-        .vnick a{
-          position:relative;
-          font-size: 14px;
-          font-weight: 700;
-          margin-right: 8px;
-          cursor: pointer;
-          text-decoration:none;
-          display:inline-block;
-          &::before{
-            content:'';
-            position:absolute;
-            width:0;
-            right:0;
-            bottom:0;
-            height:1px;
-            transition: width .3s ease;
-          }
-          &:hover {
-            &::before{
-              width:100%;
-              left:0;
-              right:auto;
-            }
-          }
-        }
+        overflow: hidden;
+        padding-bottom: 8px;
         a {
           text-decoration: none;
           color: var(--text-primary);
-          // outline: none;
-          //&:hover {
-          //  color: #222;
-          //}
         }
-        .vsys {
-          display: inline-block;
-          padding: 4px 8px;
-          background: var(--foreground-color);
-          color: var(--text-secondary);
-          font-size: 14px;
-          border-radius: 4px;
-          margin-right: 4px;
-        }
-        @media screen and (max-width:520px) {
-          .vsys {
-            display: none;
+        .vnick{
+          letter-spacing: 1px;
+          a{
+            position:relative;
+            font-size: 14px;
+            font-weight: 700;
+            margin-right: 8px;
+            cursor: pointer;
+            text-decoration:none;
+            display:inline-block;
+            &::before{
+              content:'';
+              position:absolute;
+              width:0;
+              right:0;
+              bottom:0;
+              height:1px;
+              transition: width .3s ease;
+            }
+            &:hover {
+              &::before{
+                width:100%;
+                left:0;
+                right:auto;
+              }
+            }
           }
-        }
-      }
-
-      .vh {
-        overflow: hidden;
-        padding-bottom: 8px;
-        //border-bottom: 1px dashed var(--border-color);
-
-        .vtime {
-          color: var(--text-muted);
-          font-size: 12px;
-          //margin-right: .875rem;
         }
         .vmeta {
           line-height:1;
           position: relative;
+          .vtime {
+            color: var(--text-muted);
+            font-size: 12px;
+          }
+          .vsys {
+            display: inline-block;
+            padding: 4px 8px;
+            background: var(--foreground-color);
+            color: var(--text-secondary);
+            font-size: 14px;
+            border-radius: 4px;
+            margin-right: 4px;
+          }
         }
-
       }
-      .v-content{
+      .v-content-wrapper{
         margin-left: 24px;
         .showchild-button-on{
           font-size: 14px;
@@ -408,28 +394,42 @@ html{
           border-radius: 4px;
           padding: 2px;
         }
-        .vaction{
+        .v-content-action{
           display: inline-block;
 
-          .v-reply {
+          .v-action-reply {
             font-size: 14px;
             cursor: pointer;
             padding:2px 4px;
             margin-right:8px;
           }
         }
-        .v-edit{
+        .v-edit-cancel{
           font-size: 14px;
           cursor: pointer;
           padding:2px 4px;
           margin-right:8px;
         }
-        .vcontent {
+        .v-edit-save{
+          font-size: 14px;
+          color:var(--success-color);
+          cursor: pointer;
+          padding:2px 4px;
+          margin-right:8px;
+        }
+        .v-action-edit{
+          font-size: 14px;
+          cursor: pointer;
+          padding:2px 4px;
+          margin-right:8px;
+          color:var(--info-color);
+        }
+        .v-content-body {
           word-wrap: break-word;
           word-break: break-all;
           text-align: justify;
           color: var(--text-primary);
-          font-size: 14px;
+          font-size: 16px;
           line-height: 1.5;
           position: relative;
           margin-bottom: 8px;
@@ -470,36 +470,36 @@ html{
           }
         }
       }
-      &:last-child{
-        .vh{
-          border-bottom:none;
-        }
-      }
-
-
       .vquote {
         color: var(--text-primary);
         font-size: 0.6rem;
         font-weight: 500;
         border-left: 1px dashed var(--border-color);
-        .vimg{
+        .v-avatar{
           width: 24px;
           height: 24px;
         }
         .vquote{
-          .vimg{
+          .v-avatar{
             width:18px;
             height:18px;
           }
         }
       }
 
+      &:last-child{
+        border-bottom:none;
+      }
     }
   }
   .vpage {
     .vdiscuss{
-      background: lightgreen;
+      background: var(--success-color);
       font-weight:700;
+      &:hover{
+        color:var(--theme-primary);
+        background:var(--background-color);
+      }
     }
   }
   .clear {

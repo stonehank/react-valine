@@ -10,18 +10,18 @@ const TextAreaComponent=React.forwardRef((props, ref) => {
     submitBtnDisable,
     commentErr,
     commentErrMsg,
-    commentVerify
+    commentVerify,
+    replyLoading,
   } = props;
   return (
     <TextField
       inputRef={ref}
-      className={"vtextarea-ident"}
+      className={"v-editor-main"}
       variant="outlined"
-      id="veditor"
-      name="veditor"
-      disabled={submitBtnDisable}
+      disabled={submitBtnDisable || replyLoading}
       error={commentErr}
       helperText={commentErrMsg}
+      onClick={ev=>ev.stopPropagation()}
       onBlur={commentVerify}
       onFocus={()=>commentVerify(true)}
       label={placeholder}

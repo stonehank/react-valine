@@ -16,15 +16,15 @@ export default class CardAction extends React.Component{
       showEditMode,
     }=this.props
     return (
-      <div className={"vaction"}>
+      <div className={"v-content-action"}>
         {
           owner
             ? editMode
               ? null
-              : <span className={"v-edit"} onClick={showEditMode.bind(this,curId)}>{langCtrl['edit']}</span>
+              : <span className={"v-action-edit"} onClick={showEditMode.bind(this,curId)}>{langCtrl['edit']}</span>
             : null
         }
-        <span className={"v-reply"} onClick={handleReply.bind(this,curId,nickName,rid)}>{langCtrl['reply']}</span>
+        <span className={"v-action-reply"} onClick={handleReply.bind(this,curId,nickName,rid)}>{langCtrl['reply']}</span>
       </div>
     )
   }

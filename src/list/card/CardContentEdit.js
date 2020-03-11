@@ -3,21 +3,32 @@ import TextAreaComponent from '../../input/edit-components/TextAreaComponent';
 import InputContainer from "../../input/InputContainer";
 import EmojiPreviewComponent from "../../input/EmojiPreviewComponent";
 import ControlContainer from "../../input/control-container/ControlContainer";
-import {removeReply,restoreReply} from "../../utils";
+import {removeReplyAt,restoreReplyAt} from "../../utils";
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export default class CardContentEdit extends InputContainer{
   constructor(props){
     super(props)
-    this.state.commentContent=removeReply(props.commentRawContent)
+    this.state.commentContent=removeReplyAt(props.commentRawContent,true)
+    this.state.replyLoading=false
     this.saveEdit=this.saveEdit.bind(this)
   }
 
   saveEdit(){
-    const {curId,applyEdit,pid,hideEditMode}=this.props
+    const {curId,applyEdit,pid,at,hideEditMode,commentRawContent}=this.props
     const {commentContent}=this.state
-    let comment=restoreReply(commentContent)
-    console.log(comment)
-    applyEdit({id:curId,pid,comment}).then(()=>{
+    let oldCommentRaw=removeReplyAt(commentRawContent,false)
+    if(commentContent===oldCommentRaw){
+      return hideEditMode()
+    }
+    if(!this.commentVerify()){
+      return
+    }
+    let comment=restoreReplyAt(commentContent)
+    this.setState({
+      replyLoading:true
+    })
+    applyEdit({id:curId,pid,comment,at}).then(()=>{
       hideEditMode()
     })
   }
@@ -31,6 +42,7 @@ export default class CardContentEdit extends InputContainer{
       emojiListPos,
       commentErr,
       commentErrMsg,
+      replyLoading,
     } = this.state;
     const {
       curLang,
@@ -38,16 +50,16 @@ export default class CardContentEdit extends InputContainer{
       togglePreviewShow,
       curId,
       hideEditMode,
-      updateCommentList,
     }=this.props
 
     return (
       <>
-        <div className="vedit">
+        <div className="v-edit-area">
           <TextAreaComponent ref={this.textAreaRef}
                              commentErr={commentErr}
                              commentErrMsg={commentErrMsg}
                              commentContent={commentContent}
+                             replyLoading={replyLoading}
                              contentOnKeyDown={this.contentOnKeyDown}
                              contentOnChange={this.commentContentOnChange}
                              commentVerify={this.commentVerify}
@@ -65,8 +77,12 @@ export default class CardContentEdit extends InputContainer{
                             togglePreviewShow={togglePreviewShow}
           />
         </div>
-        <span className={"v-edit"} onClick={this.saveEdit.bind(this,curId)}>{curLang['ctrl']['save']}</span>
-        <span className={"v-edit"} onClick={hideEditMode}>{curLang['ctrl']['cancel']}</span>
+        <span className={"v-edit-save"} onClick={this.saveEdit.bind(this,curId)}>
+          { replyLoading
+            ? <CircularProgress size={14} />
+            : curLang['ctrl']['save']}
+          </span>
+        <span className={"v-edit-cancel"} onClick={hideEditMode}>{curLang['ctrl']['cancel']}</span>
       </>
 
 

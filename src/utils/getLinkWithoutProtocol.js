@@ -1,4 +1,5 @@
 export function getLinkWithoutProtocol(link){
+  if(!link)return ''
   let protocolMatch=link.match(/http(?:s)?:\/\//)
   let linkWithoutPro=link
   if(protocolMatch){

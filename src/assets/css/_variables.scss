@@ -59,6 +59,8 @@ $warning-color-dark:#FFC107;
   --error-color: #{$error-color-light};
   --info-color: #{$info-color-light};
   --warning-color: #{$warning-color-light};
+
+  @import 'editor/light';
 }
 
 .theme-dark {
@@ -77,4 +79,7 @@ $warning-color-dark:#FFC107;
   --error-color: #{$error-color-dark};
   --info-color: #{$info-color-dark};
   --warning-color: #{$warning-color-dark};
+  @import 'editor/dark';
 }
+
+@import 'index';

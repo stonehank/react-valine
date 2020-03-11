@@ -8,7 +8,7 @@ export default class CardAvatar extends React.PureComponent{
       avatarSrc,
     }=this.props
     return (
-      <img className={"vimg"} alt={"avatar"} src={avatarSrc || `${GRAVATAR_URL}/?d=mp&size=50`}/>
+      <img className={"v-avatar"} alt={"avatar"} src={avatarSrc || `${GRAVATAR_URL}/?d=mp&size=50`}/>
     )
   }
 }

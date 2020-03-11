@@ -1,18 +1,12 @@
 import timeAgo from './timeAgo'
-import {contentAtVerify,linkVerify,emailVerify} from './verify'
-import {replaceAt,replaceExistEmoji2,removeReply,restoreReply} from './replace'
-import {xssMarkdown,modify_hljs} from './xssMarkdown'
-import {getEmojiPrefix,calcValueAndPos,resolveTAB} from './insertAtCaret'
+import {getEmojiPrefix, calcValueAndPos, resolveTAB, highLightEle, bindATagSmoothScroll, getCaretCoordinates,scrollElementsTo} from './DOM'
+import {contentAtVerify,linkVerify,emailVerify} from './Verify'
+import {replaceAtToTag,replaceExistEmoji,removeReplyAt,restoreReplyAt,parseToValidCommentAt,xssMarkdown,modify_hljs,escape,randUniqueString} from './String'
 import {mergeNestComment,convert2SimplyList,simplyObj,updateFromList} from './nestComment'
-import {escape} from './escape'
 import getWordList from './emojiTire'
-import getCaretCoordinates from './textarea-creat'
 import {globalState,list2Hash} from './globalState'
-import randUniqueString from './randUniqueString'
 import {getLinkWithoutProtocol} from './getLinkWithoutProtocol'
 import {getFromCache,setCache} from './cacheControl'
-import scrollElementsTo from './scrollElementsTo'
-
 
 export function deepClone(item) {
   return JSON.parse(JSON.stringify(item))
@@ -57,30 +51,26 @@ export function deepEqual(obj1,obj2){
 export {
   globalState,
   timeAgo,
-  randUniqueString,
-  contentAtVerify,
-  calcValueAndPos,
-  linkVerify,
-  emailVerify,
-  replaceAt,
-  removeReply,
-  restoreReply,
-  xssMarkdown,
-  getEmojiPrefix,
-  modify_hljs,
-  scrollElementsTo,
+
+
+
+  // Verify
+  contentAtVerify,linkVerify, emailVerify,
+  // String
+  replaceAtToTag,replaceExistEmoji,removeReplyAt,restoreReplyAt,parseToValidCommentAt,xssMarkdown,modify_hljs,escape,randUniqueString,
+  // DOM
+  getEmojiPrefix, calcValueAndPos, resolveTAB, highLightEle, bindATagSmoothScroll, getCaretCoordinates,scrollElementsTo,
+
+
   mergeNestComment,
   list2Hash,
   getFromCache,
   setCache,
-  escape,
-  // replaceExistEmoji,
-  replaceExistEmoji2,
+
   convert2SimplyList,
   simplyObj,
   updateFromList,
   getWordList,
-  resolveTAB,
-  getCaretCoordinates,
+
   getLinkWithoutProtocol
 }
