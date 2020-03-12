@@ -14,8 +14,8 @@ import {
 } from "../utils";
 import EmojiPreviewComponent from "./EmojiPreviewComponent";
 import SubmitComponent from "./SubmitComponent";
-import CreateValidateForm from 'create-validate-form';
-import 'create-validate-form/dist/css/CreateValidateForm.css'
+// import CreateValidateForm from 'create-validate-form';
+// import 'create-validate-form/dist/css/CreateValidateForm.css'
 
 const avatarsList=["mp","identicon", "monsterid",  "retro", "robohash", "wavatar","blank",]
 
