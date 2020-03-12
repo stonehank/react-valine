@@ -24,14 +24,16 @@ export default class PreviewComponent extends React.PureComponent {
   render() {
     const {previewShow,txt,togglePreviewShow}=this.props
     return (
-      <Button size={"small"}  variant="text" color="default" onClick={togglePreviewShow}>
-        <span style={{paddingLeft:8}}>{txt}： </span>
-        <StyleSwitch
-          size={'small'}
-          checked={previewShow}
-        />
-        <span style={{minWidth:28,textTransform:'capitalize'}}>{ previewShow ? 'On' : 'Off' }</span>
-      </Button>
+      <span className={"vpreview-btn"}>
+        <Button size={"small"} variant="text" color="default" onClick={togglePreviewShow}>
+          <span style={{paddingLeft:8}}>{txt}： </span>
+          <StyleSwitch
+            size={'small'}
+            checked={previewShow}
+          />
+          <span style={{minWidth:28,textTransform:'capitalize'}}>{ previewShow ? 'On' : 'Off' }</span>
+        </Button>
+      </span>
     );
   }
 }

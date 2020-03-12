@@ -30,12 +30,15 @@
   },
   "homepage": "https://github.com/stonehank/react-valine#README",
   "peerDependencies": {
-    "react": "^16.8.6"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   },
   "dependencies": {
     "@material-ui/core": "^4.5.1",
     "blueimp-md5": "^2.10.0",
+    "create-validate-form": "^0.1.7",
     "highlight.js": "^9.18.1",
+    "jquery": "^3.4.1",
     "js-cookie": "^2.2.1",
     "leancloud-storage": "^3.13.2",
     "marked": "^0.6.2",
@@ -48,12 +51,13 @@
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
+    "@testing-library/react": "^9.5.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^2.0.2",
     "codecov": "^3.5.0",
     "css-loader": "^2.1.1",
-    "enzyme": "^3.9.0",
+    "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.13.2",
     "eslint": "^5.16.0",
     "eslint-loader": "^2.1.2",

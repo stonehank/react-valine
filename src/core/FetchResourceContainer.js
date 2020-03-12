@@ -14,7 +14,7 @@ export default class FetchResourceContainer extends React.Component{
     this.oldRandUniqStr=getFromCache('ownerCode')
     this.newRandUniqStr=this.oldRandUniqStr || randUniqueString()
 
-    console.log(this.oldRandUniqStr,this.newRandUniqStr)
+    // console.log(this.oldRandUniqStr,this.newRandUniqStr)
     this.uploadComment=this.uploadComment.bind(this)
     this.updateComment=this.updateComment.bind(this)
     this.fetchNest=this.fetchNest.bind(this)

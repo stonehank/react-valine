@@ -22,7 +22,7 @@ export default class LinkComponent extends React.PureComponent{
           onChange={linkOnChange}
           fullWidth={true}
           InputProps={{
-            startAdornment:<span style={{textTransform:'none'}}  onClick={toggleProtocol}>{protocol}://</span>
+            startAdornment:<span className={"v-link-toggle"} style={{textTransform:'none'}}  onClick={toggleProtocol}>{protocol}://</span>
           }}
         />
     )

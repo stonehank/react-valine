@@ -2,6 +2,7 @@ import React from 'react';
 import {Valine,ValineCount,ValinePageview,ValinePanel} from '../src/react-valine'
 import ReactDOM from 'react-dom';
 import TestUtil from 'react-dom/test-utils';
+var enzyme = require('enzyme');
 
 const test_uniq_str="test-common-usage"
 
@@ -53,16 +54,16 @@ describe('test common usage', ()=>{
         </div>
       </Valine>, container);
     })
-    app = container.getElementsByClassName('v')
-    wrap = container.getElementsByClassName('vwrap')
+    app = container.getElementsByClassName('react-valine')
+    wrap = container.getElementsByClassName('v-main-wrapper')
     list=container.getElementsByClassName("vlist")
-    page=container.getElementsByClassName("vpage")
+    page=container.getElementsByClassName("v-content-footer")
     errlog=container.getElementsByClassName("vscreen-errorlog")
-    vinputs=container.getElementsByTagName('input')
+    vinputs=container.getElementsByClassName('vinputs-ident')
     textAreaEle=container.getElementsByTagName("textarea")[0]
     vemojiBtn=container.getElementsByClassName("vemoji-btn")[0]
     vpreviewBtn=container.getElementsByClassName("vpreview-btn")[0]
-    submitBtn=container.getElementsByClassName("vsubmit ")[0]
+    submitBtn=container.getElementsByClassName("vsubmit-ident ")[0]
     avatarBtn=container.getElementsByClassName("vavatars-select-button")[0]
   })
 
@@ -71,22 +72,22 @@ describe('test common usage', ()=>{
       expect(wrap.length).toBe(1)
       expect(list.length).toBe(0)
       expect(page.length).toBe(0)
-      // expect(textAreaEle).not.toBe(null)
+      expect(vinputs.length).toBe(3)
+      expect(textAreaEle).not.toBe(null)
       expect(vemojiBtn).not.toBe(null)
       expect(vpreviewBtn).not.toBe(null)
       expect(submitBtn).not.toBe(null)
       expect(avatarBtn).not.toBe(null)
 
-
-
   });
 
-  // it("toggle protocol",()=>{
-  //   let protoBtn=vinputs.childNodes[2].childNodes[0]
-  //   expect(protoBtn.innerHTML).toBe("https://")
-  //   TestUtil.Simulate.click(protoBtn)
-  //   expect(protoBtn.innerHTML).toBe("http://")
-  // })
+  it("toggle protocol",()=>{
+    let protoBtn=document.getElementsByClassName('v-link-toggle')[0]
+    console.log(vinputs[2])
+    expect(protoBtn.innerHTML).toBe("https://")
+    TestUtil.Simulate.click(protoBtn)
+    expect(protoBtn.innerHTML).toBe("http://")
+  })
 
   // it('verify inputs',()=>{
   //   let nickEle=vinputs.childNodes[0].childNodes[0],

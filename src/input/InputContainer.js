@@ -14,6 +14,8 @@ import {
 } from "../utils";
 import EmojiPreviewComponent from "./EmojiPreviewComponent";
 import SubmitComponent from "./SubmitComponent";
+import CreateValidateForm from 'create-validate-form';
+import 'create-validate-form/dist/css/CreateValidateForm.css'
 
 const avatarsList=["mp","identicon", "monsterid",  "retro", "robohash", "wavatar","blank",]
 
@@ -363,12 +365,12 @@ export default class InputContainer extends React.Component {
   componentDidMount(){
     window.addEventListener("click",this.turnOffEmojiPreviewList)
     let storage=getFromCache('ValineCache')
-    if(storage){
+    if(storage) {
       this.setState({
-        link:storage.link,
-        nickName:storage.nick,
-        email:storage.mail,
-        avatarSrc:storage.avatarSrc || this.state.avatarSrc
+        link: storage.link,
+        nickName: storage.nick,
+        email: storage.mail,
+        avatarSrc: storage.avatarSrc || this.state.avatarSrc
       })
     }
   }
@@ -410,7 +412,7 @@ export default class InputContainer extends React.Component {
     }=this.props
 
     return (
-      <React.Fragment>
+      <section id={"v-main-wrapper"} className={"v-main-wrapper"}>
         <EditAreaComponent link={link}
                            email={email}
                            nickName={nickName}
@@ -464,7 +466,7 @@ export default class InputContainer extends React.Component {
                            submitBtnDisable={submitBtnDisable}
                            handleOnSubmit={this.handleOnSubmit}/>
         </div>
-      </React.Fragment>
+      </section>
     );
   }
 }

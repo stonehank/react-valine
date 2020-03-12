@@ -3,9 +3,33 @@ import NickNameComponent from "./nick/NickNameComponent";
 import MailComponent from "./mail/MailComponent";
 import LinkComponent from "./link/LinkComponent";
 import AvatarContainer from "./avatar/AvatarContainer";
-import withWidth from '@material-ui/core/withWidth';
+import calcScreenSizeText from "../../utils/DOM/calcScreenSizeText";
+
 
 class EditAreaComponent extends React.PureComponent {
+
+  constructor(props){
+    super(props)
+    this.state={
+      width:''
+    }
+    this.handleResize=this.handleResize.bind(this)
+  }
+
+  handleResize(){
+    let sizeTxt=calcScreenSizeText()
+    this.setState({
+      width:sizeTxt
+    })
+  }
+  componentDidMount(){
+    this.handleResize()
+    window.addEventListener('resize',this.handleResize)
+  }
+
+  componentWillUnmount(){
+    window.addEventListener('resize',this.handleResize)
+  }
 
   render() {
     const {
@@ -32,9 +56,8 @@ class EditAreaComponent extends React.PureComponent {
       nameVerify,
       linkVerify,
       mailVerify,
-      width
     } = this.props;
-    // console.log(11)
+    const {width}=this.state
     const langHead=curLang['head']
     return (
       <div className="vheader">
@@ -74,4 +97,5 @@ class EditAreaComponent extends React.PureComponent {
     )
   }
 }
-export default withWidth()(EditAreaComponent);
+
+export default EditAreaComponent

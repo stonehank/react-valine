@@ -7,19 +7,21 @@ export default class SubmitButton extends React.PureComponent{
   render(){
     const { submitBtnDisable,handleOnSubmit,langCtrl,submitLoading} = this.props;
     return (
-      <Button size={"small"} title={"Ctrl+Enter"}
-              className={"vsubmit-ident success-btn"}
-              onClick={handleOnSubmit}
-              disabled={submitBtnDisable}
-              variant="contained"
-              color="default"
-      >
-        {
-          submitLoading
-            ? <CircularProgress size={24} />
-            : langCtrl["submit"]
-        }
-      </Button>
+      <div className={"vsubmit-ident"} onClick={handleOnSubmit}>
+        <Button size={"small"} title={"Ctrl+Enter"}
+                className={"success-btn"}
+                disabled={submitBtnDisable}
+                variant="contained"
+                color="default"
+        >
+          {
+            submitLoading
+              ? <CircularProgress size={24} />
+              : langCtrl["submit"]
+          }
+        </Button>
+      </div>
+
     )
   }
 }

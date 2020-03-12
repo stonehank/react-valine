@@ -32,6 +32,9 @@ html{
       }
     }
   }
+  .flex-1{
+    flex:1;
+  }
   .highlight-ele{
     background-color: var(--warning-color) !important;
     *{
@@ -126,7 +129,7 @@ html{
       font-weight:bold;
     }
   }
-  .vwrap {
+  .v-main-wrapper {
     margin-bottom: 8px;
     position: relative;
     padding: 8px;
@@ -168,6 +171,25 @@ html{
     .vheader {
       display: flex;
       flex-flow: column;
+      .vinputs-ident{
+        display:flex;
+        align-items:center;
+        width:100%;
+      }
+      .v-link-toggle{
+        text-transform: none;
+        padding: 6px 4px;
+        cursor: pointer;
+        background: var(--text-blur);
+        border:1px solid var(--text-blur);
+        border-radius: 4px;
+        //box-shadow: 0 4px 6px -6px var(--shadow-color);
+        &:hover{
+          background:var(--foreground-color);
+          color:var(--text-primary);
+          border:1px solid var(--text-secondary);
+        }
+      }
       .vavatars-select-button{
         position: relative;
         margin-right: 8px;
@@ -204,7 +226,7 @@ html{
         align-items: flex-start;
       }
     }
-    .vcontrol {
+    .v-edit-submit {
       padding-top: 4px;
       display:flex;
       justify-content: space-between;
@@ -224,13 +246,12 @@ html{
       border:none;
     }
   }
-  .vctrl {
+  .v-edit-control {
     text-align: right;
     font-size: 12px;
-  }
-
-  .vctrl span {
-    cursor: pointer;
+    span {
+      cursor: pointer;
+    }
   }
   .power {
     color: var(--text-secondary);
@@ -492,7 +513,7 @@ html{
       }
     }
   }
-  .vpage {
+  .v-content-footer {
     .vdiscuss{
       background: var(--success-color);
       font-weight:700;

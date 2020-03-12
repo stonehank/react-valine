@@ -89,7 +89,6 @@ export default class ControlContainer extends React.PureComponent {
                           closeEmojiDrawer={this.closeEmojiDrawer}
                           openEmojiDrawer={this.openEmojiDrawer}
         />
-        {/*<EmojiComponentShow show={show} insertEmoji={insertEmoji} />*/}
         <PreviewComponentShow previewShow={previewShow} previewContent={previewContent} />
       </React.Fragment>
     );

@@ -440,21 +440,19 @@ export default class ValineContainer extends React.Component {
             ? <ErrorLog errorLog={errorLog}/>
             : null
         }
-        <div className="vwrap">
-          <InputContainer submitBtnDisable={submitBtnDisable}
-                          ref={this.inputContainerRef}
-                          requireName={requireName}
-                          requireEmail={requireEmail}
-                          curLang={curLang}
-                          GRAVATAR_URL={GRAVATAR_URL}
-                          emojiListSize={emojiListSize}
-                          submitLoading={submitLoading}
-                          toggleTextAreaFocus={toggleTextAreaFocus}
-                          previewShow={previewShow}
-                          applySubmit={this.applySubmit}
-                          togglePreviewShow={this.togglePreviewShow}
-          />
-        </div>
+        <InputContainer submitBtnDisable={submitBtnDisable}
+                        ref={this.inputContainerRef}
+                        requireName={requireName}
+                        requireEmail={requireEmail}
+                        curLang={curLang}
+                        GRAVATAR_URL={GRAVATAR_URL}
+                        emojiListSize={emojiListSize}
+                        submitLoading={submitLoading}
+                        toggleTextAreaFocus={toggleTextAreaFocus}
+                        previewShow={previewShow}
+                        applySubmit={this.applySubmit}
+                        togglePreviewShow={this.togglePreviewShow}
+        />
         <InfoComponent lang_comments={curLang["tips"]["comments"]} commentCounts={commentCounts}/>
         <CommentListComponent GRAVATAR_URL={GRAVATAR_URL}
                               commentCounts={commentCounts}

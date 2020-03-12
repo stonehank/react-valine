@@ -1,7 +1,9 @@
 import timeAgo from './timeAgo'
-import {getEmojiPrefix, calcValueAndPos, resolveTAB, highLightEle, bindATagSmoothScroll, getCaretCoordinates,scrollElementsTo} from './DOM'
+import {getEmojiPrefix, calcValueAndPos, resolveTAB, highLightEle, bindATagSmoothScroll,
+  getCaretCoordinates,scrollElementsTo,calcScreenSizeText} from './DOM'
 import {contentAtVerify,linkVerify,emailVerify} from './Verify'
-import {replaceAtToTag,replaceExistEmoji,removeReplyAt,restoreReplyAt,parseToValidCommentAt,xssMarkdown,modify_hljs,escape,randUniqueString} from './String'
+import {replaceAtToTag,replaceExistEmoji,removeReplyAt,restoreReplyAt,parseToValidCommentAt,
+  xssMarkdown,modify_hljs,escape,randUniqueString} from './String'
 import {mergeNestComment,convert2SimplyList,simplyObj,updateFromList} from './nestComment'
 import getWordList from './emojiTire'
 import {globalState,list2Hash} from './globalState'
@@ -57,9 +59,11 @@ export {
   // Verify
   contentAtVerify,linkVerify, emailVerify,
   // String
-  replaceAtToTag,replaceExistEmoji,removeReplyAt,restoreReplyAt,parseToValidCommentAt,xssMarkdown,modify_hljs,escape,randUniqueString,
+  replaceAtToTag,replaceExistEmoji,removeReplyAt,restoreReplyAt,parseToValidCommentAt,xssMarkdown,modify_hljs,escape,
+  randUniqueString,
   // DOM
   getEmojiPrefix, calcValueAndPos, resolveTAB, highLightEle, bindATagSmoothScroll, getCaretCoordinates,scrollElementsTo,
+  calcScreenSizeText,
 
 
   mergeNestComment,

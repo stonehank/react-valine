@@ -1,5 +1,4 @@
-'use strict';
-
+// const webpack = require('webpack')
 const isWsl = require('is-wsl');
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -55,7 +54,8 @@ module.exports= {
     ],
   },
   externals: {
-    react:'react'
+    react:'react',
+    'react-dom':'react-dom'
   },
 
   resolve: {
@@ -80,6 +80,25 @@ module.exports= {
           cacheCompression: true,
           compact: true
         },
+      },
+      {
+        test: /\.css$/,
+        use: [
+          "style-loader",
+          "css-loader",
+          {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: () => [
+                require('postcss-flexbugs-fixes'),
+                require('postcss-preset-env')({
+                  stage: 3,
+                }),
+              ],
+            },
+          },
+        ]
       },
       {
         test: /\.scss$/,

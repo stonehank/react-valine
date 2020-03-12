@@ -27,6 +27,25 @@ module.exports = {
         loader: 'babel-loader'
       },
       {
+        test: /\.css$/,
+        use: [
+          "style-loader",
+          "css-loader",
+          {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: () => [
+                require('postcss-flexbugs-fixes'),
+                require('postcss-preset-env')({
+                  stage: 3,
+                }),
+              ],
+            },
+          },
+        ]
+      },
+      {
         test: /\.scss$/,
         use: [
           "style-loader",

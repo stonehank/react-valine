@@ -9,7 +9,9 @@ export default class EmojiComponent extends React.PureComponent {
     // console.log(show)
     return (
       <React.Fragment>
-        <Button size={"small"} onClick={openEmojiDrawer}  variant="text" color="default">😄{txt}</Button>
+        <span className={"vemoji-btn"}>
+          <Button size={"small"} onClick={openEmojiDrawer}  variant="text" color="default">😄{txt}</Button>
+        </span>
         <Drawer
           anchor={"bottom"}
           open={show}

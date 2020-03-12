@@ -117,9 +117,9 @@ describe('test nest with multi comments', ()=>{
       </Valine>, container);
     })
     app = container.getElementsByClassName('v')
-    wrap = container.getElementsByClassName('vwrap')
+    wrap = container.getElementsByClassName('v-main-wrapper')
     list=container.getElementsByClassName("vlist")
-    page=container.getElementsByClassName("vpage")
+    page=container.getElementsByClassName("v-content-footer")
     errlog=container.getElementsByClassName("vscreen-errorlog")
     vinputs=container.getElementsByClassName("vinputs")[0]
     textAreaEle=container.getElementsByTagName("textarea")[0]

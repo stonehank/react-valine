@@ -5,7 +5,7 @@ export default class PageComponent extends React.PureComponent{
   render(){
     const {currentCounts,langCtrl,commentCounts,handleReply,fillNxtCommentList}=this.props
     return (
-      <div className="vpage txt-center">
+      <div className="v-content-footer txt-center">
         <button className={"vdiscuss vbtn"} onClick={handleReply}>{langCtrl["discuss"]}</button>
         {
           currentCounts < commentCounts
