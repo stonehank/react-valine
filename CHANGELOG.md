@@ -20,7 +20,7 @@
 ##### 0.3.9
 
 * 修复部分xss漏洞
-* 临时修复leanCloud[无法访问问题](https://blog.avoscloud.com/6805/)
+* 临时修复leanCloud[无法访问问题](https://leancloudblog.com/domain-incident/)
 
 
 ##### 0.3.8

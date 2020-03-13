@@ -45,7 +45,6 @@ export default class ValineContainer extends React.Component {
     this.setCommentList = this.setCommentList.bind(this)
     this.handleReply = this.handleReply.bind(this)
     this.applyEdit = this.applyEdit.bind(this)
-    this.checkCanEdit = this.checkCanEdit.bind(this)
     this.applySubmit = this.applySubmit.bind(this)
     this.togglePreviewShow = this.togglePreviewShow.bind(this)
     this.resetDefaultComment = this.resetDefaultComment.bind(this)
@@ -135,7 +134,6 @@ export default class ValineContainer extends React.Component {
   scrollToEle(ele,highlight=true) {
     let [innerScrTop, outerScrTop] = this.getScrollTop(ele, this.panelParentEle)
     if (this.props.useWindow) {
-      console.log(ele, this.panelParentEle,innerScrTop,outerScrTop)
       scrollElementsTo([window], [outerScrTop ])
         .then(()=>{
           if(highlight)highLightEle(ele)
@@ -173,41 +171,29 @@ export default class ValineContainer extends React.Component {
   getScrollTop(ele, parentEle) {
     let innerScrollTop = 0, outerScrollTop = 0
     if (this.props.useWindow) {
-      // let doc = document.documentElement || document.body.parentNode || document.body
-      // let scrollTop = window.pageYOffset != null ? window.pageYOffset : doc.scrollTop
-      // let screenTop = ele.getBoundingClientRect().top
-      // outerScrollTop = scrollTop + screenTop
       outerScrollTop = this.calculateTopPosition(ele)
-      // console.log('outer',outerScrollTop)
     } else {
       if (ele.offsetParent === parentEle) {
         innerScrollTop = ele.offsetTop
       } else {
         innerScrollTop = this.calculateTopPosition(ele,parentEle)
-        // ele.offsetTop - parentEle.offsetTop
       }
       outerScrollTop = this.calculateTopPosition(parentEle)
     }
     return [innerScrollTop, outerScrollTop]
   }
 
-  checkCanEdit(cid) {
-    const {checkIsOwner} = this.props
-    return checkIsOwner(cid)
-  }
 
   applyEdit({comment, id,pid,at}) {
-    return this.checkCanEdit(id).then((isOwner) => {
-      if (!isOwner) {
-        console.error('Is Not owner')
+    return this.props.checkCanEdit(id).then((canEdit) => {
+      if (!canEdit) {
+        console.error('Can not be edit, reason: 1. Not edit mode 2. Not owner')
         return Promise.reject()
       }
       let obj=parseToValidCommentAt({comment,pid,at})
       let newComment=obj.comment
-      // console.log(obj,'~~~')
       return new Promise((resolve) => {
         newComment = xssMarkdown(newComment)
-        // console.log(newComment,'~~~')
         this.setState({
           submitLoading: true
         }, () => {
@@ -225,11 +211,11 @@ export default class ValineContainer extends React.Component {
                   },200)
                 })
 
-            }).catch(() => {
+            }).catch((err) => {
               this.setState({
                 submitLoading: false
               })
-              throw new Error('Something wrong, can not save comment')
+              console.error('Something wrong, can not save comment',err)
             })
         })
       })
@@ -418,7 +404,8 @@ export default class ValineContainer extends React.Component {
       requireEmail,
       curLang,
       nest,
-      emojiListSize
+      emojiListSize,
+      canBeModify
     } = this.props
 
     const {
@@ -460,6 +447,7 @@ export default class ValineContainer extends React.Component {
                               commentList={commentList}
                               curLang={curLang}
                               nest={nest}
+                              canBeModify={canBeModify}
                               fetchMoreLoading={fetchMoreLoading}
                               fetchInitLoading={fetchInitLoading}
                               handleReply={this.handleReply}

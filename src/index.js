@@ -15,6 +15,7 @@ ReactDOM.render(
            appKey={"lGPcHd7GL9nYKqBbNEkgXKjX"}
            // requireEmail={true}
            // lang={"en"}
+           canBeModify={true}
            placeholder={"Try“:” to input emoji"}
            nest={true}
            nestLayers={1}

@@ -3,7 +3,8 @@ import ValineContext from './ValineContext'
 import locales from './assets/locales'
 import PropTypes from 'prop-types';
 
-const AV=require('leancloud-storage')
+// const AV=require('leancloud-storage')
+import AV from './CustomAV'
 window.AV=AV
 
 export default class Valine extends React.Component{
@@ -21,6 +22,7 @@ export default class Valine extends React.Component{
       lang:props.lang,
       nestLayers:props.nestLayers,
       emojiListSize:props.emojiListSize,
+      canBeModify:props.canBeModify
     }
     if(props.customTxt!=null){
       let customTxt=props.customTxt
@@ -162,7 +164,8 @@ Valine.defaultProps={
   lang:'zh-cn',
   nestLayers:Infinity,
   emojiListSize:5,
-  serverURLs:'https://api.leancloud.cn'
+  serverURLs:'https://api.leancloud.cn',
+  canBeModify:false
 }
 
 Valine.propTypes = {
@@ -179,4 +182,5 @@ Valine.propTypes = {
   customTxt:PropTypes.object,
   nestLayers:PropTypes.number,
   emojiListSize:PropTypes.number,
+  canBeModify:PropTypes.bool
 }

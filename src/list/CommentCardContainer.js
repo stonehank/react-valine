@@ -40,13 +40,14 @@ export default class CommentCardContainer extends React.Component{
     })
   }
   showEditMode(){
-    this.setState({
-      editMode:true
-    })
+    if(this.props.canBeModify){
+      this.setState({
+        editMode:true
+      })
+    }
   }
 
   shouldComponentUpdate(nextProps,nextState){
-    // console.log('cardContainer',!deepEqual(this.props,nextProps) || !deepEqual(this.state,nextState))
     return !deepEqual(this.props,nextProps) || !deepEqual(this.state,nextState)
   }
 
@@ -112,6 +113,7 @@ export default class CommentCardContainer extends React.Component{
       commentRawContent,
       createdAt,
       previewShow,
+      canBeModify,
       togglePreviewShow,
     }=this.props
 
@@ -146,6 +148,7 @@ export default class CommentCardContainer extends React.Component{
                       owner={owner}
                       nickName={nickName}
                       editMode={editMode}
+                      canBeModify={canBeModify}
                       handleReply={handleReply}
                       showEditMode={this.showEditMode}
           />
@@ -185,6 +188,7 @@ export default class CommentCardContainer extends React.Component{
                                                    initShowChild={initShowChild}
                                                    GRAVATAR_URL={GRAVATAR_URL}
                                                    avatarSrc={avatarSrc}
+                                                   canBeModify={canBeModify}
                                                    link={link}
                                                    handleReply={handleReply }
                                                    applyEdit={applyEdit }

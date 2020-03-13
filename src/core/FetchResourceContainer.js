@@ -4,17 +4,16 @@ import '../assets/css/_variables.scss'
 // import '../assets/css/editor/a11y.scss'
 import {getFromCache,setCache,randUniqueString} from '../utils'
 import ValineContainer from "./ValineContainer";
-
+let oldRandUniqStr=getFromCache('ownerCode')
+let newRandUniqStr=oldRandUniqStr || randUniqueString()
 
 export default class FetchResourceContainer extends React.Component{
 
   constructor(props){
     super(props)
+    this.time=1
 
-    this.oldRandUniqStr=getFromCache('ownerCode')
-    this.newRandUniqStr=this.oldRandUniqStr || randUniqueString()
-
-    // console.log(this.oldRandUniqStr,this.newRandUniqStr)
+    if(props.canBeModify)props.AV.User.logOut()
     this.uploadComment=this.uploadComment.bind(this)
     this.updateComment=this.updateComment.bind(this)
     this.fetchNest=this.fetchNest.bind(this)
@@ -22,31 +21,30 @@ export default class FetchResourceContainer extends React.Component{
     this.fetchList=this.fetchList.bind(this)
     this.fetchMoreList=this.fetchMoreList.bind(this)
     this.fetchOwnerTask=this.fetchOwnerTask.bind(this)
-    this.checkIsOwner=this.checkIsOwner.bind(this)
+    this.checkCanEdit=this.checkCanEdit.bind(this)
     this.getUser=this.getUser.bind(this)
   }
 
-  checkIsOwner(id){
-    const {AV}=this.props
+  checkCanEdit(id){
+    const {AV,canBeModify}=this.props
+    if(!canBeModify)return Promise.resolve(false)
     return new AV.Query('Comment')
       .equalTo('objectId',id)
-      .equalTo('ownerCode',this.oldRandUniqStr)
+      .equalTo('ownerCode',oldRandUniqStr)
       .find()
       .then(ownerItems=>{
-        // console.log('check owner',ownerItems)
-        // console.log(id,this.oldRandUniqStr)
         return ownerItems.length>0
       })
   }
 
 
   getUser(){
-    console.log('Try to get user')
-    const {AV}=this.props
+    const {AV,canBeModify}=this.props
+    if(!canBeModify)return Promise.reject('Forbid the edit!')
     let createUser=(res)=>{
       let user= new AV.User()
-      user.setUsername(this.newRandUniqStr)
-      user.setPassword(this.newRandUniqStr)
+      user.setUsername(newRandUniqStr)
+      user.setPassword(newRandUniqStr)
       let acl = new AV.ACL();
       acl.setPublicReadAccess(true);
       acl.setPublicWriteAccess(false);
@@ -54,29 +52,31 @@ export default class FetchResourceContainer extends React.Component{
       console.log('Can not get, try create')
       return user.save().then((u)=>{
         console.log('Create success')
-        this.oldRandUniqStr=this.newRandUniqStr
+        this.time++
+        oldRandUniqStr=newRandUniqStr
         res(u)
       })
     }
     return new Promise((res)=>{
-      if(this.oldRandUniqStr && AV.User.current() && AV.User.current().getUsername()===this.oldRandUniqStr){
+      if(oldRandUniqStr && AV.User.current() && AV.User.current().attributes.username===oldRandUniqStr){
         console.log('Has login')
         return res(AV.User.current())
       }
-      if(this.oldRandUniqStr){
-        return AV.User.logIn(this.oldRandUniqStr,this.oldRandUniqStr)
+      if(oldRandUniqStr){
+        return AV.User.logIn(oldRandUniqStr,oldRandUniqStr)
           .then((user)=>{
             console.log('Can login')
             res(user)
           })
-          .catch(()=>{
-            this.newRandUniqStr=randUniqueString()
+          .catch((err)=>{
+            newRandUniqStr=randUniqueString()
             createUser(res).then(()=>{
               return this.getUser()
             })
 
           })
       }else{
+        if(this.time===2) return res(null)
         createUser(res).then(()=>{
           return this.getUser()
         })
@@ -86,14 +86,13 @@ export default class FetchResourceContainer extends React.Component{
   }
 
   updateComment({id,comment,commentRaw}){
-    const {AV}=this.props
+    const {AV,canBeModify}=this.props
+    if(!canBeModify)return Promise.reject(null)
     return this.getUser()
       .then((user)=>{
-        // console.log(user)
         return  new AV.Query('Comment').get(id)
           .then((item)=>{
-            // console.log({id,comment,commentRaw})
-            item.set('ownerCode',this.newRandUniqStr)
+            item.set('ownerCode',newRandUniqStr)
             item.set('comment',comment)
             item.set('commentRaw',commentRaw)
             // 这里当用户被删除后，无法修改ownerCode
@@ -112,6 +111,7 @@ export default class FetchResourceContainer extends React.Component{
   uploadComment(uploadField){
     const {AV}=this.props
     let Ct = AV.Object.extend('Comment');
+
     let comment = new Ct();
     for (let k in uploadField) {
       if (uploadField.hasOwnProperty(k)) {
@@ -135,16 +135,17 @@ export default class FetchResourceContainer extends React.Component{
       let acl = new AV.ACL();
       acl.setPublicReadAccess(true);
       acl.setPublicWriteAccess(false);
-      return this.getUser().then((user)=>{
-        acl.setWriteAccess(user,true);
-        comment.setACL(acl);
-        comment.set('ownerCode',this.newRandUniqStr)
-        setCache('ownerCode',this.newRandUniqStr)
-        return comment.save()
+      return this.getUser()
+        .then((user)=>{
+          acl.setWriteAccess(user.id,true);
+          comment.setACL(acl);
+          comment.set('ownerCode',newRandUniqStr)
+          setCache('ownerCode',newRandUniqStr)
+          return comment.save()
       }).catch((err)=>{
-        console.error('Cant not get User '+err )
-        comment.setACL(acl);
-        return comment.save()
+          console.warn('Cant not get User '+err )
+          comment.setACL(acl);
+          return comment.save()
       })
     }).catch(()=>{
       console.error('Some error found in Submit,try again')
@@ -170,17 +171,18 @@ export default class FetchResourceContainer extends React.Component{
   }
 
   fetchOwnerTask(){
-    const {AV,uniqStr}=this.props
+    const {AV,uniqStr,canBeModify}=this.props
+    if(!canBeModify)return Promise.resolve([])
     return new AV.Query('Comment')
       .equalTo('uniqStr',uniqStr)
-      .equalTo('ownerCode',this.oldRandUniqStr)
+      .equalTo('ownerCode',oldRandUniqStr)
       .find()
       .then(ownerItems=>{
         if(ownerItems.length===0){
           return ownerItems
         }
         return new AV.Query('User')
-          .equalTo('username',this.oldRandUniqStr)
+          .equalTo('username',oldRandUniqStr)
           .find()
           .then((validUser)=>{
             if(validUser.length===0){
@@ -245,7 +247,6 @@ export default class FetchResourceContainer extends React.Component{
   fetchNest(){
     let contains=[]
     const {AV,pageSize,fetchCount,uniqStr}=this.props
-    console.log(AV)
     let addCounts=0
     let commentCounts=0
     return fetchCount(uniqStr).then(counts=> {
@@ -277,10 +278,8 @@ export default class FetchResourceContainer extends React.Component{
   }
 
   render(){
-    this.checkIsOwner('5e62fc63546eaa0075abf2f0')
     /* eslint-disable no-unused-vars */
-    const {AV,fetchCount,...otherProps}=this.props
-    AV.User.logOut()
+    const {AV,fetchCount,canBeModify,...otherProps}=this.props
     return (
       <ValineContainer fetchNest={this.fetchNest}
                        fetchMoreNest={this.fetchMoreNest}
@@ -289,7 +288,8 @@ export default class FetchResourceContainer extends React.Component{
                        fetchOwnerTask={this.fetchOwnerTask}
                        uploadComment={this.uploadComment}
                        updateComment={this.updateComment}
-                       checkIsOwner={this.checkIsOwner}
+                       checkCanEdit={this.checkCanEdit}
+                       canBeModify={canBeModify}
                        {...otherProps}
       />
     )

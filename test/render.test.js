@@ -27,7 +27,7 @@ describe('Common Render', ()=> {
   })
   it('First load render', () => {
 
-    console.log(app.text())
+    // console.log(app.text())
     expect(app.find('.react-valine').length).toEqual(1);
     expect(app.find('.v-main-wrapper').length).toEqual(1);
     expect(app.find('.vinputs-ident input').length).toEqual(3)

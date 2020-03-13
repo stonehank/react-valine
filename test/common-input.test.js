@@ -83,7 +83,7 @@ describe('test common usage', ()=>{
 
   it("toggle protocol",()=>{
     let protoBtn=document.getElementsByClassName('v-link-toggle')[0]
-    console.log(vinputs[2])
+    // console.log(vinputs[2])
     expect(protoBtn.innerHTML).toBe("https://")
     TestUtil.Simulate.click(protoBtn)
     expect(protoBtn.innerHTML).toBe("http://")
