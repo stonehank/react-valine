@@ -1,37 +1,38 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
+import TextField from './TextField';
 
 const TextAreaComponent=React.forwardRef((props, ref) => {
   const {
+    curLang,
     commentContent,
     placeholder,
     contentOnChange,
     contentOnKeyDown,
     submitBtnDisable,
-    commentErr,
-    commentErrMsg,
-    commentVerify,
+    reset,
     replyLoading,
   } = props;
   return (
     <div className={"v-editor-main"}>
       <TextField
         inputRef={ref}
-        variant="outlined"
-        disabled={submitBtnDisable || replyLoading}
-        error={commentErr}
-        helperText={commentErrMsg}
-        onClick={ev=>ev.stopPropagation()}
-        onBlur={commentVerify}
-        onFocus={()=>commentVerify(true)}
+        reset={reset}
+        showSuccess={false}
+        style={{marginTop:4}}
+        className={"w-100"}
         label={placeholder}
+        disabled={submitBtnDisable || replyLoading}
         value={commentContent}
-        onChange={contentOnChange}
+        onClick={ev=>ev.stopPropagation()}
         onKeyDown={contentOnKeyDown}
-        multiline={true}
-        fullWidth={true}
-        rowsMax={Infinity}
+        onChange={contentOnChange}
+        materialUI={false}
+        autoHeight={true}
         rows={5}
+        rules={[
+          (v)=>v.trim()!=='' || curLang.verify['empty_content'],
+          (v)=>v.length<=2000 || curLang.verify['exceed_content'],
+        ]}
       />
     </div>
   )

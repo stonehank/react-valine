@@ -14,8 +14,6 @@ import {
 } from "../utils";
 import EmojiPreviewComponent from "./EmojiPreviewComponent";
 import SubmitComponent from "./SubmitComponent";
-// import CreateValidateForm from 'create-validate-form';
-// import 'create-validate-form/dist/css/CreateValidateForm.css'
 
 const avatarsList=["mp","identicon", "monsterid",  "retro", "robohash", "wavatar","blank",]
 
@@ -34,6 +32,7 @@ export default class InputContainer extends React.Component {
       emojiChooseId:0,
       emojiListPos:[0,0],
       avatarSrc:`${props.GRAVATAR_URL}/?d=${avatarsList[Math.floor(Math.random()*avatarsList.length)]}&size=50`,
+      resetTextarea:false,
       nameErr:false,
       nameErrMsg:null,
       emailErr:false,
@@ -69,7 +68,6 @@ export default class InputContainer extends React.Component {
   }
 
   chooseEmoji(emoji,prefix,ev){
-    // if(ev)ev.stopPropagation()
     let ele=this.textAreaRef.current
     // 此处prefix前面还有`:`，因此需要+1
     let [newV,scrollTop,startPos]=calcValueAndPos(ele,emoji,prefix.length+1)
@@ -180,7 +178,8 @@ export default class InputContainer extends React.Component {
       emojiPrefix:prefix,
       emojiList:newEmojiList,
       emojiChooseId: emojiList.length===0 ? 0 : emojiChooseId,
-      emojiListPos:newEmojiListPos
+      emojiListPos:newEmojiListPos,
+      resetTextarea:false
     },()=>{
       ele.selectionStart=selectionStart
       ele.selectionEnd=selectionStart
@@ -273,18 +272,18 @@ export default class InputContainer extends React.Component {
     }
     const {nickName}=this.state
     const {requireName,curLang}=this.props
-    let errObj=curLang.verify
+    // let errObj=curLang.verify
     if(!force && requireName && nickName.trim()===''){
-      this.setState({
-        nameErr:true,
-        nameErrMsg:errObj['require_nick']
-      })
+      // this.setState({
+      //   nameErr:true,
+      //   nameErrMsg:errObj['require_nick']
+      // })
       return false
     }
-    this.setState({
-      nameErr:false,
-      nameErrMsg:null
-    })
+    // this.setState({
+    //   nameErr:false,
+    //   nameErrMsg:null
+    // })
     return true
   }
   mailVerify(force){
@@ -293,24 +292,24 @@ export default class InputContainer extends React.Component {
     }
     const {email}=this.state
     const {requireEmail,curLang}=this.props
-    let errObj=curLang.verify
+    // let errObj=curLang.verify
     if(!force && requireEmail && email.trim()===''){
-      this.setState({
-        emailErr:true,
-        emailErrMsg:errObj['require_mail']
-      })
+      // this.setState({
+      //   emailErr:true,
+      //   emailErrMsg:errObj['require_mail']
+      // })
       return false
     }else if(!force && email.trim()!=='' && !emailVerify(email)){
-      this.setState({
-        emailErr:true,
-        emailErrMsg:errObj['email_format_failed']
-      })
+      // this.setState({
+      //   emailErr:true,
+      //   emailErrMsg:errObj['email_format_failed']
+      // })
       return false
     }
-    this.setState({
-      emailErr:false,
-      emailErrMsg:null
-    })
+    // this.setState({
+    //   emailErr:false,
+    //   emailErrMsg:null
+    // })
     return true
   }
   submitVerify(){
@@ -345,6 +344,7 @@ export default class InputContainer extends React.Component {
       .then(()=>{
         this.setState({
           commentContent:'',
+          resetTextarea:true
         })
       }).catch(()=>{})
   }
@@ -390,14 +390,7 @@ export default class InputContainer extends React.Component {
       emojiChooseId,
       emojiPrefix,
       emojiListPos,
-      nameErr,
-      nameErrMsg,
-      emailErr,
-      emailErrMsg,
-      linkErr,
-      linkErrMsg,
-      commentErr,
-      commentErrMsg,
+      resetTextarea,
     } = this.state;
 
     const {
@@ -418,12 +411,6 @@ export default class InputContainer extends React.Component {
                            nickName={nickName}
                            avatarSrc={avatarSrc}
                            protocol={protocol}
-                           nameErr={nameErr}
-                           nameErrMsg={nameErrMsg}
-                           emailErr={emailErr}
-                           emailErrMsg={emailErrMsg}
-                           linkErr={linkErr}
-                           linkErrMsg={linkErrMsg}
                            curLang={curLang}
                            requireName={requireName}
                            requireEmail={requireEmail}
@@ -433,21 +420,16 @@ export default class InputContainer extends React.Component {
                            nameOnChange={this.nameOnChange}
                            avatarOnChange={this.avatarOnChange}
                            toggleProtocol={this.toggleProtocol}
-                           linkVerify={this.linkVerify}
-                           nameVerify={this.nameVerify}
-                           mailVerify={this.mailVerify}
         />
         <div className="v-edit-area">
           <TextAreaComponent ref={this.textAreaRef}
-                             commentErr={commentErr}
-                             commentErrMsg={commentErrMsg}
-                             // toggleTextAreaFocus={toggleTextAreaFocus}
+                             curLang={curLang}
+                             reset={resetTextarea}
                              commentContent={commentContent}
                              submitBtnDisable={submitBtnDisable}
                              placeholder={curLang["tips"]["placeholder"]}
                              contentOnKeyDown={this.contentOnKeyDown}
                              contentOnChange={this.commentContentOnChange}
-                             commentVerify={this.commentVerify}
           />
           <EmojiPreviewComponent emojiList={emojiList}
                                  emojiListPos={emojiListPos}

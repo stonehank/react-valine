@@ -1,0 +1,15 @@
+
+
+.auto-height-textarea-root{
+  width:100%;
+  border-radius: 4px;
+  transition: box-shadow .5s, border-color .5s;
+  padding: 6px 48px 6px 8px;
+  line-height: 24px;
+  outline: none;
+  resize:none;
+  //&:focus{
+  //  box-shadow:0 0 10px $info;
+  //  border-color:$info;
+  //}
+}

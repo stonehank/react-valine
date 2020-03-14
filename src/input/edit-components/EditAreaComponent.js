@@ -46,16 +46,7 @@ class EditAreaComponent extends React.PureComponent {
       nameOnChange,
       avatarOnChange,
       toggleProtocol,
-      nameErr,
-      nameErrMsg,
-      emailErr,
-      emailErrMsg,
-      linkErr,
-      linkErrMsg,
       curLang,
-      nameVerify,
-      linkVerify,
-      mailVerify,
     } = this.props;
     const {width}=this.state
     const langHead=curLang['head']
@@ -65,34 +56,27 @@ class EditAreaComponent extends React.PureComponent {
             <AvatarContainer langHead={langHead} avatarSrc={avatarSrc} email={email} GRAVATAR_URL={GRAVATAR_URL} avatarOnChange={avatarOnChange}/>
             <NickNameComponent nickName={nickName}
                                langHead={langHead}
-                               nameErr={nameErr}
-                               nameErrMsg={nameErrMsg}
+                               curLang={curLang}
                                requireName={requireName}
                                nameOnChange={nameOnChange}
-                               nameVerify={nameVerify}
                                width={width}
             />
           </div>
           <MailComponent email={email}
                          langHead={langHead}
-                         emailErr={emailErr}
-                         emailErrMsg={emailErrMsg}
+                         curLang={curLang}
                          requireEmail={requireEmail}
                          emailOnChange={emailOnChange}
-                         mailVerify={mailVerify}
                          width={width}
           />
           <LinkComponent link={link}
                          langHead={langHead}
+                         curLang={curLang}
                          protocol={protocol}
-                         linkErr={linkErr}
-                         linkErrMsg={linkErrMsg}
                          toggleProtocol={toggleProtocol}
                          linkOnChange={linkOnChange}
-                         linkVerify={linkVerify}
                          width={width}
           />
-        {/*</div>*/}
       </div>
     )
   }

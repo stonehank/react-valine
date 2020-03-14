@@ -47,7 +47,7 @@ function createNestComments(){
 }
 
 function simplyObj(obj){
-  let id=obj.id,curAttrs=obj.attributes,createdAt=obj.createdAt
+  let id=obj.id,curAttrs=obj.attributes,createdAt=obj.createdAt || obj.updatedAt
   let simObj={id,createdAt,child:[],initShowChild:false,owner:false,replyLen:0}
   let ownerHash=globalState.ownerHash
   if(ownerHash && ownerHash[id]!=null){

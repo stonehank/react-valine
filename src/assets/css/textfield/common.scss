@@ -1,0 +1,261 @@
+$success:#44bd2d;
+$error:#DC291B;
+$info:#2b43dc;
+$border-color:rgb(171, 171, 171);
+$border-hover-color:#333333;
+$border-hover-light-color: #c7c7c7;
+$text-primary:rgba(0,0,0,0.54);
+$text-secondary:rgba(0,0,0,0.38);
+$text-blur:rgba(0,0,0,0.16);
+$text-opposite:#fff;
+
+
+  *{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+  }
+  p{
+    margin-bottom:4px;
+  }
+  .cvf-filedset-wrapper{
+    text-align: left;
+    position: relative;
+    margin-top: 12px;
+    .cvf-text-success{
+      color: $success !important;
+    }
+    .cvf-text-error{
+      color: $error !important;
+    }
+    .cvf-fieldset-container{
+      margin: 0 6px;
+      position: relative;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      .cvf-valid-field{
+        border: none;
+        padding: 10px 20px 4px 8px;
+        outline: none;
+        transition: 0.3s;
+        width: 100%;
+        font-size: 14px;
+        @media screen and (min-width:768px){
+          padding: 12px 20px 4px 8px;
+          font-size: 16px;
+        }
+      }
+      .cvf-success{
+        border-color: $success !important;
+      }
+      .cvf-error{
+        border-color: $error !important;
+      }
+      .cvf-fieldset-focus{
+        border-color: $info;
+      }
+      .cvf-fieldset-valid-form{
+        //top: -4px;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        color: $text-primary;
+        padding-left: 8px;
+        pointer-events: none;
+        position: absolute;
+        transition-duration: 0.3s;
+        transition-property: border, border-width;
+        transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+        z-index: 5;
+        //@media screen and (min-width:768px){
+          //height:44px;
+        //}
+        .cvf-fieldset-legend{
+          line-height: 12px;
+          height: 4px;
+          margin: 0;
+          font-size: 11px;
+          width: auto;
+          transition: all 0.3s;
+        }
+        .cvf-label-text{
+          position: absolute;
+          top: 0;
+          transform: translateY(-50%);
+          line-height: 1;
+          transition: 0.5s;
+          font-size: 12px;
+        }
+
+      }
+    }
+
+    .error-msg{
+      color: $error;
+      padding: 2px 8px 0 8px;
+      min-height: 18px;
+      font-size: 11px;
+      @media screen and (min-width:768px){
+        padding:2px 8px;
+        min-height: 22px;
+        font-size:12px;
+      }
+    }
+
+    &:hover .cvf-material-ui{
+      border-bottom: 1px solid  $border-hover-color;
+    }
+
+    .cvf-select-wrapper{
+      position: relative;
+      cursor: text;
+      width:100%;
+      .cvf-select-result{
+        display: block;
+        height: 38px;
+      }
+      .cvf-select-option-container{
+        transform: translateY(-50px);
+        opacity: 0;
+        position: absolute;
+        width: 100%;
+        max-width: 300px;
+        top: 100%;
+        left: 0;
+        z-index: -1;
+        visibility: hidden;
+        background: #fff;
+        border:1px solid $border-color;
+        border-radius:0 0 4px 4px;
+        transition:.18s;
+        max-height: 300px;
+        overflow-y: auto;
+        .cvf-select-option-item{
+          cursor:pointer;
+          border-bottom:1px solid $border-color;
+          padding: 12px 6px;
+          text-align:center;
+          transition:.5s;
+          @media (hover: hover){
+            &:not(.cvf-disabled):hover{
+              background:$border-color;
+            }
+          }
+        }
+      }
+      .cvf-show-select{
+        transform:translateY(0);
+        opacity:1;
+        visibility: visible;
+        z-index:99;
+      }
+      .cvf-select-active{
+        background:$border-color;
+      }
+    }
+    .cvf-disabled{
+      color:$text-secondary;
+    }
+  }
+
+  .cvf-material-ui{
+    border: none;
+    border-bottom: 1px solid  $border-color;
+  }
+  .cvf-bootstrap-ui{
+    border: 1px solid $border-color;
+    border-radius: 4px;
+  }
+  .cvf-checkbox-wrapper{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 4px 8px;
+    .cvf-checkbox-selector-container{
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .cvf-checkbox-selector-box{
+        position: relative;
+        width: 26px;
+        height: 26px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        margin-right: 8px;
+        border: 2px solid $border-color;
+        cursor:pointer;
+        transition:background .3s linear;
+        .cvf-checkbox-selector-tick{
+          position: absolute;
+          width: 36px;
+          height: 36px;
+          .checkmark {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 5px;
+            stroke: $success;
+            stroke-miterlimit: 10;
+          }
+          .mark_path {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48px;
+            stroke-dashoffset: 48px;
+            animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+          }
+          @keyframes stroke {
+            100% {stroke-dashoffset: 0;}
+          }
+          @keyframes scale {
+            0%,
+            100% {transform: none;}
+            50% {transform: scale3d(1.1, 1.1, 1);}
+          }
+          @keyframes fillValid {
+            100% {
+              box-shadow: inset 0px 0px 0px 30px $success;
+            }
+          }
+        }
+      }
+      .cvf-checkbox-label{
+        color:$text-primary;
+        font-weight:500;
+        font-size:18px;
+        cursor:pointer;
+      }
+      @media (hover:hover){
+        &:hover .cvf-checkbox-selector-box{
+          background:$border-hover-light-color;
+        }
+      }
+    }
+
+  }
+  .cvf-clear-icon{
+    display: none;
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 12px;
+    right: 0;
+    cursor: pointer;
+    color:$text-primary;
+    &:hover{
+      color:$text-secondary
+    }
+  }
+
+@import './auto-height-textarea';
+//@import './datepicker';
+
+
+

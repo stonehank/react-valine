@@ -56,13 +56,15 @@ export default class CardContentEdit extends InputContainer{
       <>
         <div className="v-edit-area">
           <TextAreaComponent ref={this.textAreaRef}
-                             commentErr={commentErr}
-                             commentErrMsg={commentErrMsg}
+                             // commentErr={commentErr}
+                             // commentErrMsg={commentErrMsg}
+                             curLang={curLang}
                              commentContent={commentContent}
                              replyLoading={replyLoading}
+                             placeholder={curLang["ctrl"].edit}
                              contentOnKeyDown={this.contentOnKeyDown}
                              contentOnChange={this.commentContentOnChange}
-                             commentVerify={this.commentVerify}
+                             // commentVerify={this.commentVerify}
           />
           <EmojiPreviewComponent emojiList={emojiList}
                                  emojiListPos={emojiListPos}
