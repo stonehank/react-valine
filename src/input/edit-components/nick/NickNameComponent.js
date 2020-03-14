@@ -2,13 +2,10 @@ import React from 'react'
 import TextField from '../TextField';
 
 
-
-
-
 class NickNameComponent extends React.PureComponent{
 
   render(){
-    const { width,nickName,requireName,langHead,curLang,nameOnChange} = this.props;
+    const { width,nickName,requireName,langHead,nameOnChange,nameErr,nameErrMsg,nameVerify} = this.props;
     return(
       <div className={"vinputs-ident"}>
         <TextField
@@ -16,10 +13,10 @@ class NickNameComponent extends React.PureComponent{
           label={langHead["nick"]+(requireName?langHead["require"]:"")}
           value={nickName}
           onChange={nameOnChange}
-          rules={[
-            (v)=>!!v || curLang.verify['require_nick']
-          ]}
           materialUI={width!=='xs'}
+          validateFn={nameVerify}
+          error={nameErr}
+          errorMsg={nameErrMsg}
         />
       </div>
     )

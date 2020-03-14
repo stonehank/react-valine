@@ -3,12 +3,14 @@ import TextField from './TextField';
 
 const TextAreaComponent=React.forwardRef((props, ref) => {
   const {
-    curLang,
     commentContent,
     placeholder,
     contentOnChange,
     contentOnKeyDown,
     submitBtnDisable,
+    commentErr,
+    commentErrMsg,
+    commentVerify,
     reset,
     replyLoading,
   } = props;
@@ -29,10 +31,9 @@ const TextAreaComponent=React.forwardRef((props, ref) => {
         materialUI={false}
         autoHeight={true}
         rows={5}
-        rules={[
-          (v)=>v.trim()!=='' || curLang.verify['empty_content'],
-          (v)=>v.length<=2000 || curLang.verify['exceed_content'],
-        ]}
+        error={commentErr}
+        errorMsg={commentErrMsg}
+        validateFn={commentVerify}
       />
     </div>
   )

@@ -6,6 +6,7 @@ import CardHeadInfo from "./card/CardHeadInfo";
 import CardContent from "./card/CardContent";
 import CardAction from "./card/CardAction";
 import CardContentEdit from "./card/CardContentEdit";
+import ErrorBoundary from "../info/ErrorBoundary";
 
 
 export default class CommentCardContainer extends React.Component{
@@ -115,6 +116,7 @@ export default class CommentCardContainer extends React.Component{
       previewShow,
       canBeModify,
       togglePreviewShow,
+      showError,
     }=this.props
 
     return (
@@ -125,22 +127,25 @@ export default class CommentCardContainer extends React.Component{
         </div>
         <div className={'v-content-wrapper'}>
           {
-            editMode ?
-              <CardContentEdit commentRawContent={commentRawContent}
-                               curLang={curLang}
-                               previewShow={previewShow}
-                               togglePreviewShow={togglePreviewShow}
-                               hideEditMode={this.hideEditMode}
-                               applyEdit={applyEdit}
-                               curId={curId}
-                               pid={pid}
-                               rid={rid}
-                               at={at}
-              /> :
-              <CardContent commentContent={commentContent}
-                           needExpand={needExpand}
-                           expandContent={this.expandContent}
-              />
+            editMode
+              ? <ErrorBoundary>
+                  <CardContentEdit commentRawContent={commentRawContent}
+                                   curLang={curLang}
+                                   previewShow={previewShow}
+                                   togglePreviewShow={togglePreviewShow}
+                                   hideEditMode={this.hideEditMode}
+                                   applyEdit={applyEdit}
+                                   showError={showError}
+                                   curId={curId}
+                                   pid={pid}
+                                   rid={rid}
+                                   at={at}
+                  />
+                </ErrorBoundary>
+              : <CardContent commentContent={commentContent}
+                             needExpand={needExpand}
+                             expandContent={this.expandContent}
+                />
           }
           <CardAction langCtrl={langCtrl}
                       curId={curId}
@@ -197,6 +202,7 @@ export default class CommentCardContainer extends React.Component{
                                                    commentRawContent={commentRawContent}
                                                    createdAt={createdAt}
                                                    previewShow={previewShow}
+                                                   showError={showError}
                                                    togglePreviewShow={togglePreviewShow}
                       />
                       })

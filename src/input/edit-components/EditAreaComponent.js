@@ -46,6 +46,15 @@ class EditAreaComponent extends React.PureComponent {
       nameOnChange,
       avatarOnChange,
       toggleProtocol,
+      nameErr,
+      nameErrMsg,
+      emailErr,
+      emailErrMsg,
+      linkErr,
+      linkErrMsg,
+      nameVerify,
+      mailVerify,
+      linkVerify,
       curLang,
     } = this.props;
     const {width}=this.state
@@ -56,26 +65,32 @@ class EditAreaComponent extends React.PureComponent {
             <AvatarContainer langHead={langHead} avatarSrc={avatarSrc} email={email} GRAVATAR_URL={GRAVATAR_URL} avatarOnChange={avatarOnChange}/>
             <NickNameComponent nickName={nickName}
                                langHead={langHead}
-                               curLang={curLang}
+                               nameErr={nameErr}
+                               nameErrMsg={nameErrMsg}
                                requireName={requireName}
                                nameOnChange={nameOnChange}
                                width={width}
+                               nameVerify={nameVerify}
             />
           </div>
           <MailComponent email={email}
                          langHead={langHead}
-                         curLang={curLang}
+                         emailErr={emailErr}
+                         emailErrMsg={emailErrMsg}
                          requireEmail={requireEmail}
                          emailOnChange={emailOnChange}
                          width={width}
+                         mailVerify={mailVerify}
           />
           <LinkComponent link={link}
                          langHead={langHead}
-                         curLang={curLang}
+                         linkErr={linkErr}
+                         linkErrMsg={linkErrMsg}
                          protocol={protocol}
                          toggleProtocol={toggleProtocol}
                          linkOnChange={linkOnChange}
                          width={width}
+                         linkVerify={linkVerify}
           />
       </div>
     )

@@ -22,10 +22,10 @@ export default class CardAction extends React.Component{
           owner && canBeModify
             ? editMode
               ? null
-              : <span className={"v-action-edit"} onClick={showEditMode.bind(this,curId)}>{langCtrl['edit']}</span>
+              : <div className={"v-action-edit"} onClick={showEditMode.bind(this,curId)}>{langCtrl['edit']}</div>
             : null
         }
-        <span className={"v-action-reply"} onClick={handleReply.bind(this,curId,nickName,rid)}>{langCtrl['reply']}</span>
+        <div className={"v-action-reply"} onClick={handleReply.bind(this,curId,nickName,rid)}>{langCtrl['reply']}</div>
       </div>
     )
   }

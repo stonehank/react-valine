@@ -29,6 +29,7 @@ export default class CommentListComponent extends React.Component{
       // for edit
       previewShow,
       togglePreviewShow,
+      showError,
     }=this.props
     return (
       <React.Fragment>
@@ -80,6 +81,7 @@ export default class CommentListComponent extends React.Component{
                                                    commentRawContent={commentRawContent}
                                                    createdAt={createdAt}
                                                    previewShow={previewShow}
+                                                   showError={showError}
                                                    togglePreviewShow={togglePreviewShow}
                       />
                     })

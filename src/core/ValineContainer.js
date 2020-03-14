@@ -55,6 +55,7 @@ export default class ValineContainer extends React.Component {
     this.addCommentToList = this.addCommentToList.bind(this)
     this.updateCommentFromList = this.updateCommentFromList.bind(this)
     this.scrollToEle = this.scrollToEle.bind(this)
+    this.showError = this.showError.bind(this)
 
     this.resetDefaultComment()
     this.wrapRef = React.createRef()
@@ -153,7 +154,18 @@ export default class ValineContainer extends React.Component {
     }))
   }
 
-
+  showError(errorLog){
+    // console.log(errorLog,this)
+    this.setState({
+      errorLog: errorLog
+    }, () => {
+      this.errorTimer=setTimeout(() => {
+        this.setState({
+          errorLog: null
+        })
+      }, 2000)
+    })
+  }
 
   getParentElement(el) {
     const scrollParent = this.props.getPanelParent && this.props.getPanelParent();
@@ -188,7 +200,7 @@ export default class ValineContainer extends React.Component {
     return this.props.checkCanEdit(id).then((canEdit) => {
       if (!canEdit) {
         console.error('Can not be edit, reason: 1. Not edit mode 2. Not owner')
-        return Promise.reject()
+        return Promise.reject('Can not be edit, reason: 1. Not edit mode 2. Not owner')
       }
       let obj=parseToValidCommentAt({comment,pid,at})
       let newComment=obj.comment
@@ -261,16 +273,10 @@ export default class ValineContainer extends React.Component {
             resolve()
           }).catch(ex => {
             console.error("Something wrong with submit!", curLang.error[ex.code], ex)
+            this.showError("Something wrong with submit!")
             this.setState({
               submitBtnDisable: false,
               submitLoading: false,
-              errorLog: "Something wrong with submit!"
-            }, () => {
-              setTimeout(() => {
-                this.setState({
-                  errorLog: null
-                })
-              }, 2000)
             })
           })
       })
@@ -329,15 +335,9 @@ export default class ValineContainer extends React.Component {
         fetchMoreLoading: false
       })
       if (errorLog !== this.state.errorLog) {
+        this.showError(errorLog)
         this.setState({
-          errorLog,
           currentCounts: this.state.commentCounts
-        }, () => {
-          this.errorTimer = setTimeout(() => {
-            this.setState({
-              errorLog: null
-            })
-          }, 2000)
         })
       }
       return
@@ -455,6 +455,7 @@ export default class ValineContainer extends React.Component {
                               fillNxtCommentList={this.fillNxtCommentList}
                               // for edit
                               previewShow={previewShow}
+                              showError={this.showError}
                               togglePreviewShow={this.togglePreviewShow}
         />
       </div>

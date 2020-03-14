@@ -1,7 +1,8 @@
 import React from 'react';
 import EmojiComponentShow from "./EmojiComponentShow";
-import Drawer from '@material-ui/core/Drawer';
-import Button from '@material-ui/core/Button';
+// import Drawer from '@material-ui/core/Drawer';
+import Drawer from '../../../CustomComponent/Drawer';
+// import Button from '@material-ui/core/Button';
 
 export default class EmojiComponent extends React.PureComponent {
   render() {
@@ -9,9 +10,7 @@ export default class EmojiComponent extends React.PureComponent {
     // console.log(show)
     return (
       <React.Fragment>
-        <span className={"vemoji-btn"}>
-          <Button size={"small"} onClick={openEmojiDrawer}  variant="text" color="default">😄{txt}</Button>
-        </span>
+        <span className={"vbtn text-btn"} onClick={openEmojiDrawer} >😄{txt}</span>
         <Drawer
           anchor={"bottom"}
           open={show}

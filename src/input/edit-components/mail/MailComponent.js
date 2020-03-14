@@ -1,12 +1,11 @@
 import React from 'react'
 import TextField from '../TextField';
-import {emailVerify} from "../../../utils/Verify";
 
 export default class MailComponent extends React.PureComponent{
 
 
   render(){
-    const {width,curLang,email,requireEmail,langHead,emailOnChange} = this.props;
+    const {width,email,requireEmail,langHead,emailOnChange,emailErr,emailErrMsg,mailVerify} = this.props;
     return(
       <div className={"vinputs-ident"}>
         <TextField
@@ -14,11 +13,10 @@ export default class MailComponent extends React.PureComponent{
           label={langHead["mail"]+(requireEmail?langHead["require"]:"")}
           value={email}
           onChange={emailOnChange}
-          rules={[
-            requireEmail ? (v)=>!!v || curLang.verify['require_mail'] : (v)=>!!v || null,
-            (v)=>emailVerify(v) || curLang.verify['email_format_failed']
-          ]}
           materialUI={width!=='xs'}
+          validateFn={mailVerify}
+          error={emailErr}
+          errorMsg={emailErrMsg}
         />
       </div>
     )

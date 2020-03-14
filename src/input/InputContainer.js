@@ -33,13 +33,13 @@ export default class InputContainer extends React.Component {
       emojiListPos:[0,0],
       avatarSrc:`${props.GRAVATAR_URL}/?d=${avatarsList[Math.floor(Math.random()*avatarsList.length)]}&size=50`,
       resetTextarea:false,
-      nameErr:false,
+      nameErr:null,
       nameErrMsg:null,
-      emailErr:false,
+      emailErr:null,
       emailErrMsg:null,
-      linkErr:false,
+      linkErr:null,
       linkErrMsg:null,
-      commentErr:false,
+      commentErr:null,
       commentErrMsg:null,
     }
     this.emailOnChange=this.emailOnChange.bind(this)
@@ -170,7 +170,6 @@ export default class InputContainer extends React.Component {
     // 替换已经存在的表情符号
     let result=replaceExistEmoji(value,selectionStart,str),
       newStr=result[0]
-    // if(newStr.length>1000)newStr=newStr.slice(0,1000)
     selectionStart=result[1]
     selectionStart+=str.length
     this.setState({
@@ -219,24 +218,21 @@ export default class InputContainer extends React.Component {
       email:newStr
     })
   }
-  commentVerify(force){
-    if(typeof force!=='boolean'){
-      force=false
-    }
+  commentVerify(){
     const {commentContent}=this.state
     const {curLang}=this.props
     let errObj=curLang.verify
+    if(commentContent.trim()===''){
+      this.setState({
+        commentErr:true,
+        commentErrMsg:errObj['empty_content']
+      })
+      return false
+    }
     if(commentContent.length>2000){
       this.setState({
         commentErr:true,
         commentErrMsg:errObj['exceed_content']
-      })
-      return false
-    }
-    if(!force && commentContent.trim()===''){
-      this.setState({
-        commentErr:true,
-        commentErrMsg:errObj['empty_content']
       })
       return false
     }
@@ -246,14 +242,18 @@ export default class InputContainer extends React.Component {
     })
     return true
   }
-  linkVerify(force){
-    if(typeof force!=='boolean'){
-      force=false
-    }
+  linkVerify(){
     const {link}=this.state
     const {curLang}=this.props
     let errObj=curLang.verify
-    if(!force && link.trim()!=='' && !linkVerify(link)){
+    if(link.trim()===''){
+      this.setState({
+        linkErr:null,
+        linkErrMsg:null
+      })
+      return true
+    }
+    if(!linkVerify(link)){
       this.setState({
         linkErr:true,
         linkErrMsg:errObj['link_format_failed']
@@ -266,52 +266,65 @@ export default class InputContainer extends React.Component {
     })
     return true
   }
-  nameVerify(force){
-    if(typeof force!=='boolean'){
-      force=false
-    }
+
+  nameVerify(){
     const {nickName}=this.state
     const {requireName,curLang}=this.props
-    // let errObj=curLang.verify
-    if(!force && requireName && nickName.trim()===''){
-      // this.setState({
-      //   nameErr:true,
-      //   nameErrMsg:errObj['require_nick']
-      // })
-      return false
+    let errObj=curLang.verify
+    if(nickName.trim()===''){
+      if(requireName){
+        this.setState({
+          nameErr:true,
+          nameErrMsg:errObj['require_nick']
+        })
+        return false
+      }else{
+        this.setState({
+          nameErr:null,
+          nameErrMsg:null
+        })
+        return true
+      }
     }
-    // this.setState({
-    //   nameErr:false,
-    //   nameErrMsg:null
-    // })
+    this.setState({
+      nameErr:false,
+      nameErrMsg:null
+    })
     return true
   }
-  mailVerify(force){
-    if(typeof force!=='boolean'){
-      force=false
-    }
+
+  mailVerify(){
     const {email}=this.state
     const {requireEmail,curLang}=this.props
-    // let errObj=curLang.verify
-    if(!force && requireEmail && email.trim()===''){
-      // this.setState({
-      //   emailErr:true,
-      //   emailErrMsg:errObj['require_mail']
-      // })
-      return false
-    }else if(!force && email.trim()!=='' && !emailVerify(email)){
-      // this.setState({
-      //   emailErr:true,
-      //   emailErrMsg:errObj['email_format_failed']
-      // })
+    let errObj=curLang.verify
+    if(email.trim()===''){
+      if(requireEmail){
+        this.setState({
+          emailErr:true,
+          emailErrMsg:errObj['require_mail']
+        })
+        return false
+      }
+      this.setState({
+        emailErr:null,
+        emailErrMsg:null
+      })
+      return true
+    }
+    if(!emailVerify(email)){
+      this.setState({
+        emailErr:true,
+        emailErrMsg:errObj['email_format_failed']
+      })
       return false
     }
-    // this.setState({
-    //   emailErr:false,
-    //   emailErrMsg:null
-    // })
+    this.setState({
+      emailErr:false,
+      emailErrMsg:null
+    })
     return true
   }
+
   submitVerify(){
     let nameV=this.nameVerify()
     let mailV=this.mailVerify()
@@ -323,12 +336,14 @@ export default class InputContainer extends React.Component {
     }
     return true
   }
+
   linkOnChange(event){
     let newStr=event.target.value
     this.setState({
       link:newStr
     })
   }
+
   handleOnSubmit(){
     const {nickName,email,link,protocol,avatarSrc,commentContent}=this.state
     const {applySubmit}=this.props
@@ -344,13 +359,13 @@ export default class InputContainer extends React.Component {
       .then(()=>{
         this.setState({
           commentContent:'',
+          commentErr:null,
           resetTextarea:true
         })
       }).catch(()=>{})
   }
 
   turnOffEmojiPreviewList(){
-    // console.log('popagation')
     this.setState({
       emojiList:[],
       emojiChooseId:0
@@ -371,6 +386,10 @@ export default class InputContainer extends React.Component {
         nickName: storage.nick,
         email: storage.mail,
         avatarSrc: storage.avatarSrc || this.state.avatarSrc
+      },()=>{
+        if(storage.link)this.linkVerify()
+        if(storage.nick)this.nameVerify()
+        if(storage.mail)this.mailVerify()
       })
     }
   }
@@ -391,6 +410,14 @@ export default class InputContainer extends React.Component {
       emojiPrefix,
       emojiListPos,
       resetTextarea,
+      nameErr,
+      nameErrMsg,
+      emailErr,
+      emailErrMsg,
+      linkErr,
+      linkErrMsg,
+      commentErr,
+      commentErrMsg,
     } = this.state;
 
     const {
@@ -415,6 +442,15 @@ export default class InputContainer extends React.Component {
                            requireName={requireName}
                            requireEmail={requireEmail}
                            GRAVATAR_URL={GRAVATAR_URL}
+                           nameErr={nameErr}
+                           nameErrMsg={nameErrMsg}
+                           emailErr={emailErr}
+                           emailErrMsg={emailErrMsg}
+                           linkErr={linkErr}
+                           linkErrMsg={linkErrMsg}
+                           nameVerify={this.nameVerify}
+                           mailVerify={this.mailVerify}
+                           linkVerify={this.linkVerify}
                            emailOnChange={this.emailOnChange}
                            linkOnChange={this.linkOnChange}
                            nameOnChange={this.nameOnChange}
@@ -425,11 +461,14 @@ export default class InputContainer extends React.Component {
           <TextAreaComponent ref={this.textAreaRef}
                              curLang={curLang}
                              reset={resetTextarea}
+                             commentErr={commentErr}
+                             commentErrMsg={commentErrMsg}
                              commentContent={commentContent}
                              submitBtnDisable={submitBtnDisable}
                              placeholder={curLang["tips"]["placeholder"]}
                              contentOnKeyDown={this.contentOnKeyDown}
                              contentOnChange={this.commentContentOnChange}
+                             commentVerify={this.commentVerify}
           />
           <EmojiPreviewComponent emojiList={emojiList}
                                  emojiListPos={emojiListPos}

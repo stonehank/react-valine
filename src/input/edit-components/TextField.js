@@ -10,8 +10,6 @@ export default class TextField extends React.PureComponent{
     this.fieldRef=React.createRef()
     this.state={
       dirty:false,
-      errorMsg:'',
-      valid:null,
     }
     this.labelTextW=0
     this.handleFocus=this.handleFocus.bind(this)
@@ -20,38 +18,8 @@ export default class TextField extends React.PureComponent{
     this.attachRef=this.attachRef.bind(this)
   }
 
-  validate(){
-    const {value,rules}=this.props
-    const {dirty}=this.state
-    if(!dirty){
-      return this.setState({
-        valid:null,
-        errorMsg:'',
-      })
-    }
-    for(let i=0;i<rules.length;i++){
-      let ruleFn=rules[i]
-      let errorMsg=ruleFn(value)
-      if(typeof errorMsg==='string'){
-        return this.setState({
-          valid:false,
-          errorMsg:errorMsg
-        })
-      }else if(errorMsg!==true){
-        return this.setState({
-          valid:null,
-          errorMsg:null
-        })
-      }
-    }
-    this.setState({
-      valid:true,
-      errorMsg:'',
-    })
-  }
-
   handleBlur(){
-    const {placeholder,value}=this.props
+    const {placeholder,value,validateFn}=this.props
     let legendEle=this.legendRef.current
     let labelEle=this.labelRef.current
     let fieldEle=this.fieldRef.current
@@ -61,7 +29,7 @@ export default class TextField extends React.PureComponent{
       labelEle.style.fontSize='16px'
     }
     fieldEle.classList.remove('cvf-fieldset-focus')
-    this.validate()
+    if(this.state.dirty)validateFn()
   }
 
   handleFocus(){
@@ -111,10 +79,11 @@ export default class TextField extends React.PureComponent{
     }
   }
   componentDidMount(){
-    const {label,value,autoHeight}=this.props
-    if(label!=null){
-      this.labelRef.current.style.padding='0 6px'
-    }
+    const {value,autoHeight}=this.props
+    // if(label!=null){
+    //   this.labelRef.current.style.padding='0 6px'
+    // }
+    // setTimeout(()=>{ console.log(this.labelRef.current.offsetWidth);this.labelTextW=this.labelRef.current.offsetWidth},200)
     this.labelTextW=this.labelRef.current.offsetWidth
     this.legendRef.current.style.width=this.labelTextW+'px'
     if(value){
@@ -139,16 +108,18 @@ export default class TextField extends React.PureComponent{
 
   render(){
     /* eslint-disable no-unused-vars */
-    const {rows,value,label,rules,inputRef,reset,forceVerify,showSuccess,placeholder,materialUI,className,style, autoHeight,onChange,...otherProps} = this.props;
-    const {valid,errorMsg} = this.state;
+    const {rules,inputRef,reset,validateFn,
+      rows,value,label,error,errorMsg,showSuccess,placeholder,materialUI,className,style, autoHeight
+      ,onChange,
+      ...otherProps} = this.props;
     return (
       <div className={"cvf-filedset-wrapper "+className} style={style}>
         <div className="cvf-fieldset-container">
           <fieldset ref={this.fieldRef} className={`cvf-fieldset-valid-form
           ${materialUI ? ' cvf-material-ui' : ' cvf-bootstrap-ui'}
-          ${valid===true && showSuccess? ' cvf-success' : valid===false ? ' cvf-error' : ''}`}>
+          ${error===false && showSuccess? ' cvf-success' : error===true ? ' cvf-error' : ''}`}>
             <legend ref={this.legendRef} className="cvf-fieldset-legend" />
-            <span ref={this.labelRef} className={`cvf-label-text${valid===true && showSuccess ? ' cvf-text-success' : valid===false ? ' cvf-text-error' : ''}`}>
+            <span ref={this.labelRef} className={`cvf-label-text${error===false && showSuccess ? ' cvf-text-success' : error===true ? ' cvf-text-error' : ''}`}>
               {label}
             </span>
           </fieldset>

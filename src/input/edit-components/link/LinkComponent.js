@@ -1,10 +1,9 @@
 import React from 'react'
 import TextField from '../TextField';
-import {linkVerify} from "../../../utils/Verify";
 export default class LinkComponent extends React.PureComponent{
 
   render(){
-    const {width, curLang,link,langHead,protocol,linkOnChange,toggleProtocol} = this.props;
+    const {width,link,langHead,protocol,linkOnChange,toggleProtocol,linkVerify,linkErr,linkErrMsg} = this.props;
     return (
       <div className={"vinputs-ident"}>
         <span className={"v-link-toggle"} style={{textTransform:'none'}}  onClick={toggleProtocol}>{protocol}://</span>
@@ -14,13 +13,13 @@ export default class LinkComponent extends React.PureComponent{
           placeholder={langHead["link"]}
           value={link}
           onChange={linkOnChange}
-          rules={[
-            (v)=>!!v || null,
-            (v)=>linkVerify(v) || curLang.verify['link_format_failed']
-          ]}
+          validateFn={linkVerify}
+          error={linkErr}
+          errorMsg={linkErrMsg}
           materialUI={width!=='xs'}
         />
       </div>
+
     )
   }
 }

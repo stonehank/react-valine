@@ -1,6 +1,7 @@
 import React from 'react'
 import '../assets/css/_variables.scss'
 import '../assets/css/textfield/common.scss'
+import '../assets/css/drawer/index.scss'
 // import '../assets/css/textfield/auto-height-textarea.scss'
 // import '../assets/css/index.scss'
 // import '../assets/css/editor/a11y.scss'
@@ -35,7 +36,7 @@ export default class FetchResourceContainer extends React.Component{
       .equalTo('ownerCode',oldRandUniqStr)
       .find()
       .then(ownerItems=>{
-        return ownerItems.length>0
+        return ownerItems && ownerItems.length>0
       })
   }
 
