@@ -190,7 +190,7 @@ html{
 
     .v-edit-area {
       position: relative;
-      padding-top:0;
+      padding-top:8px;
       .vemoji-preview-list{
         position:absolute;
         list-style: none;
@@ -259,11 +259,11 @@ html{
         }
       }
 
-      @media screen and (min-width:600px){
-        .vavatars-select-button{
-          transform: translateY(15px);
-        }
-      }
+      //@media screen and (min-width:600px){
+      //  .vavatars-select-button{
+      //    transform: translateY(15px);
+      //  }
+      //}
 
       .vavatars-select-selected{
         border-radius:50%;
@@ -484,6 +484,7 @@ html{
           .v-action-reply {
             display: inline-block;
             font-size: 14px;
+            color:var(--theme-primary);
             font-weight:bold;
             cursor: pointer;
             padding:2px 4px;
@@ -511,7 +512,7 @@ html{
           cursor: pointer;
           padding:2px 4px;
           margin-right:8px;
-          color:var(--info-color);
+          color:var(--theme-secondary);
         }
         .v-content-body {
           word-wrap: break-word;
@@ -585,6 +586,7 @@ html{
     .vdiscuss{
       background: var(--success-color);
       font-weight:700;
+      color:#fff;
       &:hover{
         color:var(--theme-primary);
         background:var(--background-color);

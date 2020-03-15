@@ -1,5 +1,5 @@
 import React from 'react'
-import TextField from '../TextField';
+import TextField from '../../../CustomComponent/TextField';
 
 export default class MailComponent extends React.PureComponent{
 

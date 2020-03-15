@@ -25,7 +25,7 @@ export default class TextField extends React.PureComponent{
     let fieldEle=this.fieldRef.current
     if(!value && !placeholder){
       legendEle.style.width=0
-      labelEle.style.top='18px'
+      labelEle.style.top='16px'
       labelEle.style.fontSize='16px'
     }
     fieldEle.classList.remove('cvf-fieldset-focus')
@@ -129,7 +129,12 @@ export default class TextField extends React.PureComponent{
               : <textarea ref={this.attachRef} className={`cvf-valid-field${autoHeight ? '  auto-height-textarea-root' : ''}`}  rows={rows} placeholder={placeholder} value={value} onChange={onChange} {...otherProps}/>
           }
         </div>
-        <div className="error-msg">{errorMsg}</div>
+        {
+          errorMsg
+          ?  <div className="error-msg">{errorMsg}</div>
+          :  null
+        }
+
       </div>
     )
   }

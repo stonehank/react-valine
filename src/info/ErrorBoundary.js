@@ -23,7 +23,7 @@ export default class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      return <div onClick={this.reRender} style={{cursor:'pointer'}}>
+      return <div onClick={this.reRender} style={{cursor:'pointer',background:'var(--foreground-color)'}}>
         Something went wrong.Try Click to restore.
       </div>;
     }
