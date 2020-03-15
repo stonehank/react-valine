@@ -47,7 +47,7 @@ function createNestComments(){
 }
 
 function simplyObj(obj){
-  let id=obj.id,curAttrs=obj.attributes,createdAt=obj.get('createdAt')
+  let id=obj.id,curAttrs=obj.attributes,createdAt=obj.createdAt || obj.updatedAt
   let simObj={id,createdAt,child:[],initShowChild:false,owner:false,replyLen:0}
   let ownerHash=globalState.ownerHash
   if(ownerHash && ownerHash[id]!=null){
@@ -61,7 +61,9 @@ function simplyObj(obj){
 function deepReplace(list,key,val,replaceItem){
   for(let i=0;i<list.length;i++){
     if(list[i][key]===val){
-      list[i]=replaceItem
+      // Note the child
+      replaceItem.child=list[i].child
+      list[i]=Object.assign(list[i],replaceItem)
       return true
     }
     let res=deepReplace(list[i].child,key,val,replaceItem)

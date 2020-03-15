@@ -25,7 +25,8 @@ export default class ControlContainer extends React.PureComponent {
     }))
   }
 
-  openEmojiDrawer(){
+  openEmojiDrawer(ev){
+    ev.stopPropagation()
     this.setState({
       show:true
     })

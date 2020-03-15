@@ -2,11 +2,12 @@ import React from 'react'
 
 export default class ErrorLog extends React.PureComponent{
 
+
   render(){
     const {errorLog}=this.props
-    const scrollTop=window.pageYOffset || document.documentElement.scrollTop
+    // console.log('render error')
     return (
-      <div className={"vscreen-errorlog"} style={{ transform: `translateY(${scrollTop}px)`}}>
+      <div className={"vscreen-errorlog"}>
         <h6>Error</h6>
         <p>{errorLog}</p>
       </div>

@@ -1,43 +1,9 @@
 import React from 'react'
-import Drawer from '@material-ui/core/Drawer';
-import { withStyles } from '@material-ui/core/styles';
+// import Drawer from '@material-ui/core/Drawer';
+import Drawer from '../../../CustomComponent/Drawer';
+// import { withStyles } from '@material-ui/core/styles';
 const size=48
-const styles = {
-  list: {
-    listStyle: 'none',
-    background: '#fff',
-    margin:0,
-    display:'flex',
-    padding:0,
-    flexFlow: 'row wrap',
-    justifyContent:'flex-start',
-    maxWidth: 680,
-  },
-cell:{
-  boxShadow: '5px 5px 10px -5px #57575780',
-  margin: '4px 8px',
-  cursor:'pointer',
-  width:64,
-  height:64,
-  borderRadius:10,
-  overflow:'hidden',
-  transition:'.5s',
-  '&:hover':{
-    boxShadow:'1px 1px 5px -3px #57575780',
-  },
-},
-  icon:{
-    position:'absolute',
-    top:0,
-    left:-8,
-  },
-  iconLg:{
-    position:'absolute',
-    top:'50%',
-    left:'50%',
-    transform:'translate(-50%,-50%) scale(1.5)',
-  }
-}
+
 const avatarsList=["mp","identicon", "monsterid",  "retro", "robohash", "wavatar","blank",]
 
 
@@ -59,17 +25,20 @@ class AvatarComponent extends React.PureComponent{
       turnOnMark,
       turnOffMark,
       langHead,
-      classes
     }=this.props
     // console.log(1)
     return (
       <React.Fragment>
-        <div className={"vavatars-select-button"} style={{height:size,width:size,minWidth:size}} onClick={toggleShowList} onMouseEnter={turnOnMark} onMouseLeave={turnOffMark}>
+        <div className={"vavatars-select-button"}
+             style={{height:size,width:size,minWidth:size}}
+             onClick={toggleShowList}
+             onMouseEnter={turnOnMark}
+             onMouseLeave={turnOffMark}>
           {showMark
           ? <div className={"vavatars-select-mark"} />
           :  null
           }
-          <i className={showMark ?classes.iconLg : classes.icon}>
+          <i className={showMark ?'vavatars-edit-icon-lg' : 'vavatars-edit-icon'}>
             <svg t="1571066161128" className="icon" viewBox="0 0 1024 1024" version="1.1"
                  xmlns="http://www.w3.org/2000/svg" p-id="3213" width="16" height="16">
               <path
@@ -84,12 +53,16 @@ class AvatarComponent extends React.PureComponent{
           open={showList}
           onClose={toggleShowList}
         >
-          <ul className={classes.list} onClick={avatarOnChange}>
-            <li className={classes.cell+' vavatars-select-list'} ><img alt={"avatarToChoose"} src={`${GRAVATAR_URL}/${emailHash}/?size=${64}`} /></li>
+          <ul className={'avatar-panel-box'} onClick={avatarOnChange}>
+            <li className={'avatar-panel-item'} >
+              <img alt={"avatarToChoose"} src={`${GRAVATAR_URL}/${emailHash}/?size=${64}`} />
+            </li>
             {
               avatarsList.map((k,i)=>{
                 return (
-                  <li className={classes.cell+' vavatars-select-list'}  key={i}><img alt={"avatarToChoose"} src={`${GRAVATAR_URL}/?d=${k}&size=${64}`} /></li>
+                  <li className={'avatar-panel-item'}  key={i}>
+                    <img alt={"avatarToChoose"} src={`${GRAVATAR_URL}/?d=${k}&size=${64}`} />
+                  </li>
                 )
               })
             }
@@ -101,4 +74,4 @@ class AvatarComponent extends React.PureComponent{
   }
 }
 
-export default withStyles(styles)(AvatarComponent)
+export default AvatarComponent

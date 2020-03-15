@@ -1,5 +1,5 @@
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
+import TextField from '../../CustomComponent/TextField';
 
 const TextAreaComponent=React.forwardRef((props, ref) => {
   const {
@@ -11,27 +11,29 @@ const TextAreaComponent=React.forwardRef((props, ref) => {
     commentErr,
     commentErrMsg,
     commentVerify,
+    reset,
     replyLoading,
   } = props;
   return (
     <div className={"v-editor-main"}>
       <TextField
         inputRef={ref}
-        variant="outlined"
-        disabled={submitBtnDisable || replyLoading}
-        error={commentErr}
-        helperText={commentErrMsg}
-        onClick={ev=>ev.stopPropagation()}
-        onBlur={commentVerify}
-        onFocus={()=>commentVerify(true)}
+        reset={reset}
+        showSuccess={false}
+        style={{marginTop:4}}
+        className={"w-100"}
         label={placeholder}
+        disabled={submitBtnDisable || replyLoading}
         value={commentContent}
-        onChange={contentOnChange}
+        onClick={ev=>ev.stopPropagation()}
         onKeyDown={contentOnKeyDown}
-        multiline={true}
-        fullWidth={true}
-        rowsMax={Infinity}
+        onChange={contentOnChange}
+        materialUI={false}
+        autoHeight={true}
         rows={5}
+        error={commentErr}
+        errorMsg={commentErrMsg}
+        validateFn={commentVerify}
       />
     </div>
   )

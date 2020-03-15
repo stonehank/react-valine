@@ -6,6 +6,7 @@ import CardHeadInfo from "./card/CardHeadInfo";
 import CardContent from "./card/CardContent";
 import CardAction from "./card/CardAction";
 import CardContentEdit from "./card/CardContentEdit";
+import ErrorBoundary from "../info/ErrorBoundary";
 
 
 export default class CommentCardContainer extends React.Component{
@@ -40,13 +41,14 @@ export default class CommentCardContainer extends React.Component{
     })
   }
   showEditMode(){
-    this.setState({
-      editMode:true
-    })
+    if(this.props.canBeModify){
+      this.setState({
+        editMode:true
+      })
+    }
   }
 
   shouldComponentUpdate(nextProps,nextState){
-    // console.log('cardContainer',!deepEqual(this.props,nextProps) || !deepEqual(this.state,nextState))
     return !deepEqual(this.props,nextProps) || !deepEqual(this.state,nextState)
   }
 
@@ -112,7 +114,9 @@ export default class CommentCardContainer extends React.Component{
       commentRawContent,
       createdAt,
       previewShow,
+      canBeModify,
       togglePreviewShow,
+      showError,
     }=this.props
 
     return (
@@ -123,22 +127,25 @@ export default class CommentCardContainer extends React.Component{
         </div>
         <div className={'v-content-wrapper'}>
           {
-            editMode ?
-              <CardContentEdit commentRawContent={commentRawContent}
-                               curLang={curLang}
-                               previewShow={previewShow}
-                               togglePreviewShow={togglePreviewShow}
-                               hideEditMode={this.hideEditMode}
-                               applyEdit={applyEdit}
-                               curId={curId}
-                               pid={pid}
-                               rid={rid}
-                               at={at}
-              /> :
-              <CardContent commentContent={commentContent}
-                           needExpand={needExpand}
-                           expandContent={this.expandContent}
-              />
+            editMode
+              ? <ErrorBoundary>
+                  <CardContentEdit commentRawContent={commentRawContent}
+                                   curLang={curLang}
+                                   previewShow={previewShow}
+                                   togglePreviewShow={togglePreviewShow}
+                                   hideEditMode={this.hideEditMode}
+                                   applyEdit={applyEdit}
+                                   showError={showError}
+                                   curId={curId}
+                                   pid={pid}
+                                   rid={rid}
+                                   at={at}
+                  />
+                </ErrorBoundary>
+              : <CardContent commentContent={commentContent}
+                             needExpand={needExpand}
+                             expandContent={this.expandContent}
+                />
           }
           <CardAction langCtrl={langCtrl}
                       curId={curId}
@@ -146,6 +153,7 @@ export default class CommentCardContainer extends React.Component{
                       owner={owner}
                       nickName={nickName}
                       editMode={editMode}
+                      canBeModify={canBeModify}
                       handleReply={handleReply}
                       showEditMode={this.showEditMode}
           />
@@ -185,6 +193,7 @@ export default class CommentCardContainer extends React.Component{
                                                    initShowChild={initShowChild}
                                                    GRAVATAR_URL={GRAVATAR_URL}
                                                    avatarSrc={avatarSrc}
+                                                   canBeModify={canBeModify}
                                                    link={link}
                                                    handleReply={handleReply }
                                                    applyEdit={applyEdit }
@@ -193,6 +202,7 @@ export default class CommentCardContainer extends React.Component{
                                                    commentRawContent={commentRawContent}
                                                    createdAt={createdAt}
                                                    previewShow={previewShow}
+                                                   showError={showError}
                                                    togglePreviewShow={togglePreviewShow}
                       />
                       })

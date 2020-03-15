@@ -1,30 +1,25 @@
 import React from 'react'
-import TextField from '@material-ui/core/TextField';
-// import Button from '@material-ui/core/Button';
+import TextField from '../../../CustomComponent/TextField';
 export default class LinkComponent extends React.PureComponent{
 
   render(){
-    const {width,linkErr,linkErrMsg, link,langHead,protocol,linkOnChange,toggleProtocol,linkVerify} = this.props;
+    const {width,link,langHead,protocol,linkOnChange,toggleProtocol,linkVerify,linkErr,linkErrMsg} = this.props;
     return (
+      <div className={"vinputs-ident"}>
+        <span className={"v-link-toggle"} style={{textTransform:'none'}}  onClick={toggleProtocol}>{protocol}://</span>
         <TextField
-          className={"vinputs-ident"}
-          margin={width==='xs' ? 'dense' : 'normal'}
-          variant={width==='xs' ? 'outlined' : 'standard'}
-          id="website"
-          name="website"
+          className={"w-100"}
           label={langHead['website']}
           placeholder={langHead["link"]}
           value={link}
-          error={linkErr}
-          helperText={linkErrMsg}
-          onBlur={linkVerify}
-          onFocus={()=>linkVerify(true)}
           onChange={linkOnChange}
-          fullWidth={true}
-          InputProps={{
-            startAdornment:<span className={"v-link-toggle"} style={{textTransform:'none'}}  onClick={toggleProtocol}>{protocol}://</span>
-          }}
+          validateFn={linkVerify}
+          error={linkErr}
+          errorMsg={linkErrMsg}
+          materialUI={width!=='xs'}
         />
+      </div>
+
     )
   }
 }

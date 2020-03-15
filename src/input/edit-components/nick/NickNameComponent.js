@@ -1,33 +1,24 @@
 import React from 'react'
-import TextField from '@material-ui/core/TextField';
-
-
-
+import TextField from '../../../CustomComponent/TextField';
 
 
 class NickNameComponent extends React.PureComponent{
 
   render(){
-    const { width,nickName,requireName,langHead,nameErr,nameErrMsg,nameVerify,nameOnChange} = this.props;
+    const { width,nickName,requireName,langHead,nameOnChange,nameErr,nameErrMsg,nameVerify} = this.props;
     return(
-      <TextField
-        className={"vinputs-ident"}
-        margin={width==='xs' ? 'dense' : 'normal'}
-        variant={width==='xs' ? 'outlined' : 'standard'}
-        id="author"
-        name="author"
-        label={langHead["nick"]+(requireName?langHead["require"]:"")}
-        value={nickName}
-        error={nameErr}
-        helperText={nameErrMsg}
-        onBlur={nameVerify}
-        onFocus={()=>nameVerify(true)}
-        onChange={nameOnChange}
-        fullWidth={true}
-        // InputProps={
-        // {startAdornment:inputProps}
-      // }
-      />
+      <div className={"vinputs-ident"}>
+        <TextField
+          className={"w-100"}
+          label={langHead["nick"]+(requireName?langHead["require"]:"")}
+          value={nickName}
+          onChange={nameOnChange}
+          materialUI={width!=='xs'}
+          validateFn={nameVerify}
+          error={nameErr}
+          errorMsg={nameErrMsg}
+        />
+      </div>
     )
   }
 }

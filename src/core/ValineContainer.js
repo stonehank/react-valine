@@ -45,7 +45,6 @@ export default class ValineContainer extends React.Component {
     this.setCommentList = this.setCommentList.bind(this)
     this.handleReply = this.handleReply.bind(this)
     this.applyEdit = this.applyEdit.bind(this)
-    this.checkCanEdit = this.checkCanEdit.bind(this)
     this.applySubmit = this.applySubmit.bind(this)
     this.togglePreviewShow = this.togglePreviewShow.bind(this)
     this.resetDefaultComment = this.resetDefaultComment.bind(this)
@@ -56,6 +55,7 @@ export default class ValineContainer extends React.Component {
     this.addCommentToList = this.addCommentToList.bind(this)
     this.updateCommentFromList = this.updateCommentFromList.bind(this)
     this.scrollToEle = this.scrollToEle.bind(this)
+    this.showError = this.showError.bind(this)
 
     this.resetDefaultComment()
     this.wrapRef = React.createRef()
@@ -135,7 +135,6 @@ export default class ValineContainer extends React.Component {
   scrollToEle(ele,highlight=true) {
     let [innerScrTop, outerScrTop] = this.getScrollTop(ele, this.panelParentEle)
     if (this.props.useWindow) {
-      console.log(ele, this.panelParentEle,innerScrTop,outerScrTop)
       scrollElementsTo([window], [outerScrTop ])
         .then(()=>{
           if(highlight)highLightEle(ele)
@@ -155,7 +154,18 @@ export default class ValineContainer extends React.Component {
     }))
   }
 
-
+  showError(errorLog){
+    // console.log(errorLog,this)
+    this.setState({
+      errorLog: errorLog
+    }, () => {
+      this.errorTimer=setTimeout(() => {
+        this.setState({
+          errorLog: null
+        })
+      }, 2000)
+    })
+  }
 
   getParentElement(el) {
     const scrollParent = this.props.getPanelParent && this.props.getPanelParent();
@@ -173,41 +183,29 @@ export default class ValineContainer extends React.Component {
   getScrollTop(ele, parentEle) {
     let innerScrollTop = 0, outerScrollTop = 0
     if (this.props.useWindow) {
-      // let doc = document.documentElement || document.body.parentNode || document.body
-      // let scrollTop = window.pageYOffset != null ? window.pageYOffset : doc.scrollTop
-      // let screenTop = ele.getBoundingClientRect().top
-      // outerScrollTop = scrollTop + screenTop
       outerScrollTop = this.calculateTopPosition(ele)
-      // console.log('outer',outerScrollTop)
     } else {
       if (ele.offsetParent === parentEle) {
         innerScrollTop = ele.offsetTop
       } else {
         innerScrollTop = this.calculateTopPosition(ele,parentEle)
-        // ele.offsetTop - parentEle.offsetTop
       }
       outerScrollTop = this.calculateTopPosition(parentEle)
     }
     return [innerScrollTop, outerScrollTop]
   }
 
-  checkCanEdit(cid) {
-    const {checkIsOwner} = this.props
-    return checkIsOwner(cid)
-  }
 
   applyEdit({comment, id,pid,at}) {
-    return this.checkCanEdit(id).then((isOwner) => {
-      if (!isOwner) {
-        console.error('Is Not owner')
-        return Promise.reject()
+    return this.props.checkCanEdit(id).then((canEdit) => {
+      if (!canEdit) {
+        console.error('Can not be edit, reason: 1. Not edit mode 2. Not owner')
+        return Promise.reject('Can not be edit, reason: 1. Not edit mode 2. Not owner')
       }
       let obj=parseToValidCommentAt({comment,pid,at})
       let newComment=obj.comment
-      // console.log(obj,'~~~')
       return new Promise((resolve) => {
         newComment = xssMarkdown(newComment)
-        // console.log(newComment,'~~~')
         this.setState({
           submitLoading: true
         }, () => {
@@ -225,11 +223,11 @@ export default class ValineContainer extends React.Component {
                   },200)
                 })
 
-            }).catch(() => {
+            }).catch((err) => {
               this.setState({
                 submitLoading: false
               })
-              throw new Error('Something wrong, can not save comment')
+              console.error('Something wrong, can not save comment',err)
             })
         })
       })
@@ -275,16 +273,10 @@ export default class ValineContainer extends React.Component {
             resolve()
           }).catch(ex => {
             console.error("Something wrong with submit!", curLang.error[ex.code], ex)
+            this.showError("Something wrong with submit!")
             this.setState({
               submitBtnDisable: false,
               submitLoading: false,
-              errorLog: "Something wrong with submit!"
-            }, () => {
-              setTimeout(() => {
-                this.setState({
-                  errorLog: null
-                })
-              }, 2000)
             })
           })
       })
@@ -343,15 +335,9 @@ export default class ValineContainer extends React.Component {
         fetchMoreLoading: false
       })
       if (errorLog !== this.state.errorLog) {
+        this.showError(errorLog)
         this.setState({
-          errorLog,
           currentCounts: this.state.commentCounts
-        }, () => {
-          this.errorTimer = setTimeout(() => {
-            this.setState({
-              errorLog: null
-            })
-          }, 2000)
         })
       }
       return
@@ -418,7 +404,8 @@ export default class ValineContainer extends React.Component {
       requireEmail,
       curLang,
       nest,
-      emojiListSize
+      emojiListSize,
+      canBeModify
     } = this.props
 
     const {
@@ -460,6 +447,7 @@ export default class ValineContainer extends React.Component {
                               commentList={commentList}
                               curLang={curLang}
                               nest={nest}
+                              canBeModify={canBeModify}
                               fetchMoreLoading={fetchMoreLoading}
                               fetchInitLoading={fetchInitLoading}
                               handleReply={this.handleReply}
@@ -467,6 +455,7 @@ export default class ValineContainer extends React.Component {
                               fillNxtCommentList={this.fillNxtCommentList}
                               // for edit
                               previewShow={previewShow}
+                              showError={this.showError}
                               togglePreviewShow={this.togglePreviewShow}
         />
       </div>

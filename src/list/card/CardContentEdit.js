@@ -4,7 +4,7 @@ import InputContainer from "../../input/InputContainer";
 import EmojiPreviewComponent from "../../input/EmojiPreviewComponent";
 import ControlContainer from "../../input/control-container/ControlContainer";
 import {removeReplyAt,restoreReplyAt} from "../../utils";
-import CircularProgress from '@material-ui/core/CircularProgress';
+// import CircularProgress from '@material-ui/core/CircularProgress';
 
 export default class CardContentEdit extends InputContainer{
   constructor(props){
@@ -15,7 +15,7 @@ export default class CardContentEdit extends InputContainer{
   }
 
   saveEdit(){
-    const {curId,applyEdit,pid,at,hideEditMode,commentRawContent}=this.props
+    const {curId,applyEdit,pid,at,hideEditMode,commentRawContent,showError}=this.props
     const {commentContent}=this.state
     let oldCommentRaw=removeReplyAt(commentRawContent,false)
     if(commentContent===oldCommentRaw){
@@ -30,6 +30,9 @@ export default class CardContentEdit extends InputContainer{
     })
     applyEdit({id:curId,pid,comment,at}).then(()=>{
       hideEditMode()
+    }).catch((err)=>{
+      // console.log(1,err)
+      showError(err)
     })
   }
 
@@ -51,15 +54,16 @@ export default class CardContentEdit extends InputContainer{
       curId,
       hideEditMode,
     }=this.props
-
     return (
       <>
         <div className="v-edit-area">
           <TextAreaComponent ref={this.textAreaRef}
                              commentErr={commentErr}
                              commentErrMsg={commentErrMsg}
+                             curLang={curLang}
                              commentContent={commentContent}
                              replyLoading={replyLoading}
+                             placeholder={curLang["ctrl"].edit}
                              contentOnKeyDown={this.contentOnKeyDown}
                              contentOnChange={this.commentContentOnChange}
                              commentVerify={this.commentVerify}
@@ -77,12 +81,13 @@ export default class CardContentEdit extends InputContainer{
                             togglePreviewShow={togglePreviewShow}
           />
         </div>
-        <span className={"v-edit-save"} onClick={this.saveEdit.bind(this,curId)}>
+        <div className={"v-edit-save"} onClick={this.saveEdit.bind(this,curId)} style={{minWidth:42}}>
           { replyLoading
-            ? <CircularProgress size={14} />
+            // ? <CircularProgress size={14} />
+            ? <span className={"vloading-btn vloading-btn-sm"} />
             : curLang['ctrl']['save']}
-          </span>
-        <span className={"v-edit-cancel"} onClick={hideEditMode}>{curLang['ctrl']['cancel']}</span>
+          </div>
+        <div className={"v-edit-cancel"} onClick={hideEditMode}>{curLang['ctrl']['cancel']}</div>
       </>
 
 

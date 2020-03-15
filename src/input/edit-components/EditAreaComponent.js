@@ -52,10 +52,10 @@ class EditAreaComponent extends React.PureComponent {
       emailErrMsg,
       linkErr,
       linkErrMsg,
-      curLang,
       nameVerify,
-      linkVerify,
       mailVerify,
+      linkVerify,
+      curLang,
     } = this.props;
     const {width}=this.state
     const langHead=curLang['head']
@@ -69,8 +69,8 @@ class EditAreaComponent extends React.PureComponent {
                                nameErrMsg={nameErrMsg}
                                requireName={requireName}
                                nameOnChange={nameOnChange}
-                               nameVerify={nameVerify}
                                width={width}
+                               nameVerify={nameVerify}
             />
           </div>
           <MailComponent email={email}
@@ -79,20 +79,19 @@ class EditAreaComponent extends React.PureComponent {
                          emailErrMsg={emailErrMsg}
                          requireEmail={requireEmail}
                          emailOnChange={emailOnChange}
-                         mailVerify={mailVerify}
                          width={width}
+                         mailVerify={mailVerify}
           />
           <LinkComponent link={link}
                          langHead={langHead}
-                         protocol={protocol}
                          linkErr={linkErr}
                          linkErrMsg={linkErrMsg}
+                         protocol={protocol}
                          toggleProtocol={toggleProtocol}
                          linkOnChange={linkOnChange}
-                         linkVerify={linkVerify}
                          width={width}
+                         linkVerify={linkVerify}
           />
-        {/*</div>*/}
       </div>
     )
   }

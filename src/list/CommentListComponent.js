@@ -8,7 +8,6 @@ import {xssMarkdown,deepEqual} from '../utils'
 export default class CommentListComponent extends React.Component{
 
   shouldComponentUpdate(nextProps){
-    // console.log('list',!deepEqual(this.props,nextProps))
     return !deepEqual(this.props,nextProps)
   }
   render(){
@@ -21,6 +20,7 @@ export default class CommentListComponent extends React.Component{
       nest,
       handleReply,
       applyEdit,
+      canBeModify,
       // submitLoading,
       fetchInitLoading,
       fetchMoreLoading,
@@ -29,6 +29,7 @@ export default class CommentListComponent extends React.Component{
       // for edit
       previewShow,
       togglePreviewShow,
+      showError,
     }=this.props
     return (
       <React.Fragment>
@@ -71,6 +72,7 @@ export default class CommentListComponent extends React.Component{
                                                    GRAVATAR_URL={GRAVATAR_URL}
                                                    avatarSrc={avatarSrc}
                                                    link={link}
+                                                   canBeModify={canBeModify}
                                                    initShowChild={initShowChild}
                                                    handleReply={handleReply }
                                                    applyEdit={applyEdit}
@@ -79,6 +81,7 @@ export default class CommentListComponent extends React.Component{
                                                    commentRawContent={commentRawContent}
                                                    createdAt={createdAt}
                                                    previewShow={previewShow}
+                                                   showError={showError}
                                                    togglePreviewShow={togglePreviewShow}
                       />
                     })
