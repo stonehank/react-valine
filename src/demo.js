@@ -9,6 +9,18 @@ modify_hljs(function(hljs){
   hljs.registerLanguage('python', python);
   return hljs
 })
+modify_hljs(function(hljs){
+  const xml = require('highlight.js/lib/languages/xml');
+  hljs.registerLanguage('xml', xml);
+  return hljs
+})
+modify_hljs(function(hljs){
+  const css = require('highlight.js/lib/languages/css');
+  hljs.registerLanguage('css', css);
+  return hljs
+})
+
+
 
 ReactDOM.render(
   <Valine  appId={"I5DAxOhp2kPXkbj9VXPyKoEB-gzGzoHsz"}
