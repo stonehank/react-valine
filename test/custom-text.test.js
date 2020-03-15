@@ -64,6 +64,7 @@ describe('Test No Comment', ()=> {
                 push: "https://i5daxohp.push.lncld.net",
                 stats: "https://i5daxohp.stats.lncld.net"
               }}
+              CommentClass={"Comment"}
       >
         <div className="App">
           <header className="App-header">

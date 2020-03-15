@@ -42,6 +42,7 @@ describe('Pageview upload', ()=> {
                 push: "https://i5daxohp.push.lncld.net",
                 stats: "https://i5daxohp.stats.lncld.net"
               }}
+              CommentClass={"Comment"}
       >
         <div className="App">
             <span id="pageviewCounts">

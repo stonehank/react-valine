@@ -43,6 +43,7 @@ describe('Common Render', ()=> {
               appKey={"lGPcHd7GL9nYKqBbNEkgXKjX"}
               requireEmail={true}
               nest={false}
+              CommentClass={"Comment"}
       >
         <div className="App">
           <header className="App-header">
