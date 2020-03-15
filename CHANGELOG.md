@@ -1,3 +1,7 @@
+##### 0.5.1 (2020-3-15)
+
+* `API`请求替换`leancloud-sdk`，显著减少包大小(parsed size from `479.2kb` to `331.92kb`)
+* 自定义组件UI替换`material-ui`，显著减少包大小(parsed size from `331.92kb` to `216.48kb`)
 
 ##### 0.5.0 (2020-3-13)
 
