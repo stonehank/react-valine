@@ -13,6 +13,7 @@ export default class Valine extends React.Component{
     super(props)
     this.state={
       AV:AV,
+      CommentClass:props.CommentClass,
       requireName:props.requireName,
       requireEmail:props.requireEmail,
       nest:props.nest,
@@ -66,7 +67,7 @@ export default class Valine extends React.Component{
         resolve(this.countMap.get(uniqStr))
       }else{
         let AV=this.state.AV
-        let query= new AV.Query('Comment')
+        let query= new AV.Query(this.state.CommentClass)
         query.equalTo('uniqStr',uniqStr)
           .count()
           .then((counts)=>{
@@ -165,7 +166,8 @@ Valine.defaultProps={
   nestLayers:Infinity,
   emojiListSize:5,
   serverURLs:'https://api.leancloud.cn',
-  canBeModify:false
+  canBeModify:false,
+  CommentClass:'Comment_demo'
 }
 
 Valine.propTypes = {

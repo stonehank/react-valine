@@ -1,4 +1,6 @@
 // import {getFromCache} from './utils'
+import fetch from 'node-fetch';
+
 function checkType(check, checkList) {
   let arr
   if (typeof checkList === 'string') {
@@ -91,7 +93,7 @@ class Obj{
       // customData.id=objData.objectId
       // customData.createdAt=objData.createdAt
       // customData.attributes=Object.assign({},objData)
-      return rewriteCommentToSDKObj(objData)
+      return rewriteCommentToSDKObj(objData,this.__table__)
     })
   }
 
@@ -162,9 +164,9 @@ class User extends Obj {
   }
 }
 
-function rewriteCommentToSDKObj(commentObj){
+function rewriteCommentToSDKObj(commentObj,tableName){
   // console.log(commentObj)
-  return new Obj('Comment',commentObj,'PUT')
+  return new Obj(tableName,commentObj,'PUT')
 }
 
 function rewriteUserToSDKObj(userObj,username){
@@ -266,7 +268,7 @@ let CustomAV = {
         }
       }).then(obj => obj.json())
         .then((commentObj)=>{
-          return rewriteCommentToSDKObj(commentObj)
+          return rewriteCommentToSDKObj(commentObj,this.__table__)
         })
     }
 
@@ -363,6 +365,7 @@ let CustomAV = {
 
     find(){
       return this._find().then(data=>{
+        // console.log(data)
         let results=data.results
         let res=[]
         for(let i=0;i<results.length;i++){
@@ -370,7 +373,7 @@ let CustomAV = {
         }
         return res
       }).catch((err)=>{
-        // console.log(err)
+        console.log(err)
       })
     }
     _find() {

@@ -10,7 +10,7 @@ export default class ControlComponent extends React.PureComponent {
     return (
       <div className={"v-edit-control"}>
         <EmojiComponent txt={langCtrl["emoji"]} closeEmojiDrawer={closeEmojiDrawer} openEmojiDrawer={openEmojiDrawer} toggleEmojiShow={toggleEmojiShow}  show={show} insertEmoji={insertEmoji} />
-        <PreviewComponent txt={langCtrl["preview"]} txt_on={langCtrl["preview_on"]} previewShow={previewShow} togglePreviewShow={togglePreviewShow}/>
+        <PreviewComponent langCtrl={langCtrl} previewShow={previewShow} togglePreviewShow={togglePreviewShow}/>
       </div>
 
     );

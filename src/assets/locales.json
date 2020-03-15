@@ -27,7 +27,8 @@
       "more": "加载更多评论",
       "no_more":"已经到最后啦",
       "preview": "预览",
-      "preview_on":"实时预览中",
+      "preview_on":"On",
+      "preview_off":"Off",
       "emoji": "表情"
     },
     "error": {
@@ -80,7 +81,8 @@
       "more": "Load more comments",
       "no_more":"No more comments",
       "preview": "Preview",
-      "preview_on":"Previewing",
+      "preview_on":"On",
+      "preview_off":"Off",
       "emoji": "Emoji"
     },
     "error": {

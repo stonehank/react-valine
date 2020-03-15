@@ -2,13 +2,12 @@ import React from 'react'
 import '../assets/css/_variables.scss'
 import '../assets/css/textfield/common.scss'
 import '../assets/css/drawer/index.scss'
-// import '../assets/css/textfield/auto-height-textarea.scss'
-// import '../assets/css/index.scss'
-// import '../assets/css/editor/a11y.scss'
 import {getFromCache,setCache,randUniqueString} from '../utils'
 import ValineContainer from "./ValineContainer";
 let oldRandUniqStr=getFromCache('ownerCode')
 let newRandUniqStr=oldRandUniqStr || randUniqueString()
+
+
 
 export default class FetchResourceContainer extends React.Component{
 
@@ -31,7 +30,7 @@ export default class FetchResourceContainer extends React.Component{
   checkCanEdit(id){
     const {AV,canBeModify}=this.props
     if(!canBeModify)return Promise.resolve(false)
-    return new AV.Query('Comment')
+    return new AV.Query(this.props.CommentClass)
       .equalTo('objectId',id)
       .equalTo('ownerCode',oldRandUniqStr)
       .find()
@@ -93,7 +92,7 @@ export default class FetchResourceContainer extends React.Component{
     if(!canBeModify)return Promise.reject(null)
     return this.getUser()
       .then((user)=>{
-        return  new AV.Query('Comment').get(id)
+        return  new AV.Query(this.props.CommentClass).get(id)
           .then((item)=>{
             item.set('ownerCode',newRandUniqStr)
             item.set('comment',comment)
@@ -113,7 +112,7 @@ export default class FetchResourceContainer extends React.Component{
 
   uploadComment(uploadField){
     const {AV}=this.props
-    let Ct = AV.Object.extend('Comment');
+    let Ct = AV.Object.extend(this.props.CommentClass);
 
     let comment = new Ct();
     for (let k in uploadField) {
@@ -157,7 +156,7 @@ export default class FetchResourceContainer extends React.Component{
 
   fetchMoreList(currentListLen){
     const {AV,pageSize,uniqStr}=this.props
-    return new AV.Query('Comment')
+    return new AV.Query(this.props.CommentClass)
       .equalTo("uniqStr",uniqStr)
       .select(['nick', 'comment', 'link', 'pid', 'avatarSrc','rid','commentRaw','at'])
       .skip(currentListLen)
@@ -176,7 +175,7 @@ export default class FetchResourceContainer extends React.Component{
   fetchOwnerTask(){
     const {AV,uniqStr,canBeModify}=this.props
     if(!canBeModify)return Promise.resolve([])
-    return new AV.Query('Comment')
+    return new AV.Query(this.props.CommentClass)
       .equalTo('uniqStr',uniqStr)
       .equalTo('ownerCode',oldRandUniqStr)
       .find()
@@ -205,13 +204,14 @@ export default class FetchResourceContainer extends React.Component{
       if(commentCounts===0){
         return [null,null,null,0]
       }
-      return new AV.Query('Comment')
+      return new AV.Query(this.props.CommentClass)
         .equalTo('uniqStr',uniqStr)
         .select(['nick', 'comment', 'link', 'pid', 'avatarSrc','rid','commentRaw','at'])
         .addDescending('createdAt')
         .limit(pageSize)
         .find()
         .then(items=>{
+          // console.log(items)
           return [items,null,0,commentCounts,null]
         })
     })
@@ -221,7 +221,7 @@ export default class FetchResourceContainer extends React.Component{
     let contains=[]
     const {AV,uniqStr,pageSize}=this.props
     let addCounts=0
-    return  new AV.Query('Comment')
+    return  new AV.Query(this.props.CommentClass)
       .equalTo('uniqStr',uniqStr)
       .equalTo('pid','')
       .addDescending('createdAt')
@@ -237,7 +237,7 @@ export default class FetchResourceContainer extends React.Component{
         for(let obj of parentItems){
           contains.push(obj.get('rid'))
         }
-        return new AV.Query('Comment')
+        return new AV.Query(this.props.CommentClass)
           .equalTo('uniqStr',uniqStr)
           .notEqualTo('pid','')
           .containedIn('rid',contains)
@@ -257,7 +257,7 @@ export default class FetchResourceContainer extends React.Component{
       if (commentCounts === 0) {
         return [null,null,null,0]
       }
-      let query1 =new AV.Query('Comment'), query2=new AV.Query('Comment')
+      let query1 =new AV.Query(this.props.CommentClass), query2=new AV.Query(this.props.CommentClass)
       return query1.equalTo('uniqStr',uniqStr)
         .equalTo('pid','')
         .limit(pageSize)

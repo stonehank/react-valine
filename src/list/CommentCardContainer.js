@@ -54,9 +54,9 @@ export default class CommentCardContainer extends React.Component{
 
   componentDidUpdate(prevProps,prevState){
     const {child:prevChild}=prevProps
-    const {child:curChild,nest,initShowChild,curId}=this.props
-
-    let atTagList=document.getElementById(curId).getElementsByClassName('at')
+    const {child:curChild,nest,initShowChild}=this.props
+    let cardEle=this.cardRef.current
+    let atTagList=cardEle.getElementsByClassName('at')
     if(atTagList.length>0){
       atTagList[0].removeEventListener('click', bindATagSmoothScroll)
       atTagList[0].addEventListener('click', bindATagSmoothScroll)
@@ -69,12 +69,14 @@ export default class CommentCardContainer extends React.Component{
 
   componentDidMount(){
     const {curId}=this.props
-    let atTagList=document.getElementById(curId).getElementsByClassName('at')
+    // console.log(curId,this.props)
+    let cardEle=this.cardRef.current
+    // let curIdEle=document.getElementById(curId)
+    let atTagList=cardEle ? cardEle.getElementsByClassName('at') : []
+    // console.log(cardEle)
     if(atTagList.length>0){
       atTagList[0].addEventListener('click', bindATagSmoothScroll)
     }
-
-    let cardEle=this.cardRef.current
     if(cardEle.offsetHeight>220){
       this.setState({
         needExpand:true
@@ -83,8 +85,9 @@ export default class CommentCardContainer extends React.Component{
   }
 
   componentWillUnmount(){
-    const {curId}=this.props
-    let atTagList=document.getElementById(curId).getElementsByClassName('at')
+    // const {curId}=this.props
+    let cardEle=this.cardRef.current
+    let atTagList=cardEle.getElementsByClassName('at')
     if(atTagList.length>0){
       atTagList[0].removeEventListener('click', bindATagSmoothScroll)
     }

@@ -10,7 +10,7 @@ export default class EmojiComponent extends React.PureComponent {
     // console.log(show)
     return (
       <React.Fragment>
-        <span className={"vbtn text-btn"} onClick={openEmojiDrawer} >😄{txt}</span>
+        <span className={"vbtn text-btn vemoji-btn"} onClick={openEmojiDrawer} >😄{txt}</span>
         <Drawer
           anchor={"bottom"}
           open={show}

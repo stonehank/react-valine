@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/stonehank/react-valine.svg?branch=master)](https://travis-ci.org/stonehank/react-valine)
 [![npm](https://img.shields.io/npm/v/react-valine.svg)](https://www.npmjs.com/package/react-valine)
 [![codecov](https://codecov.io/gh/stonehank/react-valine/branch/master/graph/badge.svg)](https://codecov.io/gh/stonehank/react-valine)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/react-valine?color=yellowgreen&label=gzip)
 
 ---
 
@@ -81,6 +82,7 @@
 |sofaEmpty|否|无评论时显示|快来做第一个评论的人吧~|
 |previewShow|否|是否默认开启实时预览|true|
 |lang|否|支持中文(zh-cn)和英文(en)|zh-cn|
+|CommentClass|否|在`leancloud`上的Class名称|Comment_demo|
 |customTxt|否|自定义内部文字|参考assets/locales.json|
 
 
