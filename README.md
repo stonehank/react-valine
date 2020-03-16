@@ -9,6 +9,12 @@
 
 ### Changelog
 
+##### 0.5.2 （2020-3-16）
+
+* 修复提交后，`textarea`不能恢复高度的bug
+* 修改自定义`leancloud`上储存**评论**的Class默认名称为`"Comment"`(兼容之前版本和邮件回复功能)
+* 增加自定义`leancloud`上储存**页面阅读量**的Class名称，默认为`"Counter"`
+
 ##### 0.5.1 (2020-3-15)
 
 * `API`请求替换`leancloud-sdk`，显著减少包大小(parsed size from `479.2kb` to `331.92kb`)
@@ -82,8 +88,10 @@
 |emojiListSize|否|输入`:`显示`emoji`的条数|5|
 |sofaEmpty|否|无评论时显示|快来做第一个评论的人吧~|
 |previewShow|否|是否默认开启实时预览|true|
+|themeMode|否|设定全局主题|light|
 |lang|否|支持中文(zh-cn)和英文(en)|zh-cn|
-|CommentClass|否|在`leancloud`上的Class名称|Comment_demo|
+|CommentClass|否|在`leancloud`上存放**评论**的Class名称|Comment|
+|CounterClass|否|在`leancloud`上存放**页面阅读量**的Class名称|Counter|
 |customTxt|否|自定义内部文字|参考assets/locales.json|
 
 
@@ -122,8 +130,10 @@ ReactDOM.render(
 |参数|是否必须|作用|默认值|
 |:---:|:---:|:---:|:---:|
 |uniqStr|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
-|style|否|组件的样式|''|
+|style|否|组件的样式|null|
+|className|否|组件的样式类|''|
 |count|否|未获取时的初始值|获取中|
+|themeMode|否|设定当前模块主题|light|
 
 > 注意：uniqStr必须是一个独立值，强烈建议自己填写一个独立值，而不是用默认值，因为如果使用默认值，当需要获取评论数时，并不一定在当前评论页的`uniqStr`上，就会获取错误或者失败。
 
@@ -157,9 +167,11 @@ class ArticleMeta extends React.Component{
 |参数|是否必须|作用|默认值|
 |:---:|:---:|:---:|:---:|
 |uniqStr|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
-|style|否|组件的样式|''|
+|style|否|组件的样式|null|
+|className|否|组件的样式类|''|
 |count|否|未获取时的初始值|获取中|
 |title|否|当前组件对应的文章标题，用于方便后台查看|document.title|
+|themeMode|否|设定当前模块主题|light|
 
 > 注意：uniqStr必须是一个独立值，强烈建议自己填写一个独立值，而不是用默认值，因为如果使用默认值，当需要获取评论数时，并不一定在当前评论页的`uniqStr`上，就会获取错误或者失败。
 
@@ -194,6 +206,9 @@ class ArticleMeta extends React.Component{
 |uniqStr|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
 |useWindow|否|配置执行滚动时所依赖的父元素|true|
 |getPanelParent|否|`useWindow`为`false`时，可以自定义滚动父组件，默认滚动父组件为`panel.parentNode`|null|
+|style|否|组件的样式|null|
+|className|否|组件的样式类|''|
+|themeMode|否|设定当前模块主题|light|
 
 > 注意：uniqStr必须是一个独立值，强烈建议自己填写一个独立值，而不是用默认值，因为如果使用默认值，当需要获取评论数时，并不一定在当前评论页的`uniqStr`上，就会获取错误或者失败。
 

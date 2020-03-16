@@ -1,6 +1,15 @@
 html{
   scroll-behavior: smooth;
 }
+
+.vcounter{
+  color:var(--text-primary);
+}
+
+.vpageview{
+  color:var(--text-primary);
+}
+
 .react-valine {
   color:var(--text-primary);
   background:var(--background-color);

@@ -50,7 +50,8 @@
       "require_nick":"昵称为必填项！",
       "require_mail":"email为必填项！",
       "email_format_failed":"email格式错误！",
-      "link_format_failed":"网址格式错误！"
+      "link_format_failed":"网址格式错误！",
+      "some_filed_error":"存在无效输入，请再次检查"
     }
   },
   "en": {
@@ -104,7 +105,8 @@
       "require_nick":"NickName is required!",
       "require_mail":"E-Mail is required!",
       "email_format_failed":"Incorrect email format!",
-      "link_format_failed":"Incorrect website format! "
+      "link_format_failed":"Incorrect website format! ",
+      "some_filed_error":"Some field is invalid, check please."
     }
   }
 }

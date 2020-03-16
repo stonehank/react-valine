@@ -405,7 +405,10 @@ export default class ValineContainer extends React.Component {
       curLang,
       nest,
       emojiListSize,
-      canBeModify
+      canBeModify,
+      themeMode,
+      className,
+      style
     } = this.props
 
     const {
@@ -420,8 +423,9 @@ export default class ValineContainer extends React.Component {
       submitLoading,
       submitBtnDisable,
     } = this.state
+
     return (
-      <div ref={this.wrapRef} className="react-valine theme-light">
+      <div ref={this.wrapRef} className={`react-valine theme-${themeMode} ${className}`} style={style}>
         {
           errorLog != null
             ? <ErrorLog errorLog={errorLog}/>
@@ -438,6 +442,7 @@ export default class ValineContainer extends React.Component {
                         toggleTextAreaFocus={toggleTextAreaFocus}
                         previewShow={previewShow}
                         applySubmit={this.applySubmit}
+                        showError={this.showError}
                         togglePreviewShow={this.togglePreviewShow}
         />
         <InfoComponent lang_comments={curLang["tips"]["comments"]} commentCounts={commentCounts}/>

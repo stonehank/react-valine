@@ -26,8 +26,8 @@ td, th{
   font-size:20px;
   transition:background .3s;
   &:hover{
-    background:$info;
-    color:$text-opposite
+    background:var(--info-color);
+    color:var(--background-color)
   }
 }
 .cvf-date-wrapper,.cvf-time-wrapper{
@@ -64,11 +64,11 @@ td, th{
       display: inline-block;
     }
     .next-month-cell, .prev-month-cell{
-      color:$text-primary;
+      color:var(--text-secondary);
     }
   }
   .day-choose{
-    background:$info !important;
+    background:var(--info-color) !important;
     color:#fff !important;
   }
   .cvf-today{
@@ -77,7 +77,7 @@ td, th{
       content: "";
       width: 0;
       height: 0;
-      border-bottom: 10px solid $info;
+      border-bottom: 10px solid var(--info-color);
       border-left: 10px solid transparent;
       position: absolute;
       bottom: 0;
@@ -123,8 +123,8 @@ td, th{
       padding:8px;
       border-radius: 4px;
       &:hover{
-        background:$info;
-        color:$text-opposite;
+        background:var(--info-color);
+        color:var(--background-color);
       }
     }
     .cvf-minute-prev, .cvf-minute-next, .cvf-hour-prev, .cvf-hour-next{
@@ -162,7 +162,7 @@ td, th{
     background: #fff;
     &:active li:not(.cvf-select-time-active){
       background:initial;
-      color:$text-primary;
+      color:var(--text-secondary);
     }
   }
   .cvf-select-item{
@@ -170,15 +170,15 @@ td, th{
     padding: 12px 8px;
     cursor:pointer;
     &:hover{
-      background:$info;
-      color:$text-opposite;
+      background:var(--info-color);
+      color:var(--background-color);
     }
     &:active{
       cursor:grabbing;
     }
   }
   .cvf-time-choose-btn{
-    background:$success;
+    background:var(--success-color);
     color:#fff;
     padding:8px 12px;
     max-width:120px;
@@ -195,14 +195,14 @@ td, th{
     }
   }
   .cvf-select-time-active{
-    //background:$info;
-    //color:$text-opposite;
+    //background:var(--info-color);
+    //color:var(--background-color;
   }
 }
 .cell-disabled{
-  color: $text-blur !important;
+  color: var(--text-blur) !important;
   &:hover{
-    color: $text-blur !important;
+    color: var(--text-blur) !important;
     background:initial !important;
   }
 

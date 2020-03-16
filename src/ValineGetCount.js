@@ -40,7 +40,8 @@ export default class ValineGetCount extends React.Component{
   }
 
   render(){
-    return <span style={this.props.style}>{this.state.count}</span>
+    const {themeMode,className}=this.props
+    return <span className={`theme-${themeMode} ${className} vcounter`} style={this.props.style}>{this.state.count}</span>
   }
 }
 

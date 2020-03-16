@@ -57,8 +57,9 @@ export default class CommentListComponent extends React.Component{
                         child=nest ? commentObj['child'] : null,
                         initShowChild=!!commentObj['initShowChild']
 
-                      return <CommentCardContainer curId={curId}
-                                                    key={curId}
+                      return <CommentCardContainer key={curId}
+                                                   commentObj={commentObj}
+                                                    curId={curId}
                                                    nest={nest}
                                                    child={child}
                                                    rid={rid}

@@ -13,14 +13,19 @@ export default class ValinePageview extends React.Component{
     return (
       <ValineContext.Consumer>
         {contextProps=>{
-          const {getPageview,curLang}=contextProps
-          const {style,uniqStr,count,title}=this.props
+          let {getPageview,curLang,themeMode}=contextProps
+          const {style,uniqStr,count,title,className}=this.props
+          if(this.props.themeMode){
+            themeMode=this.props.themeMode
+          }
           return (
             <ValineGetCount style={style}
                             fetchCount={getPageview}
                             title={title}
                             uniqStr={uniqStr}
                             count={count}
+                            className={className}
+                            themeMode={themeMode}
                             fetchTxt={curLang['tips']['pageview']}
             />
           )
@@ -31,11 +36,14 @@ export default class ValinePageview extends React.Component{
   }
 }
 ValinePageview.defaultProps={
-  title:document.title
+  title:document.title,
+  className:'',
 }
 
 ValinePageview.propTypes = {
   count:PropTypes.oneOfType([PropTypes.string,PropTypes.number]),
   style:PropTypes.object,
-  title:PropTypes.string
+  title:PropTypes.string,
+  themeMode:PropTypes.string,
+  className:PropTypes.string,
 }

@@ -165,7 +165,6 @@ class User extends Obj {
 }
 
 function rewriteCommentToSDKObj(commentObj,tableName){
-  // console.log(commentObj)
   return new Obj(tableName,commentObj,'PUT')
 }
 

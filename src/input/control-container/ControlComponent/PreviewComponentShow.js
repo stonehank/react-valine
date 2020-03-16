@@ -10,7 +10,6 @@ export default class PreviewComponentShow extends React.PureComponent {
             <div dangerouslySetInnerHTML={{__html:previewContent}} />
           </div>
       :   null
-
     );
   }
 }

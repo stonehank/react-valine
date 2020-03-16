@@ -66,6 +66,7 @@ export default class TextField extends React.PureComponent{
         this.setState({
           dirty:false,
         },()=>{
+          this.calcHeight()
           this.handleBlur()
         })
       }else{

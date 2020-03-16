@@ -17,26 +17,41 @@ export default class ValinePanel extends React.Component{
 
 
   render(){
+    const {className,style}=this.props
     return (
       <ValineContext.Consumer>
         {contextProps=>{
-          const {fetchCount,updateCount,...otherProps}=contextProps
-          return <FetchResourceContainer  fetchCount={fetchCount} updateCount={updateCount}  {...this.state} {...otherProps}/>
+          let {fetchCount,updateCount,themeMode,...otherProps}=contextProps
+          if(this.props.themeMode){
+            themeMode=this.props.themeMode
+          }
+          return <FetchResourceContainer  fetchCount={fetchCount}
+                                          updateCount={updateCount}
+                                          themeMode={themeMode}
+                                          className={className}
+                                          style={style}
+                                          {...this.state}
+                                          {...otherProps} />
         }}
       </ValineContext.Consumer>
     )
 
   }
 }
-
 ValinePanel.defaultProps={
   uniqStr:decodeURI(window.location.origin+window.location.pathname),
   useWindow:true,
-  getPanelParent:null
+  getPanelParent:null,
+  themeMode:'',
+  className:'',
+  style:null
 }
 
 ValinePanel.propTypes = {
   useWindow:PropTypes.bool,
-  getPanelParent:PropTypes.func
+  getPanelParent:PropTypes.func,
+  themeMode:PropTypes.string,
+  className:PropTypes.string,
+  style:PropTypes.object,
 }
 

@@ -1,14 +1,3 @@
-$success:#44bd2d;
-$error:#DC291B;
-$info:#2b43dc;
-$border-color:rgb(171, 171, 171);
-$border-hover-color:#333333;
-$border-hover-light-color: #c7c7c7;
-$text-primary:rgba(0,0,0,0.54);
-$text-secondary:rgba(0,0,0,0.38);
-$text-blur:rgba(0,0,0,0.16);
-$text-opposite:#fff;
-
 
   *{
     margin:0;
@@ -18,15 +7,19 @@ $text-opposite:#fff;
   p{
     margin-bottom:4px;
   }
+  textarea,input{
+    background: var(--background-color);
+    color: var(--text-primary);
+  }
   .cvf-filedset-wrapper{
     text-align: left;
     position: relative;
     margin-top: 12px;
     .cvf-text-success{
-      color: $success !important;
+      color: var(--success-color) !important;
     }
     .cvf-text-error{
-      color: $error !important;
+      color: var(--error-color) !important;
     }
     .cvf-fieldset-container{
       margin: 0 6px;
@@ -47,20 +40,20 @@ $text-opposite:#fff;
         }
       }
       .cvf-success{
-        border-color: $success !important;
+        border-color: var(--success-color) !important;
       }
       .cvf-error{
-        border-color: $error !important;
+        border-color: var(--error-color) !important;
       }
       .cvf-fieldset-focus{
-        border-color: $info;
+        border-color: var(--info-color);
       }
       .cvf-fieldset-valid-form{
         //top: -4px;
         left: 0;
         width: 100%;
         height: 100%;
-        color: $text-primary;
+        color: var(--text-secondary);
         padding-left: 8px;
         pointer-events: none;
         position: absolute;
@@ -93,7 +86,7 @@ $text-opposite:#fff;
     }
 
     .error-msg{
-      color: $error;
+      color: var(--error-color);
       padding: 2px 8px 0 8px;
       min-height: 18px;
       font-size: 11px;
@@ -104,8 +97,11 @@ $text-opposite:#fff;
       }
     }
 
+    &:hover .cvf-bootstrap-ui{
+      border:1px solid  var(--text-muted);
+    }
     &:hover .cvf-material-ui{
-      border-bottom: 1px solid  $border-hover-color;
+      border-bottom: 1px solid  var(--text-muted);
     }
 
     .cvf-select-wrapper{
@@ -127,20 +123,20 @@ $text-opposite:#fff;
         z-index: -1;
         visibility: hidden;
         background: #fff;
-        border:1px solid $border-color;
+        border:1px solid var(--border-color);
         border-radius:0 0 4px 4px;
         transition:.18s;
         max-height: 300px;
         overflow-y: auto;
         .cvf-select-option-item{
           cursor:pointer;
-          border-bottom:1px solid $border-color;
+          border-bottom:1px solid var(--border-color);
           padding: 12px 6px;
           text-align:center;
           transition:.5s;
           @media (hover: hover){
             &:not(.cvf-disabled):hover{
-              background:$border-color;
+              background:var(--border-color);
             }
           }
         }
@@ -152,20 +148,20 @@ $text-opposite:#fff;
         z-index:99;
       }
       .cvf-select-active{
-        background:$border-color;
+        background:var(--border-color);
       }
     }
     .cvf-disabled{
-      color:$text-secondary;
+      color:var(--text-muted);
     }
   }
 
   .cvf-material-ui{
     border: none;
-    border-bottom: 1px solid  $border-color;
+    border-bottom: 1px solid  var(--border-color);
   }
   .cvf-bootstrap-ui{
-    border: 1px solid $border-color;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
   }
   .cvf-checkbox-wrapper{
@@ -187,7 +183,7 @@ $text-opposite:#fff;
         justify-content: center;
         border-radius: 4px;
         margin-right: 8px;
-        border: 2px solid $border-color;
+        border: 2px solid var(--border-color);
         cursor:pointer;
         transition:background .3s linear;
         .cvf-checkbox-selector-tick{
@@ -200,7 +196,7 @@ $text-opposite:#fff;
             border-radius: 50%;
             display: block;
             stroke-width: 5px;
-            stroke: $success;
+            stroke: var(--success-color);
             stroke-miterlimit: 10;
           }
           .mark_path {
@@ -219,20 +215,20 @@ $text-opposite:#fff;
           }
           @keyframes fillValid {
             100% {
-              box-shadow: inset 0px 0px 0px 30px $success;
+              box-shadow: inset 0px 0px 0px 30px var(--success-color);
             }
           }
         }
       }
       .cvf-checkbox-label{
-        color:$text-primary;
+        color:var(--text-secondary);
         font-weight:500;
         font-size:18px;
         cursor:pointer;
       }
       @media (hover:hover){
         &:hover .cvf-checkbox-selector-box{
-          background:$border-hover-light-color;
+          border:var(--theme-primary);
         }
       }
     }
@@ -249,9 +245,9 @@ $text-opposite:#fff;
     top: 12px;
     right: 0;
     cursor: pointer;
-    color:$text-primary;
+    color:var(--text-secondary);
     &:hover{
-      color:$text-secondary
+      color:var(--text-muted)
     }
   }
 

@@ -326,12 +326,14 @@ export default class InputContainer extends React.Component {
   }
 
   submitVerify(){
+    const {curLang,showError}=this.props
     let nameV=this.nameVerify()
     let mailV=this.mailVerify()
     let linkV=this.linkVerify()
     let commentV=this.commentVerify()
 
     if(!nameV || !mailV || !linkV || !commentV){
+      showError(curLang.verify['some_filed_error'])
       return false
     }
     return true

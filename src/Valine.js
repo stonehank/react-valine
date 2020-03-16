@@ -14,14 +14,16 @@ export default class Valine extends React.Component{
     this.state={
       AV:AV,
       CommentClass:props.CommentClass,
+      CounterClass:props.CounterClass,
       requireName:props.requireName,
       requireEmail:props.requireEmail,
       nest:props.nest,
+      nestLayers:props.nestLayers,
       pageSize:props.pageSize,
       previewShow:props.previewShow,
       updateCountHash:0,
       lang:props.lang,
-      nestLayers:props.nestLayers,
+      themeMode:props.themeMode,
       emojiListSize:props.emojiListSize,
       canBeModify:props.canBeModify
     }
@@ -92,7 +94,7 @@ export default class Valine extends React.Component{
         resolve(this.pageviewMap.get(uniqStr))
       }else{
         let AV=this.state.AV
-        let query= new AV.Query('Counter')
+        let query= new AV.Query(this.state.CounterClass)
         query.equalTo('uniqStr',uniqStr)
           .find()
           .then(items=>{
@@ -127,7 +129,7 @@ export default class Valine extends React.Component{
 
   createCounter(uniqStr,title=''){
     let AV=this.state.AV
-    let Ct = AV.Object.extend('Counter');
+    let Ct = AV.Object.extend(this.state.CounterClass);
     let newCounter = new Ct();
     let acl = new AV.ACL();
     acl.setPublicReadAccess(true);
@@ -167,7 +169,9 @@ Valine.defaultProps={
   emojiListSize:5,
   serverURLs:'https://api.leancloud.cn',
   canBeModify:false,
-  CommentClass:'Comment_demo'
+  CommentClass:'Comment',
+  CounterClass:'Counter',
+  themeMode:'light'
 }
 
 Valine.propTypes = {
@@ -184,5 +188,8 @@ Valine.propTypes = {
   customTxt:PropTypes.object,
   nestLayers:PropTypes.number,
   emojiListSize:PropTypes.number,
-  canBeModify:PropTypes.bool
+  canBeModify:PropTypes.bool,
+  CommentClass:PropTypes.string,
+  CounterClass:PropTypes.string,
+  themeMode:PropTypes.string
 }

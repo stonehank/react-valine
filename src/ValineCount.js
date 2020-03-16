@@ -11,13 +11,18 @@ export default class ValineCount extends React.Component{
     return (
       <ValineContext.Consumer>
         {contextProps=>{
-          const {fetchCount,updateCountHash,curLang}=contextProps
-          const {style,uniqStr,count}=this.props
+          let {fetchCount,updateCountHash,curLang,themeMode}=contextProps
+          const {style,uniqStr,count,className}=this.props
+          if(this.props.themeMode){
+            themeMode=this.props.themeMode
+          }
           return (
             <ValineGetCount style={style}
                             fetchCount={fetchCount}
                             updateCountHash={updateCountHash}
                             uniqStr={uniqStr}
+                            className={className}
+                            themeMode={themeMode}
                             count={count}
                             fetchTxt={curLang['tips']['count']}
             />
@@ -28,9 +33,13 @@ export default class ValineCount extends React.Component{
     )
   }
 }
-
+ValineCount.defaultProps={
+  className:''
+}
 ValineCount.propTypes = {
   count:PropTypes.oneOfType([PropTypes.string,PropTypes.number]),
   style:PropTypes.object,
-  uniqStr:PropTypes.any
+  uniqStr:PropTypes.any,
+  themeMode:PropTypes.string,
+  className:PropTypes.string,
 }
