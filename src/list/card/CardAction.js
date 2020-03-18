@@ -11,16 +11,16 @@ export default class CardAction extends React.Component{
       langCtrl,
       owner,
       nickName,
-      editMode,
+      canBeEdit,
       handleReply,
-      canBeModify,
+      editMode,
       showEditMode,
     }=this.props
     return (
       <div className={"v-content-action"}>
         {
-          owner && canBeModify
-            ? editMode
+          owner && editMode
+            ? canBeEdit
               ? null
               : <div className={"v-action-edit"} onClick={showEditMode.bind(this,curId)}>{langCtrl['edit']}</div>
             : null

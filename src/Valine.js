@@ -25,7 +25,7 @@ export default class Valine extends React.Component{
       lang:props.lang,
       themeMode:props.themeMode,
       emojiListSize:props.emojiListSize,
-      canBeModify:props.canBeModify
+      editMode:props.editMode
     }
     if(props.customTxt!=null){
       let customTxt=props.customTxt
@@ -168,7 +168,7 @@ Valine.defaultProps={
   nestLayers:Infinity,
   emojiListSize:5,
   serverURLs:'https://api.leancloud.cn',
-  canBeModify:false,
+  editMode:false,
   CommentClass:'Comment',
   CounterClass:'Counter',
   themeMode:'light'
@@ -188,7 +188,7 @@ Valine.propTypes = {
   customTxt:PropTypes.object,
   nestLayers:PropTypes.number,
   emojiListSize:PropTypes.number,
-  canBeModify:PropTypes.bool,
+  editMode:PropTypes.bool,
   CommentClass:PropTypes.string,
   CounterClass:PropTypes.string,
   themeMode:PropTypes.string

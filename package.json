@@ -67,6 +67,7 @@
     "html-webpack-plugin": "^3.2.0",
     "is-wsl": "^2.0.0",
     "jest": "^24.8.0",
+    "jest-localstorage-mock": "^2.4.0",
     "jsdom": "^16.2.1",
     "nock": "^10.0.6",
     "node-sass": "^4.12.0",
@@ -90,6 +91,7 @@
       "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
       "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
     },
+    "setupTestFrameworkScriptFile":"<rootDir>/__mocks__/localStorageMock.js",
     "coverageDirectory": "./coverage/",
     "collectCoverage": true
   }

@@ -33,7 +33,7 @@ nock("https://i5daxohp.api.lncld.net")
 
 global.scrollTo=()=>{}
 
-describe('Test No Comment', ()=> {
+describe('Custom Localse Test', ()=> {
   let app
   beforeAll(() => {
     app = Enzyme.mount(

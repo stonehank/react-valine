@@ -20,7 +20,7 @@ export default class CommentListComponent extends React.Component{
       nest,
       handleReply,
       applyEdit,
-      canBeModify,
+      editMode,
       // submitLoading,
       fetchInitLoading,
       fetchMoreLoading,
@@ -73,7 +73,7 @@ export default class CommentListComponent extends React.Component{
                                                    GRAVATAR_URL={GRAVATAR_URL}
                                                    avatarSrc={avatarSrc}
                                                    link={link}
-                                                   canBeModify={canBeModify}
+                                                   editMode={editMode}
                                                    initShowChild={initShowChild}
                                                    handleReply={handleReply }
                                                    applyEdit={applyEdit}

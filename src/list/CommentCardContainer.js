@@ -15,7 +15,7 @@ export default class CommentCardContainer extends React.Component{
     this.state={
       showChild:props.initShowChild,
       needExpand:false,
-      editMode:false
+      canBeEdit:false
     }
     this.expandContent=this.expandContent.bind(this)
     this.toggleShowChild=this.toggleShowChild.bind(this)
@@ -37,13 +37,13 @@ export default class CommentCardContainer extends React.Component{
   }
   hideEditMode(){
     this.setState({
-      editMode:false
+      canBeEdit:false
     })
   }
   showEditMode(){
-    if(this.props.canBeModify){
+    if(this.props.editMode){
       this.setState({
-        editMode:true
+        canBeEdit:true
       })
     }
   }
@@ -94,7 +94,7 @@ export default class CommentCardContainer extends React.Component{
   }
 
   render(){
-    const {showChild,needExpand,editMode}=this.state
+    const {showChild,needExpand,canBeEdit}=this.state
     const {
       GRAVATAR_URL,
       curId,
@@ -117,7 +117,7 @@ export default class CommentCardContainer extends React.Component{
       commentRawContent,
       createdAt,
       previewShow,
-      canBeModify,
+      editMode,
       togglePreviewShow,
       showError,
     }=this.props
@@ -130,7 +130,7 @@ export default class CommentCardContainer extends React.Component{
         </div>
         <div className={'v-content-wrapper'}>
           {
-            editMode
+            canBeEdit
               ? <ErrorBoundary>
                   <CardContentEdit commentRawContent={commentRawContent}
                                    curLang={curLang}
@@ -155,8 +155,8 @@ export default class CommentCardContainer extends React.Component{
                       rid={rid}
                       owner={owner}
                       nickName={nickName}
+                      canBeEdit={canBeEdit}
                       editMode={editMode}
-                      canBeModify={canBeModify}
                       handleReply={handleReply}
                       showEditMode={this.showEditMode}
           />
@@ -196,7 +196,7 @@ export default class CommentCardContainer extends React.Component{
                                                    initShowChild={initShowChild}
                                                    GRAVATAR_URL={GRAVATAR_URL}
                                                    avatarSrc={avatarSrc}
-                                                   canBeModify={canBeModify}
+                                                   editMode={editMode}
                                                    link={link}
                                                    handleReply={handleReply }
                                                    applyEdit={applyEdit }

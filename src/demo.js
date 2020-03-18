@@ -25,7 +25,7 @@ modify_hljs(function(hljs){
 ReactDOM.render(
   <Valine  appId={"I5DAxOhp2kPXkbj9VXPyKoEB-gzGzoHsz"}
            appKey={"lGPcHd7GL9nYKqBbNEkgXKjX"}
-           canBeModify={true}
+           editMode={true}
            placeholder={"Try“:” to input emoji"}
            nest={true}
            CommentClass={'Comment'}
