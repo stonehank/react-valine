@@ -133,6 +133,7 @@ export default class ValineContainer extends React.Component {
   }
 
   scrollToEle(ele,highlight=true) {
+    if(!ele)return
     let [innerScrTop, outerScrTop] = this.getScrollTop(ele, this.panelParentEle)
     if (this.props.useWindow) {
       scrollElementsTo([window], [outerScrTop ])
@@ -405,7 +406,7 @@ export default class ValineContainer extends React.Component {
       curLang,
       nest,
       emojiListSize,
-      canBeModify,
+      editMode,
       themeMode,
       className,
       style
@@ -452,7 +453,7 @@ export default class ValineContainer extends React.Component {
                               commentList={commentList}
                               curLang={curLang}
                               nest={nest}
-                              canBeModify={canBeModify}
+                              editMode={editMode}
                               fetchMoreLoading={fetchMoreLoading}
                               fetchInitLoading={fetchInitLoading}
                               handleReply={this.handleReply}

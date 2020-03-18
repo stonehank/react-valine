@@ -82,8 +82,6 @@ describe('Test One Comment', ()=>{
   })
 
   it('Comment list has 1 child',()=>{
-    console.log(app.find(".vcard").length)
-    console.log(app.html().includes('vcard'))
     expect(app.find('.vinfo').length).toBe(1)
     expect(app.find('.vcount').text()).toBe('总共1条评论')
     expect(app.find(".vcard").length).toBe(1)

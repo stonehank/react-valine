@@ -15,7 +15,7 @@ export default class FetchResourceContainer extends React.Component{
     super(props)
     this.time=1
 
-    if(props.canBeModify)props.AV.User.logOut()
+    if(props.editMode)props.AV.User.logOut()
     this.uploadComment=this.uploadComment.bind(this)
     this.updateComment=this.updateComment.bind(this)
     this.fetchNest=this.fetchNest.bind(this)
@@ -28,8 +28,8 @@ export default class FetchResourceContainer extends React.Component{
   }
 
   checkCanEdit(id){
-    const {AV,canBeModify}=this.props
-    if(!canBeModify)return Promise.resolve(false)
+    const {AV,editMode}=this.props
+    if(!editMode)return Promise.resolve(false)
     return new AV.Query(this.props.CommentClass)
       .equalTo('objectId',id)
       .equalTo('ownerCode',oldRandUniqStr)
@@ -41,8 +41,8 @@ export default class FetchResourceContainer extends React.Component{
 
 
   getUser(){
-    const {AV,canBeModify}=this.props
-    if(!canBeModify)return Promise.reject('Forbid the edit!')
+    const {AV,editMode}=this.props
+    if(!editMode)return Promise.reject('Forbid the edit!')
     let createUser=(res)=>{
       let user= new AV.User()
       user.setUsername(newRandUniqStr)
@@ -88,8 +88,8 @@ export default class FetchResourceContainer extends React.Component{
   }
 
   updateComment({id,comment,commentRaw}){
-    const {AV,canBeModify}=this.props
-    if(!canBeModify)return Promise.reject(null)
+    const {AV,editMode}=this.props
+    if(!editMode)return Promise.reject(null)
     return this.getUser()
       .then((user)=>{
         return  new AV.Query(this.props.CommentClass).get(id)
@@ -149,8 +149,8 @@ export default class FetchResourceContainer extends React.Component{
           comment.setACL(acl);
           return comment.save()
       })
-    }).catch(()=>{
-      console.error('Some error found in Submit,try again')
+    }).catch((err)=>{
+      console.error('Some error found in Submit,try again',err)
     })
   }
 
@@ -173,8 +173,8 @@ export default class FetchResourceContainer extends React.Component{
   }
 
   fetchOwnerTask(){
-    const {AV,uniqStr,canBeModify}=this.props
-    if(!canBeModify)return Promise.resolve([])
+    const {AV,uniqStr,editMode}=this.props
+    if(!editMode)return Promise.resolve([])
     return new AV.Query(this.props.CommentClass)
       .equalTo('uniqStr',uniqStr)
       .equalTo('ownerCode',oldRandUniqStr)
@@ -282,7 +282,7 @@ export default class FetchResourceContainer extends React.Component{
 
   render(){
     /* eslint-disable no-unused-vars */
-    const {AV,fetchCount,canBeModify,...otherProps}=this.props
+    const {AV,fetchCount,editMode,...otherProps}=this.props
     return (
       <ValineContainer fetchNest={this.fetchNest}
                        fetchMoreNest={this.fetchMoreNest}
@@ -292,7 +292,7 @@ export default class FetchResourceContainer extends React.Component{
                        uploadComment={this.uploadComment}
                        updateComment={this.updateComment}
                        checkCanEdit={this.checkCanEdit}
-                       canBeModify={canBeModify}
+                       editMode={editMode}
                        {...otherProps}
       />
     )

@@ -337,7 +337,10 @@ let CustomAV = {
       checkType(key, 'String')
       if (this.conditions.order != null) {
         this.conditions.order += ','
+      }else{
+        this.conditions.order=''
       }
+
       this.conditions.order += key
       return this
     }
@@ -379,6 +382,7 @@ let CustomAV = {
       let condQuery = ''
       for (let key in this.conditions) {
         let v=this.conditions[key],stringify
+        if(v==null)continue
         if(typeof v!=="object"){
           stringify=v
         }else{
