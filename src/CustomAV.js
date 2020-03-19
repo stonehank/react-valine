@@ -68,7 +68,6 @@ class Obj{
   }
 
   save() {
-    console.log(this.__classes__,this.__table__)
     let url=this.__method__==='PUT'
       ? `${CustomAV.serverURLs['api']}/1.1/${this.__classes__}/${this.__table__}/${this.id}?fetchWhenSave=true`
       : `${CustomAV.serverURLs['api']}/1.1/${this.__classes__}/${this.__table__}?fetchWhenSave=true`

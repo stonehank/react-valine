@@ -11,10 +11,12 @@ import './nock/nock-initial'
 import './nock/nock-comment-none'
 import './nock/nock-count-0'
 import './nock/nock-pageview-9999'
+import './nock/nock-create-comment'
 
 
 describe('Common Render', ()=> {
   let app
+  // Careful each
   beforeEach(()=>{
     app = Enzyme.mount(
       <Valine appId={"I5DAxOhp2kPXkbj9VXPyKoEB-gzGzoHsz"}
@@ -75,7 +77,7 @@ describe('Common Render', ()=> {
     expect(app.find('.error-msg').length).toBe(1)
     expect(app.find('.error-msg').at(0).text()).toBe('网址格式错误！');
     app.find('.vinputs-ident input').at(2).simulate('change',{name:'link', target: { value: 'www.valid.com' } })
-    app.find('.vsubmit-ident').simulate('click')
+    app.find('.v-editor-main textarea').simulate('keydown',{ctrlKey:true,keyCode:13,preventDefault:()=>{}})
     expect(app.find('.error-msg').length).toBe(0)
   })
 
@@ -111,12 +113,24 @@ describe('Common Render', ()=> {
     expect(app.find('.v-content-preview').length).toBe(0)
   })
 
-  it('Choose Avatar',()=>{
+  it('Choose Avatar',(done)=>{
     // Default not show
     expect(app.find('.avatar-panel-box').length).toBe(0)
     app.find('.vavatars-select-button').simulate('click')
     // Show After click
     expect(app.find('.avatar-panel-box').length).toBe(1)
+    expect(app.find('.avatar-panel-item').length).toBe(8)
+    // Must click at img tag
+    app.find('.avatar-panel-item').at(1).simulate('click')
+    expect(app.find('.avatar-panel-box').length).toBe(1)
+    app.find('.avatar-panel-item img').at(1).simulate('click')
+
+    setTimeout(()=>{
+      app.update()
+      expect(app.find('.avatar-panel-box').length).toBe(0)
+      expect(app.find('.vavatars-select-selected').prop('src')).toBe('https://gravatar.loli.net/avatar/?d=mp&size=64')
+      done()
+    },3000)
   })
 
   it('Show Fetching List',()=>{
@@ -124,9 +138,11 @@ describe('Common Render', ()=> {
     expect(app.find("#pageviewCounts").text()).toBe("浏览量：获取中")
   })
 
-  it("Textarea input TAB",()=>{
+  it("Textarea input TAB and shift+TAB",()=>{
     app.find('.v-editor-main textarea').simulate('focus')
     app.find('.v-editor-main textarea').simulate('keydown',{keyCode:9,preventDefault:()=>{}})
+    expect(app.find('.v-editor-main textarea').prop('value')).toBe("  ")
+    app.find('.v-editor-main textarea').simulate('keydown',{shiftKey:true,keyCode:9,preventDefault:()=>{}})
     expect(app.find('.v-editor-main textarea').prop('value')).toBe("  ")
   })
 })

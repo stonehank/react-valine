@@ -211,7 +211,6 @@ export default class FetchResourceContainer extends React.Component{
         .limit(pageSize)
         .find()
         .then(items=>{
-          // console.log(items)
           return [items,null,0,commentCounts,null]
         })
     })

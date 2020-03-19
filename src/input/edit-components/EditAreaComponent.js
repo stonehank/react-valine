@@ -28,7 +28,7 @@ class EditAreaComponent extends React.PureComponent {
   }
 
   componentWillUnmount(){
-    window.addEventListener('resize',this.handleResize)
+    window.removeEventListener('resize',this.handleResize)
   }
 
   render() {
