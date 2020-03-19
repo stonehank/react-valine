@@ -23,6 +23,7 @@ export default class ValineGetCount extends React.Component{
         }
       })
   }
+
   componentDidUpdate(){
     this.props.fetchCount(this.state.uniqStr)
       .then(count=>{
@@ -34,7 +35,6 @@ export default class ValineGetCount extends React.Component{
         }
       })
   }
-
   componentWillUnmount(){
     this._isMounted=false
   }

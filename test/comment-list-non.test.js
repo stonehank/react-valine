@@ -4,34 +4,12 @@ import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 Enzyme.configure({ adapter: new Adapter() });
 
-const test_uniq_str="test-non-reply"
+import test_uniq_str from './nock/nock-UNIQUESTR'
 
-
-const nock = require('nock')
-
-nock('https://app-router.leancloud.cn')
-  .persist()
-  .get('/2/route?appId=I5DAxOhp2kPXkbj9VXPyKoEB-gzGzoHsz')
-  .reply(200, {"ttl":3600,"stats_server":"i5daxohp.stats.lncld.net","rtm_router_server":"i5daxohp.rtm.lncld.net","push_server":"i5daxohp.push.lncld.net","play_server":"i5daxohp.play.lncld.net","engine_server":"i5daxohp.engine.lncld.net","api_server":"i5daxohp.api.lncld.net"})
-
-
-/* fetch nestInit start */
-nock('https://i5daxohp.api.lncld.net')
-  .persist()
-  .get('/1.1/classes/Comment?where=%7B%22uniqStr%22:%22test-non-reply%22%7D&keys=nick,comment,link,pid,avatarSrc,rid,commentRaw,at&order=-createdAt&limit=10')
-  .reply(200, {"results":[]})
-
-nock('https://i5daxohp.api.lncld.net')
-  .persist()
-  .get('/1.1/classes/Comment?where=%7B%22uniqStr%22:%22test-non-reply%22%7D&count=1&limit=0')
-  .reply(200, {"results":[],"count":0})
-
-
-/* fetch pageview */
-nock("https://i5daxohp.api.lncld.net")
-  .persist()
-  .get("/1.1/classes/Counter?where=%7B%22uniqStr%22:%22test-non-reply%22%7D")
-  .reply(200, {"results":[{"uniqStr":"test-non-reply","title":"\u6d4b\u8bd5\u9875\u9762localhost","time":9999,"createdAt":"2019-05-29T14:53:57.872Z","updatedAt":"2019-05-30T08:08:47.209Z","objectId":"5cee9d0530863b006861c98c"}]})
+import './nock/nock-initial'
+import './nock/nock-comment-none'
+import './nock/nock-count-0'
+import './nock/nock-pageview-9999'
 
 global.scrollTo=()=>{}
 

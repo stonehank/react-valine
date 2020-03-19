@@ -66,17 +66,16 @@ export default class Valine extends React.Component{
   fetchCount(uniqStr){
     return new Promise(resolve=>{
       if(this.countMap.has(uniqStr)){
-        resolve(this.countMap.get(uniqStr))
+        return resolve(this.countMap.get(uniqStr))
       }else{
         let AV=this.state.AV
         let query= new AV.Query(this.state.CommentClass)
-        query.equalTo('uniqStr',uniqStr)
+        return query.equalTo('uniqStr',uniqStr)
           .count()
           .then((counts)=>{
             this.countMap.set(uniqStr,counts)
-            resolve(counts)
+            return resolve(counts)
           })
-        query=null
       }
     })
   }
@@ -91,38 +90,43 @@ export default class Valine extends React.Component{
   getPageview(uniqStr,title){
     return new Promise(resolve=>{
       if(this.pageviewMap.has(uniqStr)){
-        resolve(this.pageviewMap.get(uniqStr))
+        return resolve(this.pageviewMap.get(uniqStr))
       }else{
         let AV=this.state.AV
         let query= new AV.Query(this.state.CounterClass)
-        query.equalTo('uniqStr',uniqStr)
+        return query.equalTo('uniqStr',uniqStr)
           .find()
           .then(items=>{
             if(items.length===0){
-              this.createCounter(uniqStr,title)
-                .then(()=>resolve(1))
+              return this.createCounter(uniqStr,title)
+                .then(()=>{
+                  this.pageviewMap.set(uniqStr,1)
+                  return resolve(1)
+                })
             }else{
               if(items.length>1)console.warn("Warning!The uniqStr is not unique!")
               let item=items[0]
               let updateTime=item.get("time")+1
               item.increment("time")
               item.set('title',title)
-              item.save().then(()=>{
+              return item.save().then(()=>{
                 this.pageviewMap.set(uniqStr,updateTime)
-                resolve(updateTime)
+                return resolve(updateTime)
               }).catch(()=>{
-                resolve(updateTime-1)
+                return resolve(updateTime-1)
               })
             }
           }).catch(ex=>{
             if(ex.code===101){
-              this.createCounter(uniqStr,title)
-                .then(()=>resolve(1))
+              return this.createCounter(uniqStr,title)
+                .then(()=>{
+                  this.pageviewMap.set(uniqStr,1)
+                  return resolve(1)
+                })
             }else{
               console.error(locales[this.props.lang]["error"][ex.code],ex)
             }
         })
-        query=null
       }
     })
   }
@@ -167,7 +171,7 @@ Valine.defaultProps={
   lang:'zh-cn',
   nestLayers:Infinity,
   emojiListSize:5,
-  serverURLs:'https://api.leancloud.cn',
+  serverURLs:'https://i5daxohp.api.lncld.net',
   editMode:false,
   CommentClass:'Comment',
   CounterClass:'Counter',

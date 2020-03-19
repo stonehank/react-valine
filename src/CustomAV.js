@@ -68,6 +68,7 @@ class Obj{
   }
 
   save() {
+    console.log(this.__classes__,this.__table__)
     let url=this.__method__==='PUT'
       ? `${CustomAV.serverURLs['api']}/1.1/${this.__classes__}/${this.__table__}/${this.id}?fetchWhenSave=true`
       : `${CustomAV.serverURLs['api']}/1.1/${this.__classes__}/${this.__table__}?fetchWhenSave=true`
@@ -367,7 +368,6 @@ let CustomAV = {
 
     find(){
       return this._find().then(data=>{
-        // console.log(data)
         let results=data.results
         let res=[]
         for(let i=0;i<results.length;i++){
