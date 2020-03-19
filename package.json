@@ -1,6 +1,6 @@
 {
   "name": "react-valine",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "A react component for comment system without backend.",
   "main": "dist/react-valine.js",
   "author": "stonehank <stonehank310@gmail.com>",
