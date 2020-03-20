@@ -91,7 +91,7 @@
       "\\.(css|less|sass|scss)$": "<rootDir>/__mocks__/styleMock.js",
       "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
     },
-    "setupTestFrameworkScriptFile":"<rootDir>/__mocks__/localStorageMock.js",
+    "setupFilesAfterEnv":["<rootDir>/__mocks__/localStorageMock.js"],
     "coverageDirectory": "./coverage/",
     "collectCoverage": true
   }

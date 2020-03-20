@@ -216,14 +216,13 @@ export default class ValineContainer extends React.Component {
                 throw new Error(commentItem)
               }
               let simplyItem = simplyObj(commentItem)
-              resolve()
               this.updateCommentFromList(id, simplyItem)
                 .then(()=>{
                   setTimeout(()=>{
                     highLightEle(document.getElementById(id))
                   },200)
                 })
-
+              return resolve()
             }).catch((err) => {
               this.setState({
                 submitLoading: false
