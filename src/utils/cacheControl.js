@@ -2,7 +2,12 @@ import jsCookies from 'js-cookie'
 function getFromCache(key){
   let savedUserData=null
   if(localStorage){
-    savedUserData=JSON.parse(localStorage.getItem(key))
+    let value=localStorage.getItem(key)
+    try{
+      savedUserData=JSON.parse(value)
+    }catch(_){
+      savedUserData=value
+    }
   }else{
     savedUserData=jsCookies.get(key)
   }
