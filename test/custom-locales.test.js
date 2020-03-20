@@ -56,7 +56,7 @@ describe('Custom Localse Test', ()=> {
       </Valine>
     );
   })
-  
+
   it('Custom Comment Counts fetching text',()=>{
     expect(app.find("#commentCounts").text()).toBe("评论数：正在获取评论数")
   })
