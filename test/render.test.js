@@ -1,5 +1,5 @@
 import React from 'react';
-import {Valine,ValineCount,ValinePageview,ValinePanel} from '../src/react-valine'
+import {Valine,ValineCount,ValinePageview,ValinePanel,modify_hljs} from '../src/react-valine'
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
@@ -12,12 +12,18 @@ import './nock/nock-comment-none'
 import './nock/nock-count-0'
 import './nock/nock-pageview-9999'
 import './nock/nock-create-comment'
+import './nock/nock-update-comment'
 
 
 describe('Common Render', ()=> {
   let app
   // Careful each
   beforeEach(()=>{
+    modify_hljs(function(hljs){
+      const python = require('highlight.js/lib/languages/python');
+      hljs.registerLanguage('python', python);
+      return hljs
+    })
     app = Enzyme.mount(
       <Valine appId={"I5DAxOhp2kPXkbj9VXPyKoEB-gzGzoHsz"}
               appKey={"lGPcHd7GL9nYKqBbNEkgXKjX"}

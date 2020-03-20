@@ -4,8 +4,8 @@ import '../assets/css/textfield/common.scss'
 import '../assets/css/drawer/index.scss'
 import {getFromCache,setCache,randUniqueString} from '../utils'
 import ValineContainer from "./ValineContainer";
-let oldRandUniqStr=getFromCache('ownerCode')
-let newRandUniqStr=oldRandUniqStr || randUniqueString()
+let oldRandOwnerCode=getFromCache('ownerCode')
+let newRandOwnerCode=oldRandOwnerCode || randUniqueString()
 
 
 
@@ -32,7 +32,7 @@ export default class FetchResourceContainer extends React.Component{
     if(!editMode)return Promise.resolve(false)
     return new AV.Query(this.props.CommentClass)
       .equalTo('objectId',id)
-      .equalTo('ownerCode',oldRandUniqStr)
+      .equalTo('ownerCode',oldRandOwnerCode)
       .find()
       .then(ownerItems=>{
         return ownerItems && ownerItems.length>0
@@ -45,8 +45,8 @@ export default class FetchResourceContainer extends React.Component{
     if(!editMode)return Promise.reject('Forbid the edit!')
     let createUser=(res)=>{
       let user= new AV.User()
-      user.setUsername(newRandUniqStr)
-      user.setPassword(newRandUniqStr)
+      user.setUsername(newRandOwnerCode)
+      user.setPassword(newRandOwnerCode)
       let acl = new AV.ACL();
       acl.setPublicReadAccess(true);
       acl.setPublicWriteAccess(false);
@@ -55,23 +55,23 @@ export default class FetchResourceContainer extends React.Component{
       return user.save().then((u)=>{
         console.log('Create success')
         this.time++
-        oldRandUniqStr=newRandUniqStr
+        oldRandOwnerCode=newRandOwnerCode
         res(u)
       })
     }
     return new Promise((res)=>{
-      if(oldRandUniqStr && AV.User.current() && AV.User.current().attributes.username===oldRandUniqStr){
+      if(oldRandOwnerCode && AV.User.current() && AV.User.current().attributes.username===oldRandOwnerCode){
         console.log('Has login')
         return res(AV.User.current())
       }
-      if(oldRandUniqStr){
-        return AV.User.logIn(oldRandUniqStr,oldRandUniqStr)
+      if(oldRandOwnerCode){
+        return AV.User.logIn(oldRandOwnerCode,oldRandOwnerCode)
           .then((user)=>{
             console.log('Can login')
             res(user)
           })
           .catch((err)=>{
-            newRandUniqStr=randUniqueString()
+            newRandOwnerCode=randUniqueString()
             createUser(res).then(()=>{
               return this.getUser()
             })
@@ -94,7 +94,7 @@ export default class FetchResourceContainer extends React.Component{
       .then((user)=>{
         return  new AV.Query(this.props.CommentClass).get(id)
           .then((item)=>{
-            item.set('ownerCode',newRandUniqStr)
+            item.set('ownerCode',newRandOwnerCode)
             item.set('comment',comment)
             item.set('commentRaw',commentRaw)
             // 这里当用户被删除后，无法修改ownerCode
@@ -141,8 +141,8 @@ export default class FetchResourceContainer extends React.Component{
         .then((user)=>{
           acl.setWriteAccess(user.id,true);
           comment.setACL(acl);
-          comment.set('ownerCode',newRandUniqStr)
-          setCache('ownerCode',newRandUniqStr)
+          comment.set('ownerCode',newRandOwnerCode)
+          setCache('ownerCode',newRandOwnerCode)
           return comment.save()
       }).catch((err)=>{
           console.warn('Cant not get User '+err )
@@ -177,14 +177,14 @@ export default class FetchResourceContainer extends React.Component{
     if(!editMode)return Promise.resolve([])
     return new AV.Query(this.props.CommentClass)
       .equalTo('uniqStr',uniqStr)
-      .equalTo('ownerCode',oldRandUniqStr)
+      .equalTo('ownerCode',oldRandOwnerCode)
       .find()
       .then(ownerItems=>{
         if(ownerItems.length===0){
           return ownerItems
         }
         return new AV.Query('User')
-          .equalTo('username',oldRandUniqStr)
+          .equalTo('username',oldRandOwnerCode)
           .find()
           .then((validUser)=>{
             if(validUser.length===0){

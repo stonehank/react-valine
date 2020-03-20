@@ -9,7 +9,7 @@ import test_uniq_str from './nock/nock-UNIQUESTR'
 import './nock/nock-initial'
 import './nock/nock-comment-none'
 import './nock/nock-count-0'
-import './nock/nock-pageview-none'
+import './nock/nock-pageview-9999'
 
 global.scrollTo=()=>{}
 
@@ -56,6 +56,7 @@ describe('Custom Localse Test', ()=> {
       </Valine>
     );
   })
+  
   it('Custom Comment Counts fetching text',()=>{
     expect(app.find("#commentCounts").text()).toBe("评论数：正在获取评论数")
   })
