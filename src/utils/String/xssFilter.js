@@ -70,34 +70,36 @@ function attribute(ele,name,value){
 
 function clearAttr(el) {
   let attrs = el.attributes
-  let ignoreAttrs = ['align', 'alt','checked', 'disabled', 'href', 'id', 'target', 'title', 'type', 'src', 'class', 'style']
+  let ignoreAttrs = ['align', 'alt','checked', 'disabled', 'href', 'id', 'target', 'title', 'type', 'src', 'class', /*'style'*/]
   let removeAttrs=[]
+  let addToStyles=[]
   for(let attr of attrs){
     let name = attr.name
     switch (attr.name.toLowerCase()) {
       case 'style':
         attr.value.split(';').forEach((item) => {
-          if (item.includes('color')) {
-            attribute(el, 'style', item);
-            return false
-          } else{
-            removeAttrs.push('style')
+          if (item.split(':')[0]==='color') {
+            addToStyles.push(item)
           }
         })
         break;
       case 'class':
-        if (el.nodeName === 'CODE') return false
+        if(el.nodeName!=='CODE'){
+          removeAttrs.push('class')
+        }
         break;
       default:
         break;
     }
     if (!ignoreAttrs.includes(name)) {
       removeAttrs.push(name)
-      // el.removeAttribute(name)
     }
   }
   for(let name of removeAttrs){
     el.removeAttribute(name)
+  }
+  for(let item of addToStyles){
+    attribute(el, 'style', item);
   }
   return el
 }

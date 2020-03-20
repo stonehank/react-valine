@@ -448,4 +448,15 @@ describe("test xssfilter", () => {
   it('set checkbox', () => {
     expect(xssFilter(`<input type="checkbox" />`).includes(`disabled="disabled"`)).toBe(true)
   })
+  it('remove style,but not color', () => {
+    expect(xssFilter(`<div style="width:100px;background-color:red;color:blue;" ></div>`)).toBe('<div style="color:blue"></div>')
+  })
+
+  it('can not have class', () => {
+    expect(xssFilter(`<div class="hljs-attr" ></div>`)).toBe('<div></div>')
+  })
+
+  it('code can keep class', () => {
+    expect(xssFilter(`<code class="hljs-attr" style="width:100px;background:red;color:blue;" ></code>`)).toBe('<code class="hljs-attr" style="color:blue"></code>')
+  })
 })
