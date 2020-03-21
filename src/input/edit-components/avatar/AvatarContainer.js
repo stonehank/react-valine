@@ -30,7 +30,8 @@ export default class AvatarContainer extends React.PureComponent{
   }
 
 
-  toggleShowList(){
+  toggleShowList(ev){
+    ev.stopPropagation()
     const {email}=this.props
     const prevShowList=this.state.showList
     if(!prevShowList){
@@ -56,21 +57,18 @@ export default class AvatarContainer extends React.PureComponent{
 
       })
   }
-  checkIfClose(event){
-    if(!event)return
-    if(event && typeof event.target.className==="string" && !event.target.className.includes("vavatars-select")){
-      this.setState({
-        showList:false
-      })
-    }
+  checkIfClose(){
+    this.setState({
+      showList:false
+    })
   }
 
 
   componentDidMount(){
-    document.addEventListener('click',this.checkIfClose)
+    window.addEventListener('click',this.checkIfClose)
   }
   componentWillUnmount(){
-    document.removeEventListener('click',this.checkIfClose)
+    window.removeEventListener('click',this.checkIfClose)
   }
 
 
