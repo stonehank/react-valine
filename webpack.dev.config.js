@@ -2,6 +2,8 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const path = require('path');
 const WebpackBar = require('webpackbar')
 const src = path.join(__dirname, 'src')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 
 module.exports = {
   entry: path.join( src, 'index.js'),
@@ -76,25 +78,16 @@ module.exports = {
     ]
   },
   plugins: [
+    new FriendlyErrorsWebpackPlugin(),
+    new ErrorOverlayPlugin(),
     new WebpackBar(),
     new HtmlWebPackPlugin({
       template: "./index.html",
       filename: "./index.html"
     })
   ],
-  stats: {
-    all: false,
-    modules: true,
-    maxModules: 0,
-    errors: true,
-    warnings: true,
-    timings: true,
-  },
   devServer: {
-    overlay: true,
-    noInfo: false,
-    clientLogLevel: 'silent',
-    stats: 'errors-only',
-    hot: true
+    quiet:true,
+    hot: true,
   } ,
 };

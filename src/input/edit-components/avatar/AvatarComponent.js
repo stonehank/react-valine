@@ -24,7 +24,7 @@ class AvatarComponent extends React.PureComponent{
       toggleShowList,
       turnOnMark,
       turnOffMark,
-      langHead,
+      // langHead,
     }=this.props
     // console.log(1)
     return (

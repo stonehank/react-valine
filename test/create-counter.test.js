@@ -44,7 +44,6 @@ describe('Common Render', ()=> {
   })
 
   it('Create Counter',()=>{
-    console.log(app.html())
     expect(app.find("#pageviewCounts").text()).toBe("浏览量：1")
   })
 

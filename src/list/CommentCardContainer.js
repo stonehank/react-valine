@@ -68,7 +68,7 @@ export default class CommentCardContainer extends React.Component{
   }
 
   componentDidMount(){
-    const {curId}=this.props
+    // const {curId}=this.props
     // console.log(curId,this.props)
     let cardEle=this.cardRef.current
     // let curIdEle=document.getElementById(curId)

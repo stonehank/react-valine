@@ -6,7 +6,7 @@ import Drawer from '../../../CustomComponent/Drawer';
 
 export default class EmojiComponent extends React.PureComponent {
   render() {
-    const {txt,toggleEmojiShow,show,openEmojiDrawer,closeEmojiDrawer,insertEmoji}=this.props
+    const {txt,show,openEmojiDrawer,closeEmojiDrawer,insertEmoji}=this.props
     // console.log(show)
     return (
       <React.Fragment>

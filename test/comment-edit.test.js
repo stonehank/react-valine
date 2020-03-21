@@ -71,7 +71,6 @@ describe('Edit Comment', ()=> {
     app.find('.v-action-edit').simulate('click')
     app.find('.v-content-wrapper .v-edit-area textarea').simulate('change', {target: { value: 'aaaaa' } })
     app.find('.v-content-wrapper .v-edit-save').simulate('click')
-    // console.log(app.find('.v-content-wrapper').html())
     expect(app.find('.vloading-btn').length).toBe(1)
     setTimeout(()=>{
       // after edit

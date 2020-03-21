@@ -2,17 +2,14 @@ import React from 'react'
 import ValineContext from './ValineContext'
 import locales from './assets/locales'
 import PropTypes from 'prop-types';
+import FetchResourceContainer from './core/FetchResourceContainer'
 
-// const AV=require('leancloud-storage')
-import AV from './CustomAV'
-window.AV=AV
 
-export default class Valine extends React.Component{
+export default class Valine extends FetchResourceContainer{
 
   constructor(props){
     super(props)
     this.state={
-      AV:AV,
       CommentClass:props.CommentClass,
       CounterClass:props.CounterClass,
       requireName:props.requireName,
@@ -21,7 +18,6 @@ export default class Valine extends React.Component{
       nestLayers:props.nestLayers,
       pageSize:props.pageSize,
       previewShow:props.previewShow,
-      updateCountHash:0,
       lang:props.lang,
       themeMode:props.themeMode,
       emojiListSize:props.emojiListSize,
@@ -43,122 +39,36 @@ export default class Valine extends React.Component{
     if(props.placeholder!=null)locales[props.lang].tips.placeholder=props.placeholder
     if(props.sofaEmpty!=null)locales[props.lang].tips.sofa=props.sofaEmpty
 
-    this.countMap=new Map()
-    this.pageviewMap=new Map()
-    this.fetchCount=this.fetchCount.bind(this)
-    this.updateCounts=this.updateCounts.bind(this)
-    this.getPageview=this.getPageview.bind(this)
-    this.createCounter=this.createCounter.bind(this)
-    if(!this.state.AV){
-      throw new Error("leancloud 导入失败，请刷新重试！")
-    }
-    try{
-      this.state.AV.init({
-        appId:props.appId,
-        appKey:props.appKey,
-        serverURLs: props.serverURLs
-      })
-    }catch(e){
-      // do nothing
-    }
   }
-
-  fetchCount(uniqStr){
-    return new Promise(resolve=>{
-      if(this.countMap.has(uniqStr)){
-        return resolve(this.countMap.get(uniqStr))
-      }else{
-        let AV=this.state.AV
-        let query= new AV.Query(this.state.CommentClass)
-        return query.equalTo('uniqStr',uniqStr)
-          .count()
-          .then((counts)=>{
-            this.countMap.set(uniqStr,counts)
-            return resolve(counts)
-          })
-      }
-    })
-  }
-
-  updateCounts(uniqStr,count){
-    this.countMap.set(uniqStr,count)
-    this.setState({
-      updateCountHash:Math.floor(Math.random()*(1e9+7))
-    })
-  }
-
-  getPageview(uniqStr,title){
-    return new Promise(resolve=>{
-      if(this.pageviewMap.has(uniqStr)){
-        return resolve(this.pageviewMap.get(uniqStr))
-      }else{
-        let AV=this.state.AV
-        let query= new AV.Query(this.state.CounterClass)
-        return query.equalTo('uniqStr',uniqStr)
-          .find()
-          .then(items=>{
-            if(items.length===0){
-              return this.createCounter(uniqStr,title)
-                .then(()=>{
-                  this.pageviewMap.set(uniqStr,1)
-                  return resolve(1)
-                })
-            }else{
-              if(items.length>1)console.warn("Warning!The uniqStr is not unique!")
-              let item=items[0]
-              let updateTime=item.get("time")+1
-              item.increment("time")
-              item.set('title',title)
-              return item.save().then(()=>{
-                this.pageviewMap.set(uniqStr,updateTime)
-                return resolve(updateTime)
-              }).catch(()=>{
-                return resolve(updateTime-1)
-              })
-            }
-          }).catch(ex=>{
-            if(ex.code===101){
-              return this.createCounter(uniqStr,title)
-                .then(()=>{
-                  this.pageviewMap.set(uniqStr,1)
-                  return resolve(1)
-                })
-            }else{
-              console.error(locales[this.props.lang]["error"][ex.code],ex)
-            }
-        })
-      }
-    })
-  }
-
-  createCounter(uniqStr,title=''){
-    let AV=this.state.AV
-    let Ct = AV.Object.extend(this.state.CounterClass);
-    let newCounter = new Ct();
-    let acl = new AV.ACL();
-    acl.setPublicReadAccess(true);
-    acl.setPublicWriteAccess(true);
-    newCounter.setACL(acl);
-    newCounter.set('uniqStr', uniqStr)
-    newCounter.set('title', title)
-    newCounter.set('time', 1)
-    return newCounter.save().then(() => {
-      this.pageviewMap.set(uniqStr,1)
-    }).catch(ex => {
-      console.error(locales[this.props.lang]["error"][ex.code],ex)
-    });
-  }
-
 
   render(){
-    const {lang,...otherState}=this.state
+    // eslint-disable-next-line
+    const {CommentClass,CounterClass,pageSize,lang,...otherState}=this.state
     let curLang=locales[lang]
     return (
-      <ValineContext.Provider value={{curLang,getPageview:this.getPageview, fetchCount:this.fetchCount,updateCount:this.updateCounts,...otherState}}>
+      <ValineContext.Provider value={
+        {
+          curLang,
+          fetchNest:this.fetchNest,
+          fetchMoreNest:this.fetchMoreNest,
+          fetchList:this.fetchList,
+          fetchMoreList:this.fetchMoreList,
+          fetchOwnerTask:this.fetchOwnerTask,
+          uploadComment:this.uploadComment,
+          updateComment:this.updateComment,
+          checkCanEdit:this.checkCanEdit,
+          fetchCount:this.fetchCount,
+          updateCounts:this.updateCounts,
+          getPageview:this.getPageview,
+          createCounter:this.createCounter,
+          getUser:this.getUser,
+          ...otherState
+        }
+      }
+      >
         {this.props.children}
       </ValineContext.Provider>
     )
-
   }
 }
 

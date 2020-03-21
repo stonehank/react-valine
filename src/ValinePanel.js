@@ -1,43 +1,31 @@
 import React from 'react'
 import ValineContext from './ValineContext'
 import PropTypes from "prop-types";
-import FetchResourceContainer from "./core/FetchResourceContainer";
+import ValineContainer from "./core/ValineContainer";
 
 
 export default class ValinePanel extends React.Component{
 
-  constructor(props){
-    super(props)
-    this.state={
-      uniqStr:props.uniqStr,
-      useWindow:props.useWindow,
-      getPanelParent:props.getPanelParent
-    }
-  }
-
-
   render(){
-    const {className,style}=this.props
     return (
       <ValineContext.Consumer>
         {contextProps=>{
-          let {fetchCount,updateCount,themeMode,...otherProps}=contextProps
+          let {themeMode,...otherProps}=contextProps
           if(this.props.themeMode){
             themeMode=this.props.themeMode
           }
-          return <FetchResourceContainer  fetchCount={fetchCount}
-                                          updateCount={updateCount}
-                                          themeMode={themeMode}
-                                          className={className}
-                                          style={style}
-                                          {...this.state}
-                                          {...otherProps} />
+
+          return <ValineContainer themeMode={themeMode}
+                                  {...this.props}
+                                  {...otherProps}
+
+          />
         }}
       </ValineContext.Consumer>
     )
-
   }
 }
+
 ValinePanel.defaultProps={
   uniqStr:decodeURI(window.location.origin+window.location.pathname),
   useWindow:true,

@@ -127,13 +127,14 @@ module.exports= {
     new WebpackBar(),
     new BundleAnalyzerPlugin(),
   ],
+
   stats: {
     all: false,
-    modules: true,
-    maxModules: 0,
-    errors: true,
-    warnings: true,
-    timings: true,
+    // modules: true,
+    // maxModules: 0,
+    // errors: true,
+    // warnings: true,
+    // timings: true,
   },
   node:{
     child_process: 'empty'

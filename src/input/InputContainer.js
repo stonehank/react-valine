@@ -67,7 +67,7 @@ export default class InputContainer extends React.Component {
     }))
   }
 
-  chooseEmoji(emoji,prefix,ev){
+  chooseEmoji(emoji,prefix){
     let ele=this.textAreaRef.current
     // 此处prefix前面还有`:`，因此需要+1
     let [newV,scrollTop,startPos]=calcValueAndPos(ele,emoji,prefix.length+1)

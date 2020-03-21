@@ -76,13 +76,11 @@ describe('Edit Comment', ()=> {
     app.find('.vquote .v-action-edit').simulate('click')
     app.find('.vquote .v-edit-area textarea').simulate('change', {target: { value: 'aaaa' } })
     app.find('.vquote .v-edit-save').simulate('click')
-    // console.log(app.find('.v-content-wrapper').html())
     expect(app.find('.vloading-btn').length).toBe(1)
     setTimeout(()=>{
       // after edit
       app.update()
       expect(app.find('.vquote .v-edit-area textarea').length).toBe(0)
-      console.log(app.find('.vquote .v-content-body').html())
       expect(app.find('.vquote .v-content-body').text().trim()).toBe('@45 aaaa')
       done()
     },3000)

@@ -258,7 +258,7 @@ let CustomAV = {
       where[key] = value
       return this
     }
-    get(objectId, options) {
+    get(objectId) {
       return fetch(`${CustomAV.serverURLs['api']}/1.1/classes/${this.__table__}/${objectId}?fetchWhenSave=true`, {
         headers: {
           "X-LC-Id": CustomAV.__appId__,
@@ -374,7 +374,7 @@ let CustomAV = {
         }
         return res
       }).catch((err)=>{
-        console.log(err)
+        console.error(err)
       })
     }
     _find() {

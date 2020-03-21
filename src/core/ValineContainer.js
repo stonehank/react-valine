@@ -19,6 +19,10 @@ import {
   highLightEle
 } from '../utils/DOM'
 import ErrorLog from "../info/ErrorLog";
+import PropTypes from 'prop-types';
+import '../assets/css/_variables.scss'
+import '../assets/css/textfield/common.scss'
+import '../assets/css/drawer/index.scss'
 
 const GRAVATAR_URL = 'https://gravatar.loli.net/avatar'
 
@@ -90,7 +94,7 @@ export default class ValineContainer extends React.Component {
   }
 
   addCommentToList(simplyItem) {
-    const {nest, updateCount, uniqStr, nestLayers} = this.props
+    const {nest, updateCounts, uniqStr, nestLayers} = this.props
     return new Promise((res)=>{
       this.setState((prevState,) => {
         let newCommentList = []
@@ -111,7 +115,7 @@ export default class ValineContainer extends React.Component {
           submitLoading: false
         }
       }, () => {
-        updateCount(uniqStr, this.state.commentCounts)
+        updateCounts(uniqStr, this.state.commentCounts)
         res()
       })
     })
@@ -308,7 +312,7 @@ export default class ValineContainer extends React.Component {
   }
 
   fillNxtCommentList() {
-    const {fetchMoreNest, fetchMoreList} = this.props
+    const {uniqStr,fetchMoreNest, fetchMoreList} = this.props
     let {currentCounts, commentCounts, commentList} = this.state
     if (currentCounts === commentCounts) return
     if (!this.hasMounted) return
@@ -316,11 +320,11 @@ export default class ValineContainer extends React.Component {
       fetchMoreLoading: true
     })
     if (this.props.nest) {
-      fetchMoreNest(commentList.length).then(list => {
+      fetchMoreNest(uniqStr,commentList.length).then(list => {
         this.setCommentList(list, true)
       })
     } else {
-      fetchMoreList(commentList.length).then(list => {
+      fetchMoreList(uniqStr,commentList.length).then(list => {
         this.setCommentList(list, false)
       })
     }
@@ -372,16 +376,16 @@ export default class ValineContainer extends React.Component {
   componentDidMount() {
     this.hasMounted = true
     this.panelParentEle = this.getParentElement(this.wrapRef.current)
-    const {fetchNest, fetchList, fetchOwnerTask} = this.props
+    const {uniqStr,fetchNest, fetchList, fetchOwnerTask} = this.props
     this.setState({
       fetchInitLoading: true
     })
     let fetchArr = []
-    fetchArr.push(fetchOwnerTask())
+    fetchArr.push(fetchOwnerTask(uniqStr))
     if (this.props.nest) {
-      fetchArr.push(fetchNest())
+      fetchArr.push(fetchNest(uniqStr))
     } else {
-      fetchArr.push(fetchList())
+      fetchArr.push(fetchList(uniqStr))
     }
     Promise.all(fetchArr).then(([ownerList, commentList]) => {
       globalState.ownerHash = list2Hash(ownerList, 'id', globalState.ownerHash)
@@ -466,4 +470,31 @@ export default class ValineContainer extends React.Component {
       </div>
     )
   }
+}
+
+
+ValineContainer.propTypes={
+  fetchNest:PropTypes.func,
+  fetchMoreNest:PropTypes.func,
+  fetchList:PropTypes.func,
+  fetchMoreList:PropTypes.func,
+  fetchOwnerTask:PropTypes.func,
+  uploadComment:PropTypes.func,
+  updateComment:PropTypes.func,
+  updateCounts:PropTypes.func,
+  checkCanEdit:PropTypes.func,
+  editMode:PropTypes.bool,
+  requireName:PropTypes.bool,
+  requireEmail:PropTypes.bool,
+  curLang:PropTypes.object,
+  nest:PropTypes.bool,
+  nestLayers:PropTypes.number,
+  emojiListSize:PropTypes.number,
+  themeMode:PropTypes.string,
+  className:PropTypes.string,
+  style:PropTypes.object,
+  previewShow:PropTypes.bool,
+  useWindow:PropTypes.bool,
+  uniqStr:PropTypes.string,
+  getPanelParent:PropTypes.func,
 }
