@@ -12,7 +12,7 @@ import './nock/nock-comment-none'
 import './nock/nock-comment-owner-0'
 import './nock/nock-count-0'
 import './nock/nock-pageview-9999'
-import './nock/nock-create-comment'
+import './nock/nock-comment-create'
 import './nock/nock-user-create'
 import './nock/nock-save-comment-acl'
 

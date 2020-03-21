@@ -56,6 +56,7 @@ describe('Test Multiple Comments', ()=> {
     expect(app.find('.vcard').length).toBe(10)
     expect(app.find('.vcard').at(0).prop('id')).toBe('5cf0ceb7c8959c00691262e6')
   })
+
   it('Last line text should be fetch more',()=>{
     expect(app.find('.v-content-footer').text().trim()).toBe('参与讨论加载更多评论')
   })

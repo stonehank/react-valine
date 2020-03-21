@@ -14,7 +14,7 @@ import './nock/nock-user-get'
 import './nock/nock-login-success'
 import './nock/nock-comments-owner-validate-before-update'
 import './nock/nock-comment-validate-before-update'
-import './nock/nock-update-comment'
+import './nock/nock-comment-update'
 
 global.scrollTo=()=>{}
 

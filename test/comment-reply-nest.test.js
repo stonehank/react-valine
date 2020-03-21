@@ -11,6 +11,7 @@ import './nock/nock-initial'
 import './nock/nock-comment-nest-more'
 import './nock/nock-count-25'
 import './nock/nock-pageview-9999'
+import './nock/nock-comment-nest-create'
 
 
 
@@ -18,7 +19,7 @@ import './nock/nock-pageview-9999'
 
 global.scrollTo=()=>{}
 
-describe('Test Multiple Comments', ()=> {
+describe('Test Reply Nest Comment', ()=> {
   let app
   beforeAll((done) => {
     app = Enzyme.mount(
@@ -51,34 +52,25 @@ describe('Test Multiple Comments', ()=> {
     }, 4000)
   })
 
-  it('Comment List should has 1 child',()=>{
-    expect(app.find('.vcard').length).toBe(1)
-    expect(app.find('.showchild-button-on').length).toBe(1)
-    expect(app.find('.vquote').length).toBe(0)
+
+  it('Reply a nest',(done)=>{
     app.find('.showchild-button-on').simulate('click')
-    expect(app.find('.vquote').length).toBe(1)
-    expect(app.find('.vquote .v-content-body').text().trim()).toBe('@45 nest')
+    expect(app.find('.vquote .v-action-reply').length).toBe(1)
     app.find('.vquote .v-action-reply').simulate('click')
     expect(app.find('.v-editor-main textarea').prop('value')).toBe('@xxxx ')
-    app.find('.showchild-button-off').simulate('click')
-    expect(app.find('.vcard').length).toBe(1)
-    expect(app.find('.showchild-button-on').length).toBe(1)
-    expect(app.find('.vquote').length).toBe(0)
-  })
-
-  it('Comment List has more comment',()=>{
-    expect(app.find('.v-content-footer').text().trim()).toBe('参与讨论加载更多评论')
-    app.find('.vmore').simulate('click')
-    expect(app.find('.vloading').length).toBe(1)
+    app.find('.v-editor-main textarea').simulate('change',{name:'comment', target: { value: '@xxxx some reply nest' } })
+    app.find('.vinputs-ident input').at(0).simulate('change', {name:'username', target: { value: 'username-test' } })
+    app.find('.vinputs-ident input').at(1).simulate('change',{name:'email', target: { value: 'valid@email.com' } })
+    app.find('.vsubmit-ident').simulate('click')
+    expect(app.find('.error-msg').length).toBe(0)
     setTimeout(()=>{
       app.update()
-      expect(app.find('.vloading').length).toBe(0)
-      expect(app.find('.v-content-footer').text().trim()).toBe('参与讨论已经到最后啦')
+      expect(app.find('.vquote').length).toBe(2)
+      expect(app.find('.vquote .v-content-body').length).toBe(2)
+      expect(app.find('.vquote .v-content-body').at(1).text().trim()).toBe('@xxxx some reply nest')
       done()
-    },2000)
+    },3000)
   })
-
-
 
 })
 

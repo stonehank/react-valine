@@ -7,7 +7,7 @@ Enzyme.configure({ adapter: new Adapter() });
 import test_uniq_str from './nock/nock-UNIQUESTR'
 
 import './nock/nock-initial'
-import './nock/nock-comment-nest-some1'
+import './nock/nock-comment-nest-1'
 import './nock/nock-count-1'
 import './nock/nock-comment-owner-2-nest'
 import './nock/nock-user-get'

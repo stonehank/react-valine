@@ -11,8 +11,8 @@ import './nock/nock-initial'
 import './nock/nock-comment-none'
 import './nock/nock-count-0'
 import './nock/nock-pageview-9999'
-import './nock/nock-create-comment'
-import './nock/nock-update-comment'
+import './nock/nock-comment-create'
+import './nock/nock-comment-update'
 
 
 describe('Common Render', ()=> {
@@ -111,8 +111,12 @@ describe('Common Render', ()=> {
     expect(app.find('.vpreview-btn').text()).toBe('预览：On')
     // No content, no show preview panel
     expect(app.find('.v-content-preview').length).toBe(0)
-    app.find('.v-editor-main textarea').simulate('change',{name:'comment', target: { value: 'some comment' } })
+    app.find('.v-editor-main textarea').simulate('change',{name:'comment', target: { value: "```py\n" +
+        "a=54\n" +
+        "```" } })
     expect(app.find('.v-content-preview').length).toBe(1)
+    expect(app.find('.v-content-preview').html()).toBe('<div class="v-content-preview"><div><pre><code class="language-py"><pre><code>a=<span>54</span></code></pre></code></pre>\n' +
+      '</div></div>')
     // Close preview panel
     app.find('.vpreview-btn').simulate('click')
     expect(app.find('.vpreview-btn').text()).toBe('预览：Off')
@@ -128,6 +132,7 @@ describe('Common Render', ()=> {
     expect(app.find('.avatar-panel-item').length).toBe(8)
     // Must click at img tag
     app.find('.avatar-panel-item').at(1).simulate('click')
+    app.find('.avatar-panel-box').simulate('click')
     expect(app.find('.avatar-panel-box').length).toBe(1)
     app.find('.avatar-panel-item img').at(1).simulate('click')
 
@@ -150,5 +155,9 @@ describe('Common Render', ()=> {
     expect(app.find('.v-editor-main textarea').prop('value')).toBe("  ")
     app.find('.v-editor-main textarea').simulate('keydown',{shiftKey:true,keyCode:9,preventDefault:()=>{}})
     expect(app.find('.v-editor-main textarea').prop('value')).toBe("  ")
+  })
+
+  it('Unmount App',()=>{
+    app.unmount()
   })
 })
