@@ -9,8 +9,14 @@
 
 ### Changelog
 
-##### 0.5.2 （2020-3-16）
+##### 0.5.3 (2020-3-21)
 
+* 修复部分bug
+* 增加测试，覆盖度超过90%
+
+##### 0.5.2 (2020-3-16)
+
+* 增加主题(黑暗/明亮)模式
 * 修复提交后，`textarea`不能恢复高度的bug
 * 修改自定义`leancloud`上储存**评论**的Class默认名称为`"Comment"`(兼容之前版本和邮件回复功能)
 * 增加自定义`leancloud`上储存**页面阅读量**的Class名称，默认为`"Counter"`
@@ -20,13 +26,6 @@
 * `API`请求替换`leancloud-sdk`，显著减少包大小(parsed size from `479.2kb` to `331.92kb`)
 * 自定义组件UI替换`material-ui`，显著减少包大小(parsed size from `331.92kb` to `216.48kb`)
 * 增加自定义`leancloud`上Class名称，默认为`"Comment_demo"`
-
-##### 0.5.0 (2020-3-13)
-
-* 增加可编辑模式，基于`cookie`的token检测
-* 当添加，回复，修改评论后，对目标评论增加一个显眼的闪烁效果
-* 修复滚动精确度
-* 调整部分UI，包括字体颜色，背景等
 
 [更多Changelog](https://github.com/stonehank/react-valine/blob/master/CHANGELOG.md)
 
@@ -89,7 +88,7 @@
 |emojiListSize|否|输入`:`显示`emoji`的条数|5|
 |sofaEmpty|否|无评论时显示|快来做第一个评论的人吧~|
 |previewShow|否|是否默认开启实时预览|true|
-|themeMode|否|设定全局主题|light|
+|themeMode|否|设定全局主题(light/dark)|light|
 |lang|否|支持中文(zh-cn)和英文(en)|zh-cn|
 |CommentClass|否|在`leancloud`上存放**评论**的Class名称|Comment|
 |CounterClass|否|在`leancloud`上存放**页面阅读量**的Class名称|Counter|
