@@ -67,7 +67,7 @@ function attribute(ele,name,value){
   }
 }
 
-
+let keepClassPre=null
 function clearAttr(el) {
   let attrs = el.attributes
   let ignoreAttrs = ['align', 'alt','checked', 'disabled', 'href', 'id', 'target', 'title', 'type', 'src', 'class', /*'style'*/]
@@ -84,8 +84,12 @@ function clearAttr(el) {
         })
         break;
       case 'class':
-        if(el.nodeName!=='CODE'){
-          removeAttrs.push('class')
+        if((el.nodeName==='PRE' || el.nodeName==='CODE') && (el.className.startsWith('language-') || el.className.startsWith('hljs'))){
+          keepClassPre=el
+        }else{
+          if(!isDescendant(keepClassPre,el)){
+            removeAttrs.push('class')
+          }
         }
         break;
       default:
@@ -104,4 +108,16 @@ function clearAttr(el) {
   return el
 }
 
+function isDescendant(parent, child) {
+  if(!parent)return null
+  if(parent===child)return true
+  let node = child.parentNode;
+  while (node != null) {
+    if (node === parent) {
+      return true;
+    }
+    node = node.parentNode;
+  }
+  return false;
+}
 export default xssFilter

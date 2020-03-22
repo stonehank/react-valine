@@ -456,7 +456,9 @@ describe("test xssfilter", () => {
     expect(xssFilter(`<div class="hljs-attr" ></div>`)).toBe('<div></div>')
   })
 
-  it('code can keep class', () => {
-    expect(xssFilter(`<code class="hljs-attr" style="width:100px;background:red;color:blue;" ></code>`)).toBe('<code class="hljs-attr" style="color:blue"></code>')
+  it('Classname start with hljs and language with pre, code element can keep class', () => {
+    expect(xssFilter(`<code class="some-class" style="width:100px;background:red;color:blue;" ></code>`)).toBe('<code style="color:blue"></code>')
+    expect(xssFilter(`<pre class="hljs"><code><span class="hljs-keyword">var</span> a=<span class="hljs-number">5</span></code></pre>`)).toBe('<pre class="hljs"><code><span class="hljs-keyword">var</span> a=<span class="hljs-number">5</span></code></pre>')
+    expect(xssFilter(`<pre><code class="language-js"><pre class="hljs"><code><span class="hljs-keyword">var</span> a=<span class="hljs-number">5</span></code></pre></code></pre>`)).toBe(`<pre><code class="language-js"><pre class="hljs"><code><span class="hljs-keyword">var</span> a=<span class="hljs-number">5</span></code></pre></code></pre>`)
   })
 })
