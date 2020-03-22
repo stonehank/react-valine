@@ -50,6 +50,12 @@ export default class FetchResourceContainer extends React.Component{
    
   }
 
+  /**
+   *
+   * @param uniqStr
+   * @param title
+   * @returns {Promise}<Number>
+   */
   getPageview(uniqStr,title){
     return new Promise(resolve=>{
       if(this.pageviewMap.has(uniqStr)){
@@ -93,6 +99,12 @@ export default class FetchResourceContainer extends React.Component{
     })
   }
 
+  /**
+   *
+   * @param uniqStr
+   * @param title
+   * @returns {Promise}<Void>
+   */
   createCounter(uniqStr,title=''){
     let Ct = AV.Object.extend(this.state.CounterClass);
     let newCounter = new Ct();
@@ -110,6 +122,11 @@ export default class FetchResourceContainer extends React.Component{
     });
   }
 
+  /**
+   *
+   * @param id
+   * @returns {Promise}<Boolean>
+   */
   checkCanEdit(id){
     const {editMode}=this.props
     if(!editMode)return Promise.resolve(false)
@@ -122,6 +139,11 @@ export default class FetchResourceContainer extends React.Component{
       })
   }
 
+  /**
+   *
+   * @param uniqStr
+   * @returns {Promise}<Number>
+   */
   fetchCount(uniqStr){
     return new Promise(resolve=>{
       if(this.countMap.has(uniqStr)){
@@ -138,6 +160,11 @@ export default class FetchResourceContainer extends React.Component{
     })
   }
 
+  /**
+   *
+   * @param uniqStr
+   * @param count
+   */
   updateCounts(uniqStr,count){
     this.countMap.set(uniqStr,count)
     this.setState({
@@ -145,6 +172,10 @@ export default class FetchResourceContainer extends React.Component{
     })
   }
 
+  /**
+   * // todo need to define UserObject
+   * @returns {Promise}<UserObject>
+   */
   getUser(){
     const {editMode}=this.props
     if(!editMode)return Promise.reject('Forbid the edit!')
@@ -189,9 +220,15 @@ export default class FetchResourceContainer extends React.Component{
         })
       }
     })
-
   }
 
+  /**
+   * // todo defined CommentObject
+   * @param id
+   * @param comment
+   * @param commentRaw
+   * @returns {Promise}<CommentObject>
+   */
   updateComment({id,comment,commentRaw}){
     const {editMode}=this.props
     if(!editMode)return Promise.reject(null)
@@ -211,10 +248,13 @@ export default class FetchResourceContainer extends React.Component{
       }).catch(err=>{
         throw new Error('Can not modify! '+err)
     })
-
-
   }
 
+  /**
+   *
+   * @param uploadField
+   * @returns {Promise}<CommentObject>
+   */
   uploadComment(uploadField){
     let Ct = AV.Object.extend(this.props.CommentClass);
     let comment = new Ct();
@@ -257,6 +297,12 @@ export default class FetchResourceContainer extends React.Component{
     })
   }
 
+  /**
+   *
+   * @param uniqStr
+   * @param currentListLen
+   * @returns {Promise}<Array>[]
+   */
   fetchMoreList(uniqStr,currentListLen){
     const {pageSize}=this.props
     return new AV.Query(this.props.CommentClass)
@@ -275,6 +321,11 @@ export default class FetchResourceContainer extends React.Component{
       })
   }
 
+  /**
+   *
+   * @param uniqStr
+   * @returns {Promise}<Array>
+   */
   fetchOwnerTask(uniqStr){
     const {editMode}=this.props
     if(!editMode)return Promise.resolve([])
