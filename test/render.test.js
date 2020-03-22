@@ -115,8 +115,8 @@ describe('Common Render', ()=> {
         "a=54\n" +
         "```" } })
     expect(app.find('.v-content-preview').length).toBe(1)
-    expect(app.find('.v-content-preview').html()).toBe('<div class="v-content-preview"><div><pre><code class="language-py"><pre><code>a=<span>54</span></code></pre></code></pre>\n' +
-      '</div></div>')
+    expect(app.find('.v-content-preview').html()).toBe(`<div class="v-content-preview"><div><pre><code class="language-py"><pre class="hljs"><code>a=<span class="hljs-number">54</span></code></pre></code></pre>
+</div></div>`)
     // Close preview panel
     app.find('.vpreview-btn').simulate('click')
     expect(app.find('.vpreview-btn').text()).toBe('预览：Off')
