@@ -30,7 +30,7 @@ class Obj{
     this.attributes={}
     this.__method__=method
     for(let k in obj){
-      if(obj.hasOwnProperty(k)){
+      if(Object.prototype.hasOwnProperty.call(obj,k)){
         if(k==='_r' || k==='_w' || k==='ua' || k==='ownerCode')continue
         this.attributes[k]=obj[k]
       }
@@ -193,7 +193,7 @@ let CustomAV = {
     // applicationId=appKey
     // applicationKey=appKey
     for (let k in other) {
-      if(other.hasOwnProperty(k)){
+      if(Object.prototype.hasOwnProperty.call(other,k)){
         if (CustomAV[k] != null) CustomAV[k] = other[k]
       }
     }

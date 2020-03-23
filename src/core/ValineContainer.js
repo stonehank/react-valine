@@ -241,7 +241,7 @@ export default class ValineContainer extends React.Component {
   applySubmit(defaultComment) {
     const {curLang, uploadComment} = this.props
     for (let k in defaultComment) {
-      if (defaultComment.hasOwnProperty(k)) {
+      if (Object.prototype.hasOwnProperty.call(defaultComment,k)) {
         this.defaultComment[k] = defaultComment[k]
       }
     }

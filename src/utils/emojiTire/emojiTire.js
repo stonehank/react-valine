@@ -2,7 +2,7 @@ import emojiData from '../../assets/emoji'
 
 let emojiWords=[]
 for(let k in emojiData){
-  if(emojiData.hasOwnProperty(k)){
+  if(Object.prototype.hasOwnProperty.call(emojiData,k)){
     emojiWords.push(k)
   }
 }

@@ -24,7 +24,7 @@ export function deepEqual(obj1,obj2){
   if(!obj1 || !obj2)return false
   let os=Object.prototype.toString,result=true;
   for(let key in obj1){
-    if(obj1.hasOwnProperty(key)){
+    if(Object.prototype.hasOwnProperty.call(obj1,key)){
       if(os.call(obj1[key])==='[object Array]' && os.call(obj2[key])==='[object Array]'){
         if(obj1[key].length!==obj2[key].length){ return false}
         result=deepEqual(obj1[key],obj2[key])

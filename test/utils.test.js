@@ -461,4 +461,7 @@ describe("test xssfilter", () => {
     expect(xssFilter(`<pre class="hljs"><code><span class="hljs-keyword">var</span> a=<span class="hljs-number">5</span></code></pre>`)).toBe('<pre class="hljs"><code><span class="hljs-keyword">var</span> a=<span class="hljs-number">5</span></code></pre>')
     expect(xssFilter(`<pre><code class="language-js"><pre class="hljs"><code><span class="hljs-keyword">var</span> a=<span class="hljs-number">5</span></code></pre></code></pre>`)).toBe(`<pre><code class="language-js"><pre class="hljs"><code><span class="hljs-keyword">var</span> a=<span class="hljs-number">5</span></code></pre></code></pre>`)
   })
+  it('If class name is at, should not be remove', () => {
+    expect(xssFilter(`<a class="at" href="#someone">@someone</a>`)).toBe('<a class="at" href="#someone">@someone</a>')
+  })
 })

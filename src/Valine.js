@@ -31,7 +31,7 @@ export default class Valine extends FetchResourceContainer{
         throw new Error("customTxt must be a object!")
       }
       for(let k in customTxt){
-        if(customTxt.hasOwnProperty(k)){
+        if(Object.prototype.hasOwnProperty.call(customTxt,k)){
           if(locales[props.lang][k]){
             locales[props.lang][k]=Object.assign({},locales[props.lang][k],customTxt[k])
           }

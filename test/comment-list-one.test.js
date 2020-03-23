@@ -38,7 +38,7 @@ describe('Test One Comment', ()=>{
           </header>
           <div><ValinePanel uniqStr={test_uniq_str}/></div>
         </div>
-      </Valine>
+      </Valine>,{ attachTo: document.body }
     );
     setTimeout(()=>{
       // fetch done

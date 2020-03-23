@@ -259,7 +259,7 @@ export default class FetchResourceContainer extends React.Component{
     let Ct = AV.Object.extend(this.props.CommentClass);
     let comment = new Ct();
     for (let k in uploadField) {
-      if (uploadField.hasOwnProperty(k)) {
+      if (Object.prototype.hasOwnProperty.call(uploadField,k)) {
         let val = uploadField[k];
         comment.set(k,val);
       }

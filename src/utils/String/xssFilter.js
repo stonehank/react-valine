@@ -84,7 +84,9 @@ function clearAttr(el) {
         })
         break;
       case 'class':
-        if((el.nodeName==='PRE' || el.nodeName==='CODE') && (el.className.startsWith('language-') || el.className.startsWith('hljs'))){
+        if(el.className==='at'){
+          continue
+        }else if((el.nodeName==='PRE' || el.nodeName==='CODE') && (el.className.startsWith('language-') || el.className.startsWith('hljs'))){
           keepClassPre=el
         }else{
           if(!isDescendant(keepClassPre,el)){

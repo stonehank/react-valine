@@ -58,6 +58,8 @@ describe('Test Multiple Comments', ()=> {
     app.find('.showchild-button-on').simulate('click')
     expect(app.find('.vquote').length).toBe(1)
     expect(app.find('.vquote .v-content-body').text().trim()).toBe('@45 nest')
+    // console.log(app.find('.vquote .v-content-body').html())
+    expect(app.find('.vquote .v-content-body').html().includes('class="at"')).toBe(true)
     app.find('.vquote .v-action-reply').simulate('click')
     expect(app.find('.v-editor-main textarea').prop('value')).toBe('@xxxx ')
     app.find('.showchild-button-off').simulate('click')
