@@ -3,9 +3,6 @@ import ValineContext from './ValineContext'
 import locales from './assets/locales'
 import PropTypes from 'prop-types';
 import FetchResourceContainer from './core/FetchResourceContainer'
-// import 'cross-fetch/polyfill';
-// import Promise from 'promise-polyfill';
-if(!window.Promise)window.Promise=Promise
 
 export default class Valine extends FetchResourceContainer{
 
