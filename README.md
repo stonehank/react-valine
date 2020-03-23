@@ -9,6 +9,10 @@
 
 ### Changelog
 
+##### 0.5.5 (2020-3-23)
+* 修复`at`某个人标签`class`被删除bug
+* 更新package
+
 ##### 0.5.4 (2020-3-22)
 
 * 分离数据获取模块
@@ -27,12 +31,6 @@
 * 修复提交后，`textarea`不能恢复高度的bug
 * 修改自定义`leancloud`上储存**评论**的Class默认名称为`"Comment"`(兼容之前版本和邮件回复功能)
 * 增加自定义`leancloud`上储存**页面阅读量**的Class名称，默认为`"Counter"`
-
-##### 0.5.1 (2020-3-15)
-
-* `API`请求替换`leancloud-sdk`，显著减少包大小(parsed size from `479.2kb` to `331.92kb`)
-* 自定义组件UI替换`material-ui`，显著减少包大小(parsed size from `331.92kb` to `216.48kb`)
-* 增加自定义`leancloud`上Class名称，默认为`"Comment_demo"`
 
 [更多Changelog](https://github.com/stonehank/react-valine/blob/master/CHANGELOG.md)
 
