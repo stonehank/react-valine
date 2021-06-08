@@ -81,7 +81,7 @@ export default class CardContentEdit extends InputContainer{
                             togglePreviewShow={togglePreviewShow}
           />
         </div>
-        <div className={"v-edit-save"} onClick={this.saveEdit.bind(this,curId)} style={{minWidth:42}}>
+        <div className={"v-edit-save"} onClick={()=>replyLoading ? false : this.saveEdit()} style={{minWidth:42}}>
           { replyLoading
             // ? <CircularProgress size={14} />
             ? <span className={"vloading-btn vloading-btn-sm"} />

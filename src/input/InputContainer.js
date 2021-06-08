@@ -347,6 +347,7 @@ export default class InputContainer extends React.Component {
   }
 
   handleOnSubmit(){
+    if(this.submitLoading)return
     const {nickName,email,link,protocol,avatarSrc,commentContent}=this.state
     const {applySubmit}=this.props
     if(!this.submitVerify())return
