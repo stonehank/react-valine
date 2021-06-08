@@ -24,17 +24,17 @@ export default class ValineGetCount extends React.Component{
       })
   }
 
-  componentDidUpdate(){
-    this.props.fetchCount(this.state.uniqStr)
-      .then(count=>{
-        if(count===this.state.count)return
-        if(this._isMounted){
-          this.setState({
-            count
-          })
-        }
-      })
-  }
+  // componentDidUpdate(){
+  //   this.props.fetchCount(this.state.uniqStr)
+  //     .then(count=>{
+  //       if(count===this.state.count)return
+  //       if(this._isMounted){
+  //         this.setState({
+  //           count
+  //         })
+  //       }
+  //     })
+  // }
   componentWillUnmount(){
     this._isMounted=false
   }

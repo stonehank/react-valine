@@ -17,6 +17,7 @@ codecov.yml
 src
 test
 demo
+draft
 docs
 index.html
 postcss.config.js
