@@ -125,7 +125,7 @@ module.exports= {
   plugins: [
     new CleanWebpackPlugin(),
     new WebpackBar(),
-    new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin({analyzerMode: 'static'}),
   ],
 
   stats: {

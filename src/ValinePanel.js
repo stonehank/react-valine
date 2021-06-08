@@ -32,7 +32,6 @@ ValinePanel.defaultProps={
   uniqStr:decodeURI(window.location.origin+window.location.pathname),
   useWindow:true,
   getPanelParent:null,
-  themeMode:'',
   className:'',
   style:null
 }
