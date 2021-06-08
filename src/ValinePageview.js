@@ -21,14 +21,16 @@ export default class ValinePageview extends React.Component{
             }
             return initialLoading
                 ? 'Loading'
-                : <ValineGetCount style={style}
-                              fetchCount={getPageview}
-                              title={title}
-                              uniqStr={uniqStr}
-                              count={count}
-                              className={className}
-                              themeMode={themeMode}
-                              fetchTxt={curLang['tips']['pageview']}
+                : <ValineGetCount
+                    style={style}
+                    fetchCount={getPageview}
+                    fetchOnUpdate={false}
+                    title={title}
+                    uniqStr={uniqStr}
+                    count={count}
+                    className={className}
+                    themeMode={themeMode}
+                    fetchTxt={curLang['tips']['pageview']}
               />
           }
         }

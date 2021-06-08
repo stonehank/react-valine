@@ -19,14 +19,16 @@ export default class ValineCount extends React.Component{
           return (
               initialLoading
                   ? 'Loading...'
-                  :<ValineGetCount style={style}
-                            fetchCount={fetchCount}
-                            updateCountHash={updateCountHash}
-                            uniqStr={uniqStr}
-                            className={className}
-                            themeMode={themeMode}
-                            count={count}
-                            fetchTxt={curLang['tips']['count']}
+                  :<ValineGetCount
+                      style={style}
+                      fetchCount={fetchCount}
+                      fetchOnUpdate={true}
+                      updateCountHash={updateCountHash}
+                      uniqStr={uniqStr}
+                      className={className}
+                      themeMode={themeMode}
+                      count={count}
+                      fetchTxt={curLang['tips']['count']}
             />
           )
         }

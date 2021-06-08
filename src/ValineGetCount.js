@@ -24,17 +24,19 @@ export default class ValineGetCount extends React.Component{
       })
   }
 
-  // componentDidUpdate(){
-  //   this.props.fetchCount(this.state.uniqStr)
-  //     .then(count=>{
-  //       if(count===this.state.count)return
-  //       if(this._isMounted){
-  //         this.setState({
-  //           count
-  //         })
-  //       }
-  //     })
-  // }
+  componentDidUpdate(){
+    if(!this.props.fetchOnUpdate)return
+    this.props.fetchCount(this.state.uniqStr,this.props.title)
+      .then(count=>{
+        if(count===this.state.count)return
+        if(this._isMounted){
+          this.setState({
+            count
+          })
+        }
+      })
+  }
+
   componentWillUnmount(){
     this._isMounted=false
   }
@@ -46,5 +48,6 @@ export default class ValineGetCount extends React.Component{
 }
 
 ValineGetCount.defaultProps={
-  uniqStr:decodeURI(window.location.origin+window.location.pathname)
+  uniqStr:decodeURI(window.location.origin+window.location.pathname),
+  fetchOnUpdate:true
 }
