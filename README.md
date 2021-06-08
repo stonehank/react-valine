@@ -7,33 +7,6 @@
 
 ---
 
-### Changelog
-
-##### 0.5.5 (2020-3-23)
-* 修复`at`某个人标签`class`被删除bug
-* 更新package
-
-##### 0.5.4 (2020-3-22)
-
-* 分离数据获取模块
-* 修复`xssFilter`过滤代码块的`class`，导致无高亮的bug
-* 优化`webpack dev`显示
-
-##### 0.5.3 (2020-3-21)
-
-* 修复部分bug
-* 增加测试，覆盖度超过90%
-
-##### 0.5.2 (2020-3-16)
-
-* 增加主题(黑暗/明亮)模式
-
-* 修复提交后，`textarea`不能恢复高度的bug
-* 修改自定义`leancloud`上储存**评论**的Class默认名称为`"Comment"`(兼容之前版本和邮件回复功能)
-* 增加自定义`leancloud`上储存**页面阅读量**的Class名称，默认为`"Counter"`
-
-[更多Changelog](https://github.com/stonehank/react-valine/blob/master/CHANGELOG.md)
-
 ### 特性
 
 * 支持实时预览，支持`markdown`语法
@@ -283,3 +256,37 @@ modify_hljs((hljs)=>{
 ### 邮件回复
 
 参考[Valine-Admin](https://github.com/zhaojun1998/Valine-Admin)
+
+
+### Changelog
+
+##### 0.5.6
+
+* 修复接收到`code:101`(当前请求对象不存在)时发生的逻辑崩溃，第一次发布评论时，自动创建`Comment`表
+* 更新`README`, 添加客户端配置步骤
+* **serverURLs**会尝试根据`appId`自动获取
+
+##### 0.5.5 (2020-3-23)
+* 修复`at`某个人标签`class`被删除bug
+* 更新package
+
+##### 0.5.4 (2020-3-22)
+
+* 分离数据获取模块
+* 修复`xssFilter`过滤代码块的`class`，导致无高亮的bug
+* 优化`webpack dev`显示
+
+##### 0.5.3 (2020-3-21)
+
+* 修复部分bug
+* 增加测试，覆盖度超过90%
+
+##### 0.5.2 (2020-3-16)
+
+* 增加主题(黑暗/明亮)模式
+
+* 修复提交后，`textarea`不能恢复高度的bug
+* 修改自定义`leancloud`上储存**评论**的Class默认名称为`"Comment"`(兼容之前版本和邮件回复功能)
+* 增加自定义`leancloud`上储存**页面阅读量**的Class名称，默认为`"Counter"`
+
+[更多Changelog](https://github.com/stonehank/react-valine/blob/master/CHANGELOG.md)

@@ -1,11 +1,10 @@
 {
   "name": "react-valine",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "description": "A react component for comment system without backend.",
   "main": "dist/react-valine.js",
   "author": "stonehank <stonehank310@gmail.com>",
   "scripts": {
-    "test:build": "jest --runInBand && codecov",
     "test": "jest  && codecov",
     "build": "npm run test && npm run build:main",
     "build:main": "webpack",
