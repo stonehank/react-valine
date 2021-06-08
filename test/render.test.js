@@ -2,7 +2,7 @@ import React from 'react';
 import {Valine,ValineCount,ValinePageview,ValinePanel,modify_hljs} from '../src/react-valine'
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-
+const {serverURLs}=require('./config')
 Enzyme.configure({ adapter: new Adapter() });
 
 import test_uniq_str from './nock/nock-UNIQUESTR'
@@ -18,7 +18,7 @@ import './nock/nock-comment-update'
 describe('Common Render', ()=> {
   let app
   // Careful each
-  beforeEach(()=>{
+  beforeEach((done)=>{
     modify_hljs(function(hljs){
       const python = require('highlight.js/lib/languages/python');
       hljs.registerLanguage('python', python);
@@ -27,6 +27,7 @@ describe('Common Render', ()=> {
     app = Enzyme.mount(
       <Valine appId={"I5DAxOhp2kPXkbj9VXPyKoEB-gzGzoHsz"}
               appKey={"lGPcHd7GL9nYKqBbNEkgXKjX"}
+              serverURLs={serverURLs}
               requireEmail={true}
               nest={false}
               CommentClass={"Comment"}
@@ -40,7 +41,14 @@ describe('Common Render', ()=> {
         </div>
       </Valine>
     );
+    // Need to update the loading status
+    setTimeout(() => {
+      // fetch done
+      app.update()
+      done()
+    }, 0)
   })
+
   it('First load render', () => {
     expect(app.find('.react-valine').length).toBe(1);
     expect(app.find('.v-main-wrapper').length).toBe(1);

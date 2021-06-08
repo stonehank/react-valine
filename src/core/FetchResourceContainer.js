@@ -17,17 +17,7 @@ export default class FetchResourceContainer extends React.Component{
     if(!AV){
       throw new Error(locales[this.props.lang]["error"]['importError'])
     }
-    try{
-      AV.init({
-        appId:props.appId,
-        appKey:props.appKey,
-        serverURLs: props.serverURLs
-      })
-      if(props.editMode)AV.User.logOut()
-    }catch(e){
-      throw new Error(locales[this.props.lang]["error"]['initError'],e)
-      // do nothing
-    }
+
     this.state={
       updateCountHash:0,
     }
@@ -47,8 +37,61 @@ export default class FetchResourceContainer extends React.Component{
     this.updateCounts=this.updateCounts.bind(this)
     this.getPageview=this.getPageview.bind(this)
     this.createCounter=this.createCounter.bind(this)
-   
+
   }
+
+
+  initAVObject(){
+    let props=this.props
+    return this.initServerURLs()
+    .then((serverURLs)=>{
+      if(!serverURLs){
+        throw new Error('serverURLs 获取失败，请自行手动添加, https://github.com/stonehank/react-valine#获取serverURLs')
+      }
+      try{
+        AV.init({
+          appId:props.appId,
+          appKey:props.appKey,
+          serverURLs: serverURLs
+        })
+        if(props.editMode)AV.User.logOut()
+      }catch(e){
+        throw new Error(locales[this.props.lang]["error"]['initError'],e)
+        // do nothing
+      }
+    })
+  }
+
+  initServerURLs(){
+    return new Promise(res=>{
+      if(!this.props.serverURLs){
+        return this.getServerURLs().then((url)=>res(url))
+      }else{
+        return res(this.props.serverURLs)
+      }
+    })
+    .then((urls)=>{
+      let serverURLs=urls
+      if(typeof serverURLs === 'string' && !serverURLs.startsWith('https://')){
+        serverURLs='https://'+serverURLs
+      }
+      return serverURLs
+    })
+    .catch((err)=>{
+      console.error(err)
+      throw new Error('Something error happened. Please pass the serverURLs manually')
+    })
+  }
+
+  getServerURLs(){
+    return fetch('https://app-router.leancloud.cn/2/route?appId='+this.props.appId,{
+      method: 'get',
+    }).then(data=>data.json())
+    .then(resp=>{
+      return resp.api_server || resp.api
+    })
+  }
+
 
   /**
    *
@@ -99,6 +142,7 @@ export default class FetchResourceContainer extends React.Component{
     })
   }
 
+
   /**
    *
    * @param uniqStr
@@ -137,6 +181,9 @@ export default class FetchResourceContainer extends React.Component{
       .then(ownerItems=>{
         return ownerItems && ownerItems.length>0
       })
+      .catch(ex=>{
+        console.log('checkCanEdit',ex)
+      })
   }
 
   /**
@@ -155,6 +202,14 @@ export default class FetchResourceContainer extends React.Component{
           .then((counts)=>{
             this.countMap.set(uniqStr,counts)
             return resolve(counts)
+          })
+          .catch(ex=>{
+            if(ex.code===101){
+              this.countMap.set(uniqStr,0)
+              return resolve(0)
+            }else{
+              console.error(ex)
+            }
           })
       }
     })
@@ -180,7 +235,7 @@ export default class FetchResourceContainer extends React.Component{
     const {editMode}=this.props
     if(!editMode)return Promise.reject('Forbid the edit!')
     let createUser=(res)=>{
-      let user= new AV.User()
+      let user= new AV.User(this.state.UserClass)
       user.setUsername(newRandOwnerCode)
       user.setPassword(newRandOwnerCode)
       let acl = new AV.ACL();
@@ -337,7 +392,7 @@ export default class FetchResourceContainer extends React.Component{
         if(ownerItems.length===0){
           return ownerItems
         }
-        return new AV.Query('User')
+        return new AV.Query(this.state.UserClass)
           .equalTo('username',oldRandOwnerCode)
           .find()
           .then((validUser)=>{
@@ -347,6 +402,13 @@ export default class FetchResourceContainer extends React.Component{
               return ownerItems
             }
           })
+      })
+      .catch(ex=>{
+        if(ex.code===101){
+          return []
+        }else{
+          console.error(ex)
+        }
       })
   }
 
@@ -442,5 +504,6 @@ FetchResourceContainer.propTypes = {
   editMode:PropTypes.bool,
   CommentClass:PropTypes.string,
   CounterClass:PropTypes.string,
+  UserClass:PropTypes.string,
   themeMode:PropTypes.string
 }

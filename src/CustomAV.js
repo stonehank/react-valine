@@ -99,9 +99,10 @@ class Obj{
 
 }
 class User extends Obj {
-  constructor() {
-    super('_User')
-    this.classes='users'
+  constructor(userTableName) {
+    if(!userTableName)userTableName='Users'
+    super(userTableName)
+    this.__table__=userTableName
   }
 
   setUsername(username) {
@@ -158,7 +159,7 @@ class User extends Obj {
       }
     })
       .then((userObj) => {
-        rewriteUserToSDKObj(userObj,username)
+        rewriteUserToSDKObj(this.__table__,userObj,username)
         return currentUser
       })
   }
@@ -168,9 +169,9 @@ function rewriteCommentToSDKObj(commentObj,tableName){
   return new Obj(tableName,commentObj,'PUT')
 }
 
-function rewriteUserToSDKObj(userObj,username){
+function rewriteUserToSDKObj(userTable,userObj,username){
   userObj.username=username
-  currentUser = new Obj('_User',userObj,'PUT')
+  currentUser = new Obj(userTable,userObj,'PUT')
   return currentUser
 }
 
@@ -244,7 +245,7 @@ let CustomAV = {
   },
   Query: class Query {
     constructor(table) {
-      if(table==='User')table='_User'
+      if(!table)table='Users'
       this.__table__ = table
       this.conditions = {}
     }
@@ -362,11 +363,22 @@ let CustomAV = {
       if (this.conditions.limit == null) {
         this.conditions.limit = 0
       }
-      return this._find().then(data=>data.count)
+      return this._find().then(data=>{
+        if(data.code===101){
+          throw data
+        }
+        return data.count
+      })
     }
 
     find(){
       return this._find().then(data=>{
+        if(data.code===101){
+          throw data
+        }
+        if(!data.results){
+          throw data
+        }
         let results=data.results
         let res=[]
         for(let i=0;i<results.length;i++){
@@ -374,7 +386,7 @@ let CustomAV = {
         }
         return res
       }).catch((err)=>{
-        console.error(err)
+        throw err
       })
     }
     _find() {

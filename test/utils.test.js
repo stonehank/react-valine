@@ -11,7 +11,7 @@ import {
   randUniqueString,
 } from '../src/utils'
 import timeAgo from "../src/utils/timeAgo";
-import {escape} from "../src/utils/String/escape";
+import {escape} from "../src/utils/String";
 import getWordList from "../src/utils/emojiTire";
 import xssFilter from "../src/utils/String/xssFilter";
 

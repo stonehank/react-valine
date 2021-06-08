@@ -9,8 +9,10 @@ export default class Valine extends FetchResourceContainer{
   constructor(props){
     super(props)
     this.state={
+      initialLoading:true,
       CommentClass:props.CommentClass,
       CounterClass:props.CounterClass,
+      UserClass:'_User',
       requireName:props.requireName,
       requireEmail:props.requireEmail,
       nest:props.nest,
@@ -40,9 +42,17 @@ export default class Valine extends FetchResourceContainer{
 
   }
 
+  componentDidMount(){
+    this.initAVObject().then(()=>{
+      this.setState({
+        initialLoading:false
+      })
+    })
+  }
+
   render(){
     // eslint-disable-next-line
-    const {CommentClass,CounterClass,pageSize,lang,...otherState}=this.state
+    const {CommentClass,CounterClass,UserClass,pageSize,lang,...otherState}=this.state
     let curLang=locales[lang]
     return (
       <ValineContext.Provider value={
@@ -61,6 +71,7 @@ export default class Valine extends FetchResourceContainer{
           getPageview:this.getPageview,
           createCounter:this.createCounter,
           getUser:this.getUser,
+          initialLoading:this.state.initialLoading,
           ...otherState
         }
       }
@@ -80,7 +91,6 @@ Valine.defaultProps={
   lang:'zh-cn',
   nestLayers:Infinity,
   emojiListSize:5,
-  serverURLs:'https://i5daxohp.api.lncld.net',
   editMode:false,
   CommentClass:'Comment',
   CounterClass:'Counter',

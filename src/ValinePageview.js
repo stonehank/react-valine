@@ -12,24 +12,25 @@ export default class ValinePageview extends React.Component{
   render(){
     return (
       <ValineContext.Consumer>
-        {contextProps=>{
-          let {getPageview,curLang,themeMode}=contextProps
-          const {style,uniqStr,count,title,className}=this.props
-          if(this.props.themeMode){
-            themeMode=this.props.themeMode
+        {
+          contextProps=>{
+            let {getPageview,initialLoading,curLang,themeMode}=contextProps
+            const {style,uniqStr,count,title,className}=this.props
+            if(this.props.themeMode){
+              themeMode=this.props.themeMode
+            }
+            return initialLoading
+                ? 'Loading'
+                : <ValineGetCount style={style}
+                              fetchCount={getPageview}
+                              title={title}
+                              uniqStr={uniqStr}
+                              count={count}
+                              className={className}
+                              themeMode={themeMode}
+                              fetchTxt={curLang['tips']['pageview']}
+              />
           }
-          return (
-            <ValineGetCount style={style}
-                            fetchCount={getPageview}
-                            title={title}
-                            uniqStr={uniqStr}
-                            count={count}
-                            className={className}
-                            themeMode={themeMode}
-                            fetchTxt={curLang['tips']['pageview']}
-            />
-          )
-        }
         }
       </ValineContext.Consumer>
     )

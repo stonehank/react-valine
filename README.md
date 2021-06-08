@@ -83,12 +83,13 @@
 |:---:|:---:|:---:|:---:|
 |appId|是|leancloud上的appId|/|
 |appKey|是|leancloud上的appKey|/|
+|serverURLs|否|LeanCloud的请求API([怎样获取](#获取serverURLs))|自动获取|
 |requireName|否|是否必须填写昵称|true|
 |requireEmail|否|是否必须填写邮箱|false|
 |placeholder|否|评论框占位提示符|说点什么吧|
 |nest|否|回复样式是否为嵌套模式|true|
 |nestLayers|否|开启嵌套模式后有效，配置嵌套的层数|Infinity|
-|editMode|否|开启可编辑模式|false|
+|editMode|否|开启可编辑模式，用户可以编辑自己的留言|false|
 |pageSize|否|评论列表分页，每页条数|10|
 |emojiListSize|否|输入`:`显示`emoji`的条数|5|
 |sofaEmpty|否|无评论时显示|快来做第一个评论的人吧~|
@@ -241,6 +242,43 @@ modify_hljs((hljs)=>{
 
 更多关于[异步加载highlight](https://highlightjs.org/usage/)的介绍。
 
+### 客户端设置
+
+1. ##### 获取APP ID 和 APP Key
+
+    请先 [登录](https://leancloud.cn/dashboard/login.html#/signin) 或 
+    [注册](https://leancloud.cn/dashboard/login.html#/signup) `LeanCloud`, 
+    进入 [控制台](https://leancloud.cn/dashboard/applist.html#/apps) 
+    后点击左下角 [创建应用](https://leancloud.cn/dashboard/applist.html#/newapp)
+    
+    ![](https://i.loli.net/2019/06/21/5d0c995c86fac81746.jpg)
+    
+    应用创建好以后，进入刚刚创建的应用，选择左下角的`设置`>`应用Key`，然后就能看到你的`APP ID`和`APP Key`了：
+    
+    ![](https://i.loli.net/2019/06/21/5d0c997a60baa24436.jpg)
+
+2. ##### 获取serverURLs
+
+    `serverURLs`在应用内部会尝试自动获取，如果发现获取失败，请手动提供
+    刚刚创建的应用，选择左下角的`设置`>`应用Key`，找到`Request 域名` 第一行
+    ![](./doc/images/react-valine-setting3.png)
+
+3. ##### 创建 Comment 表
+    在应用菜单->数据储存->结构化数据，点击`创建Class`，输入表名称`Comment`(也可以自定义)，自定义需要将名称传递给`react-valine`
+    
+    权限选择无限制，如图
+    
+    ![react-valine-setting-4](./doc/images/react-valine-setting4.png)
+
+4. ##### 配置 Comment 表
+    在客户端 `Comment` 表中(也可能是你的自定义名称`CommentClass`)， 建议勾选 `mail`列的`客户端不可见`
+
+    ![react-valine-setting1](./doc/images/react-valine-setting2.png)
+    
+5. ##### 配置 _User 表
+    当你在`LeanCloud`客户端开启一个新的应用后，新创建的应用的 _User 表默认关闭了 find 权限，需要手动打开find权限，设置为`所有用户`
+
+    ![react-valine-setting1](./doc/images/react-valine-setting1.png)
 
 ### 邮件回复
 

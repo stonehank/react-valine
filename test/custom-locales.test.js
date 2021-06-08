@@ -2,6 +2,7 @@ import React from 'react';
 import {Valine,ValineCount,ValinePageview,ValinePanel} from '../src/react-valine'
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
+const {serverURLs}=require('./config')
 Enzyme.configure({ adapter: new Adapter() });
 
 import test_uniq_str from './nock/nock-UNIQUESTR'
@@ -38,12 +39,7 @@ describe('Custom Localse Test', ()=> {
                   "require_mail":"email别漏！",
                 }
               }}
-              serverURLs={{
-                api: "https://i5daxohp.api.lncld.net",
-                engine: "https://i5daxohp.engine.lncld.net",
-                push: "https://i5daxohp.push.lncld.net",
-                stats: "https://i5daxohp.stats.lncld.net"
-              }}
+              serverURLs={serverURLs}
               CommentClass={"Comment"}
       >
         <div className="App">

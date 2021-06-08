@@ -2,7 +2,7 @@ import React from 'react';
 import {Valine,ValinePageview} from '../src/react-valine'
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-
+const {serverURLs}=require('./config')
 Enzyme.configure({ adapter: new Adapter() });
 
 import test_uniq_str from './nock/nock-UNIQUESTR'
@@ -19,6 +19,7 @@ describe('Common Render', ()=> {
     app = Enzyme.mount(
       <Valine appId={"I5DAxOhp2kPXkbj9VXPyKoEB-gzGzoHsz"}
               appKey={"lGPcHd7GL9nYKqBbNEkgXKjX"}
+              serverURLs={serverURLs}
               requireEmail={true}
               nest={false}
               CommentClass={"Comment"}

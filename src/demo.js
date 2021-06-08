@@ -23,12 +23,14 @@ modify_hljs(function(hljs){
 
 
 ReactDOM.render(
-  <Valine  appId={"I5DAxOhp2kPXkbj9VXPyKoEB-gzGzoHsz"}
-           appKey={"lGPcHd7GL9nYKqBbNEkgXKjX"}
+  <Valine  appId={"s8REl9WtWtOw7omr7frVIpMP-MdYXbMMI"}
+           appKey={"amadgvU7WzMYQ9eqMatTHLWM"}
            editMode={true}
            placeholder={"Try“:” to input emoji"}
            nest={true}
-           CommentClass={'Comment'}
+           serverURLs={"https://s8rel9wt.api.lncldglobal.com"}
+           CommentClass={'Comment_demo_live'}
+           UserClass={"User_demo_live"}
   >
     <App />
   </Valine>, document.getElementById('root'));

@@ -3,7 +3,7 @@ import {Valine,ValineCount,ValinePageview,ValinePanel} from '../src/react-valine
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 Enzyme.configure({ adapter: new Adapter() });
-
+const {serverURLs}=require('./config')
 import test_uniq_str from './nock/nock-UNIQUESTR'
 
 import './nock/nock-initial'
@@ -21,12 +21,7 @@ describe('Pageview upload', ()=> {
               appKey={"lGPcHd7GL9nYKqBbNEkgXKjX"}
               requireEmail={true}
               nest={false}
-              serverURLs={{
-                api: "https://i5daxohp.api.lncld.net",
-                engine: "https://i5daxohp.engine.lncld.net",
-                push: "https://i5daxohp.push.lncld.net",
-                stats: "https://i5daxohp.stats.lncld.net"
-              }}
+              serverURLs={serverURLs}
               CommentClass={"Comment"}
       >
         <div className="App">

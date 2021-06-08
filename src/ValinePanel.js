@@ -10,16 +10,18 @@ export default class ValinePanel extends React.Component{
     return (
       <ValineContext.Consumer>
         {contextProps=>{
-          let {themeMode,...otherProps}=contextProps
+          let {themeMode,initialLoading,...otherProps}=contextProps
           if(this.props.themeMode){
             themeMode=this.props.themeMode
           }
 
-          return <ValineContainer themeMode={themeMode}
-                                  {...this.props}
-                                  {...otherProps}
-
-          />
+          return initialLoading
+              ? 'Loading........'
+              : <ValineContainer
+                  themeMode={themeMode}
+                  {...this.props}
+                  {...otherProps}
+              />
         }}
       </ValineContext.Consumer>
     )

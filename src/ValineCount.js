@@ -11,13 +11,15 @@ export default class ValineCount extends React.Component{
     return (
       <ValineContext.Consumer>
         {contextProps=>{
-          let {fetchCount,updateCountHash,curLang,themeMode}=contextProps
+          let {initialLoading,fetchCount,updateCountHash,curLang,themeMode}=contextProps
           const {style,uniqStr,count,className}=this.props
           if(this.props.themeMode){
             themeMode=this.props.themeMode
           }
           return (
-            <ValineGetCount style={style}
+              initialLoading
+                  ? 'Loading...'
+                  :<ValineGetCount style={style}
                             fetchCount={fetchCount}
                             updateCountHash={updateCountHash}
                             uniqStr={uniqStr}
