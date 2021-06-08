@@ -260,6 +260,10 @@ modify_hljs((hljs)=>{
 
 ### Changelog
 
+##### 0.5.9
+
+* 修复多次更新`pageView`
+
 ##### 0.5.8
 
 * 修复一些情况下无法显示部分css
