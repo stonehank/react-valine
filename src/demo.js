@@ -30,7 +30,7 @@ ReactDOM.render(
            nest={true}
            serverURLs={"https://s8rel9wt.api.lncldglobal.com"}
            CommentClass={'Comment_demo_live'}
-           UserClass={"User_demo_live"}
+           CounterClass={"Counter_demo_live"}
   >
     <App />
   </Valine>, document.getElementById('root'));

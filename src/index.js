@@ -27,7 +27,7 @@ ReactDOM.render(
            nest={true}
            serverURLs={"s8rel9wt.api.lncldglobal.com"}
            CommentClass={"Comment_demo"}
-           UserClass={"User_demo"}
+           CounterClass={"Counter_demo"}
   >
     <App />
   </Valine>, document.getElementById('root'));
