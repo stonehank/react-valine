@@ -108,13 +108,12 @@ ReactDOM.render(
 
 |参数|是否必须|作用|默认值|
 |:---:|:---:|:---:|:---:|
-|uniqStr|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
+|[uniqStr](#关于uniqStr说明)|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
 |style|否|组件的样式|null|
 |className|否|组件的样式类|''|
 |count|否|未获取时的初始值|获取中|
 |themeMode|否|设定当前模块主题|light|
 
-> 注意：uniqStr必须是一个独立值，强烈建议自己填写一个独立值，而不是用默认值，因为如果使用默认值，当需要获取评论数时，并不一定在当前评论页的`uniqStr`上，就会获取错误或者失败。
 
 案例参考：
 
@@ -145,14 +144,13 @@ class ArticleMeta extends React.Component{
 
 |参数|是否必须|作用|默认值|
 |:---:|:---:|:---:|:---:|
-|uniqStr|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
+|[uniqStr](#关于uniqStr说明)|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
 |style|否|组件的样式|null|
 |className|否|组件的样式类|''|
 |count|否|未获取时的初始值|获取中|
 |title|否|当前组件对应的文章标题，用于方便后台查看|document.title|
 |themeMode|否|设定当前模块主题|light|
 
-> 注意：uniqStr必须是一个独立值，强烈建议自己填写一个独立值，而不是用默认值，因为如果使用默认值，当需要获取评论数时，并不一定在当前评论页的`uniqStr`上，就会获取错误或者失败。
 
 articleMeta.js
 ```js
@@ -182,14 +180,13 @@ class ArticleMeta extends React.Component{
 
 |参数|是否必须|作用|默认值|
 |:---:|:---:|:---:|:---:|
-|uniqStr|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
+|[uniqStr](#关于uniqStr说明)|否|一个独立值，用于获取当前页面评论|window.location.origin+window.location.pathname|
 |useWindow|否|配置执行滚动时所依赖的父元素|true|
 |getPanelParent|否|`useWindow`为`false`时，可以自定义滚动父组件，默认滚动父组件为`panel.parentNode`|null|
 |style|否|组件的样式|null|
 |className|否|组件的样式类|''|
 |themeMode|否|设定当前模块主题|light|
 
-> 注意：uniqStr必须是一个独立值，强烈建议自己填写一个独立值，而不是用默认值，因为如果使用默认值，当需要获取评论数时，并不一定在当前评论页的`uniqStr`上，就会获取错误或者失败。
 
 #### modify_hljs
 
@@ -214,6 +211,26 @@ modify_hljs((hljs)=>{
 ```
 
 更多关于[异步加载highlight](https://highlightjs.org/usage/)的介绍。
+
+
+### 关于uniqStr说明
+
+每个页面的数据储存方式为`key:value`，因此每个页面有一个独立的字符串作为`key`，才能获取到页面的浏览数，评论数等数据，这个`key`称为`uniqStr`；
+
+默认`uniqStr`使用当前页面`location.origin+location.pathname`，但是有一个缺陷，如果你在页面`b`想要获取页面`a`的评论数等数据，使用`location.origin+location.pathname`就会获取错误或者失败；
+
+因此，对于每一个页面或者说每一个你定义的评论模块，建议手动提供一个`uniqStr`，这个`uniqStr`有以下特性：
+
+1. 全局唯一
+2. `uniqStr`对相同的页面一定有相同的值
+
+例如：评论框位于文章后面
+
+可以使用文章的独立`ID`作为`uniqStr`，这样做，你在任何页面都可以通过文章的`ID`来获取文章浏览量和评论数据。
+
+
+
+> 注意：uniqStr必须是一个独立值，强烈建议自己填写一个独立值，而不是用默认值，因为如果使用默认值，当需要获取评论数时，并不一定在当前评论页的`uniqStr`上，就会获取错误或者失败。
 
 ### 客户端设置
 

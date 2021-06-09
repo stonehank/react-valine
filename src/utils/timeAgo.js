@@ -30,7 +30,7 @@ export default function timeAgo(oldDate,langTxt){
     else if (days < 365) return Math.floor(days / 30) + ` ${langTxt["months"]}`
     else return dateFormat(oldDate);
   } catch (error) {
-    console.error("Something wrong with timeago function.",error)
+    console.error("Something wrong with time ago function.",error)
   }
 }
 

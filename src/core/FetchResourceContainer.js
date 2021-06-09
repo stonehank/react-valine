@@ -182,7 +182,7 @@ export default class FetchResourceContainer extends React.Component{
         return ownerItems && ownerItems.length>0
       })
       .catch(ex=>{
-        console.log('checkCanEdit',ex)
+        console.error('Error happen in check can edit',ex)
       })
   }
 
@@ -208,7 +208,7 @@ export default class FetchResourceContainer extends React.Component{
               this.countMap.set(uniqStr,0)
               return resolve(0)
             }else{
-              console.error(ex)
+              console.error('Error happen in fetch count',ex)
             }
           })
       }
@@ -407,7 +407,7 @@ export default class FetchResourceContainer extends React.Component{
         if(ex.code===101){
           return []
         }else{
-          console.error(ex)
+          console.error('Error happen in fetch owner task',ex)
         }
       })
   }
