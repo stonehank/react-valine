@@ -234,12 +234,13 @@ html{
       flex-flow: column;
       .vinputs-ident{
         display:flex;
-        align-items:center;
+        align-items:flex-start;
         width:100%;
       }
       .v-link-toggle{
+        margin-top:12px;
         text-transform: none;
-        padding: 6px 4px;
+        padding: 4px 4px;
         cursor: pointer;
         background: var(--text-blur);
         border:1px solid var(--text-blur);
