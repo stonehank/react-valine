@@ -1,7 +1,7 @@
 import React from 'react'
 import ValineContext from './ValineContext'
-import locales from './assets/locales'
-import PropTypes from 'prop-types';
+import locales from './assets/locales.json'
+import PropTypes from 'prop-types'
 import FetchResourceContainer from './core/FetchResourceContainer'
 
 export default class Valine extends FetchResourceContainer{
@@ -42,6 +42,14 @@ export default class Valine extends FetchResourceContainer{
 
   }
 
+  componentDidUpdate(){
+    if(this.props.themeMode !== this.state.themeMode){
+      this.setState({
+        themeMode:this.props.themeMode
+      })
+    }
+  }
+
   componentDidMount(){
     this.initAVObject().then(()=>{
       this.setState({
@@ -55,29 +63,29 @@ export default class Valine extends FetchResourceContainer{
     const {CommentClass,CounterClass,UserClass,pageSize,lang,...otherState}=this.state
     let curLang=locales[lang]
     return (
-      <ValineContext.Provider value={
-        {
-          curLang,
-          fetchNest:this.fetchNest,
-          fetchMoreNest:this.fetchMoreNest,
-          fetchList:this.fetchList,
-          fetchMoreList:this.fetchMoreList,
-          fetchOwnerTask:this.fetchOwnerTask,
-          uploadComment:this.uploadComment,
-          updateComment:this.updateComment,
-          checkCanEdit:this.checkCanEdit,
-          fetchCount:this.fetchCount,
-          updateCounts:this.updateCounts,
-          getPageview:this.getPageview,
-          createCounter:this.createCounter,
-          getUser:this.getUser,
-          initialLoading:this.state.initialLoading,
-          ...otherState
+        <ValineContext.Provider value={
+          {
+            curLang,
+            fetchNest:this.fetchNest,
+            fetchMoreNest:this.fetchMoreNest,
+            fetchList:this.fetchList,
+            fetchMoreList:this.fetchMoreList,
+            fetchOwnerTask:this.fetchOwnerTask,
+            uploadComment:this.uploadComment,
+            updateComment:this.updateComment,
+            checkCanEdit:this.checkCanEdit,
+            fetchCount:this.fetchCount,
+            updateCounts:this.updateCounts,
+            getPageview:this.getPageview,
+            createCounter:this.createCounter,
+            getUser:this.getUser,
+            initialLoading:this.state.initialLoading,
+            ...otherState
+          }
         }
-      }
-      >
-        {this.props.children}
-      </ValineContext.Provider>
+        >
+          {this.props.children}
+        </ValineContext.Provider>
     )
   }
 }

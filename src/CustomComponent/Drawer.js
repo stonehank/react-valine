@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 
 export default class Drawer extends React.Component{
   constructor(props){
@@ -10,15 +11,15 @@ export default class Drawer extends React.Component{
 
   }
   hasScrollbar() {
-    return document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight);
+    return document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight)
   }
   getScrollbarWidth() {
-    let scrollDiv = document.createElement("div");
-    scrollDiv.style.cssText = 'width: 99px; height: 99px; overflow: scroll; position: absolute; top: -9999px;';
-    document.body.appendChild(scrollDiv);
-    let scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
-    document.body.removeChild(scrollDiv);
-    return scrollbarWidth;
+    let scrollDiv = document.createElement("div")
+    scrollDiv.style.cssText = 'width: 99px; height: 99px; overflow: scroll; position: absolute; top: -9999px;'
+    document.body.appendChild(scrollDiv)
+    let scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth
+    document.body.removeChild(scrollDiv)
+    return scrollbarWidth
   }
 
   componentDidUpdate(prevProps){
@@ -51,19 +52,20 @@ export default class Drawer extends React.Component{
   render(){
     const {open,anchor,onClose}=this.props
     let cls='drawer-content-'+anchor
-    return (
-      <div className={'drawer-panel-wrapper'} style={{display:open ? 'block' : 'none'}}>
-        {
-          open
-            ? <>
-                <div className={'drawer-panel-mask'} onClick={onClose} />
-                <div className={cls}>
-                  {this.props.children}
-                </div>
-              </>
-            : null
-        }
-      </div>
+    return  ReactDOM.createPortal(
+        <div className={'drawer-panel-wrapper react-valine'} style={{display:open ? 'block' : 'none'}}>
+          {
+            open
+                ? <>
+                  <div className={'drawer-panel-mask'} onClick={onClose} />
+                  <div className={cls}>
+                    {this.props.children}
+                  </div>
+                </>
+                : null
+          }
+        </div>,
+        document.body
     )
   }
 }
