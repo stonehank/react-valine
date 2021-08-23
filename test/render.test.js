@@ -50,7 +50,6 @@ describe('Common Render', ()=> {
   })
 
   it('First load render', () => {
-    expect(app.find('.react-valine').length).toBe(1);
     expect(app.find('.v-main-wrapper').length).toBe(1);
     expect(app.find('.vinputs-ident input').length).toBe(3)
     expect(app.find('.v-link-toggle').length).toBe(1)
