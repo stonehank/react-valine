@@ -94,7 +94,7 @@
       "401": "Unauthorized operation, Please check your appId and appKey.",
       "403": "Access denied by api domain white list, Please check your security domain.",
       "importError":"Something error when import leancloud, try again please",
-      "initError":"Something eror when initial leancloud, try again please",
+      "initError":"Something error when initial leancloud, try again please",
       "noCommentError":"Failed to get the reply comment list"
     },
     "timeago": {
